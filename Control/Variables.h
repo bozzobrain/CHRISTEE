@@ -1,7 +1,7 @@
 
 Timers LEDTimer(1000);
 Timers Seconds(1000);
-Timers sendTimer(100);
+Timers sendTimer(50);
 Timers screenTimer(25);  //15
 Timers commTimer(2000);
 Timers latency(50);
@@ -74,7 +74,7 @@ int driveDistance = 0;   //F/R DIFF
 int angle_command = 0;
 //----------------------------------------------------------------------------
 //in development profile variable for changing driving functionality
-int drivingProfile = 1;
+int drivingProfile = 2;
 //State Control Variables
 int leftMotorSpeed = 0;
 int rightMotorSpeed = 0;

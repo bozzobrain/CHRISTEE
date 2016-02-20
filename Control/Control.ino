@@ -11,14 +11,14 @@
 #include <Timers.h>
 #include "SoftwareSerial.h"
 #include "digitalWriteFast.h"
-#include "Adafruit_Thermal.h"
+//#include "Adafruit_Thermal.h"
 #include <avr/pgmspace.h>
 
 //Internal File Includes
 #include "Methods.h"
 #include "Definitions.h"
 #include "Variables.h"
-#include "Printer.h"
+//#include "Printer.h"
 #include "Comms.h"
 #include "Screen_Outgoing.h"
 #include "Screen.h"

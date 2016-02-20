@@ -13,7 +13,7 @@ MPU MPU1(0x68);
 MPU MPU2(0x69);
 int sampleSet1[100];
 int sampleSet2[100];
-//GYRO
+//-------------GYRO
 Filter gyroF1, gyroF2;
 int angle1, angle2;
 int macroAngle;

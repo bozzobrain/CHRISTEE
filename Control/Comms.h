@@ -91,27 +91,36 @@ void initializeCommunicaton()
 
 inline void updateCommunication()
 {
-  static Timers minimumResponseTimer(20);
+  static Timers minimumResponseTimer(15);
   //So if you have heard from the comm after sending -or- if the resend timer timed out and you havent already sent before a safety timeout condition
   if ((heardBack && minimumResponseTimer.timerDone()) || (resendTimer.timerDone() && notSent))
   {
     sendDataNavigation(internalMacroKeeper);
     if (internalMacroKeeper == 0)
       sendDataMotor(leftMotorSpeed, rightMotorSpeed, actuatorSpeed);
-
+    
     //make a mental note that we have sent
     if (heardBack)  heardBack = false;
-    else if (notSent) notSent = false;
+    //else if (notSent) notSent = false;
   }
   //control box is always listening to the robot
   //in order to keep track of macro's and keep
   //screen up to date.
-  if (robot.receiveData())
+  while (robot.receiveData())
   {
     switch (roboMessage[LAST_BOARD_ADDRESS_RECEIVE]) {
       case NAVIGATION_ADDRESS:
         //NAVIGATION_RECEIVE
-
+        
+        
+       //When you hear from the navigation, reset comms timers
+        heardBack = true;
+        notSent = true;
+        resendTimer.resetTimer();
+        minimumResponseTimer.resetTimer();
+        commTimer.resetTimer();
+        
+        
         //if good checksum, store data locally.
         commMacro             = roboMessage[MACRO_COMMAND_RECEIVE];
         //Gyro Angle
@@ -119,6 +128,7 @@ inline void updateCommunication()
         //Robot Motor States
         motorL                = roboMessage[MOTORL];
         motorR                = roboMessage[MOTORR];
+        
         break;
       case POWER_ADDRESS:
         //Power systems
@@ -149,12 +159,7 @@ inline void updateCommunication()
     if (internalMacroKeeper != 0) macro_complete = roboMessage[MACRO_COMPLETE];
     else                      macro_complete = 0;
 
-    //Communications Reset Timers
-    heardBack = true;
-    notSent = true;
-    resendTimer.resetTimer();
-    minimumResponseTimer.resetTimer();
-    commTimer.resetTimer();
+   
   }
 
   //  if (Bluetooth.receiveData())
@@ -205,6 +210,9 @@ inline void killMacro()
 
 inline void packetWait()
 {
+  //Wait timer (50 ms)
+  static Timers sendTimerWait(50);
+  //
   leftMotorSpeed = 0;
   rightMotorSpeed = 0;
   actuatorSpeed = 255;
@@ -213,7 +221,7 @@ inline void packetWait()
   pageKeeper = activePage;  //record which page is active (to return to after macro)
   CTS = true;
   //writeObject(FORMMESSAGE, CommError, 1);    //change the page to the active macro page
-  sendTimer.resetTimer();
+  sendTimerWait.resetTimer();
   totalTime = 0;
   while (!robot.receiveData())
   {
@@ -224,25 +232,23 @@ inline void packetWait()
       totalTime++;
       lastTime = time;
     }
-    sendTimer.updateTimer();
-    if (sendTimer.timerDone())
+    if (sendTimerWait.timerDone())
     {
       sendDataNavigation(internalMacroKeeper);
-      delay(10);
       sendDataMotor(0, 0, 255);
     }
     if (digitalReadFast(MACRO_BUTTON) == HIGH)
     {
       killMacro();
     }
-    delay(100);
+    delayMicroseconds(50);
     CTS = true;
-    //writeObject(LEDDIGITS, 1, totalTime);
+   // writeObject(LEDDIGITS, 1, totalTime);
   }
   
-  delay(10);
+  delay(1);
   sendDataNavigation(internalMacroKeeper);
-  delay(10);
+  delay(5);
   sendDataMotor(leftMotorSpeed, rightMotorSpeed, actuatorSpeed);
   commTimer.resetTimer();
   CTS = true;

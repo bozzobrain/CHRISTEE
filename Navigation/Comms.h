@@ -6,7 +6,7 @@ FastTransfer Navigation;
 #define NAVIGATION_ADDRESS           4
 #define PIC_ADDRESS                  1
 #define MOTOR_ADDRESS                6
-//#define LED_ADDRESS                  2
+#define LED_ADDRESS                  2
 #define POWER_ADDRESS	             3
 
 //LED SEND
@@ -134,28 +134,31 @@ void prepAutoData()
   Navigation.ToSend(RIGHT_MOTOR   , rM);
   Navigation.ToSend(GYRO          , macroAngle);
 }
+
+Timers minimumResendTimer(50);
 //MAIN UPDATE FOR COMMUNICATIONS WHILE NOT IN A MACRO
 inline void updateComms()
 {
   updateFromControlBoard();
   //Data has been received from the Communication Board
-  if (readyToSend)
+  if (readyToSend && minimumResendTimer.timerDone())
   {
     prepManualData();
-    prepAutoData();
+    //prepAutoData();
     Navigation.ToSend(LAST_BOARD_ADDRESS_RECEIVE, NAVIGATION_ADDRESS);
     Navigation.sendData(CONTROL_ADDRESS);
     readyToSend = false;
+    minimumResendTimer.resetTimer();
   }
 }
 
 inline void macroCommunicationsUpdate()
 {
   
-//  static Timers LEDresend(100);
-//  if(LEDresend.timerDone()){
-//    sendLEDstate(MACRO);
-//  }
+  static Timers LEDresend(100);
+  if(LEDresend.timerDone()){
+    sendLEDstate(MACRO);
+  }
   if (Navigation.receiveData())
   {
     if ((stored_macro_command != navigation_receive[MACRO_COMMAND_RECEIVE]) || (navigation_receive[MACRO_STOP] == 1))
@@ -189,6 +192,9 @@ void updateFromControlBoard()
   if (Navigation.receiveData())
   {
      pullDataFromPacket();
+     
+    
+ 
     //If sent a macro command -- do it
     if (stored_macro_command != 0)
     {
@@ -203,6 +209,10 @@ void updateFromControlBoard()
 
 void pullDataFromPacket() {
   static float keeper1, keeper2;
+  static int16_t encoderPastR=0, encoderPastL=0;
+     static Timers LEDresendTimer(100);
+    
+  
   switch ( navigation_receive[LAST_BOARD_ADDRESS_RECEIVE]) {
     case CONTROL_ADDRESS:
         //time stamp activity from communications board and okay a response to comm
@@ -214,8 +224,12 @@ void pullDataFromPacket() {
       stored_macro_command     = navigation_receive[MACRO_COMMAND_RECEIVE];
       macro_sub_command        = navigation_receive[MACRO_SUB_COMMAND_RECEIVE];
       macro_stop               = navigation_receive[MACRO_STOP];
-       if (stored_macro_command == 0){
-        sendLEDstate(MANUAL);
+       if (stored_macro_command == 0)
+       {
+         if(LEDresendTimer.timerDone())
+         {    
+            sendLEDstate(MANUAL);
+         }
       }
       break;
      
@@ -225,8 +239,12 @@ void pullDataFromPacket() {
       break;  
     case PIC_ADDRESS:
       //----------------PIC ENCODER DATA---------------------------
-      encoderR                += navigation_receive[ENCODER_R_PIC_RECEIVE]   / 100.0;    //IMPLIED CM*100 -> IMPLIED CM
-      encoderL                += navigation_receive[ENCODER_L_PIC_RECEIVE]   / 100.0;
+      encoderR                += ((int) navigation_receive[ENCODER_R_PIC_RECEIVE] - encoderPastR)   / 100.0;    //IMPLIED CM*100 -> IMPLIED CM
+      encoderL                += ((int) navigation_receive[ENCODER_L_PIC_RECEIVE] - encoderPastL)   / 100.0;
+      //Store values as the older values after using them for difference calculation
+      encoderPastR=navigation_receive[ENCODER_R_PIC_RECEIVE];
+      encoderPastL=navigation_receive[ENCODER_L_PIC_RECEIVE];
+      
       keeper1                  = navigation_receive[ENCODER_SPEED_R_PIC_RECEIVE] / 100.0;//IMPLIED CM/SEC*100 -> IMPLIED CM/SEC
       keeper2                  = navigation_receive[ENCODER_SPEED_L_PIC_RECEIVE] / 100.0;
       encoderSpeedR            = ((encoderSpeedR * 3) + keeper1) / 4.0;
@@ -275,12 +293,16 @@ inline void commSafety()
 //DELAY TIMEOUT OCCURRED METHOD
 inline void packetWait()
 {
+  static Timers sendDataTimer(150);
   //sendMotorCommand(0, 0, 255);
   while (navigation_receive[LAST_BOARD_ADDRESS_RECEIVE]!=CONTROL_ADDRESS)
   {
-    Navigation.receiveData();
-    sendLEDstate(0);
-    delay(25);
+    if(sendDataTimer.timerDone())
+    {
+      Navigation.receiveData();
+      sendLEDstate(0);
+    }
+    delayMicroseconds(50);
   }
   readyToSend = true;      //make not we got a good one
   latency.resetTimer();  //delay till send after not received
@@ -355,10 +377,10 @@ void sendLEDCommand(int color) {
 }
 void sendLEDstate(int state) {
 //
-//  Navigation.ToSend(LAST_BOARD_ADDRESS_RECEIVE, NAVIGATION_ADDRESS);
-//  Navigation.ToSend(STATE, state);  
-//  Navigation.ToSend(COLOR_PICKER, 0);
-//  Navigation.sendData(LED_ADDRESS);
+  Navigation.ToSend(LAST_BOARD_ADDRESS_RECEIVE, NAVIGATION_ADDRESS);
+  Navigation.ToSend(STATE, state);  
+  Navigation.ToSend(COLOR_PICKER, 0);
+  Navigation.sendData(LED_ADDRESS);
 }
 
 

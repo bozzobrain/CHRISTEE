@@ -92,6 +92,76 @@ inline void updateJoysticks()
     //Profile 2
     //---------------------------------------------------------------------
     //Single Joystick Operation
+    int leftActualY  = analogRead(JOYSTICK_1_Y);
+    int leftActualX  = analogRead(JOYSTICK_1_X);
+    
+    //int rightActualY = analogRead(JOYSTICK_2_Y);
+    //int rightActualX = analogRead(JOYSTICK_2_X);
+
+    //if (517 > rightActualY && rightActualY > 505)
+//    {
+//      rightActualY = 512;
+//    }
+//    if (517 > rightActualX && rightActualX > 505)
+//    {
+//      rightActualX = 512;
+//    }
+
+    if (517 > leftActualY && leftActualY > 505)
+    {
+      leftActualY = 512;
+    }
+    if (517 > leftActualX && leftActualX > 505)
+    {
+      leftActualX = 512;
+    }
+    
+    
+    //--------------SCALING FROM SLIDE POTS----------------
+    int leftScale = 1023 - analogRead(POT_1);
+    //int rightScale = 1023 - analogRead(POT_2);
+
+
+    //eliminates zeroes from the scales
+    if (leftScale < 2)
+    {
+      leftScale = 2;
+    }
+//    if (rightScale < 2)
+//    {
+//      rightScale = 2;
+//    }
+
+
+    static int pastleftScale = 0;
+    //static int pastrightScale = 0;
+    static int leftLimit = 0;
+    //static int rightLimit = 0;
+
+    if (abs(leftScale - pastleftScale) > 7)
+    {
+      pastleftScale = leftScale;
+      leftLimit = map(leftScale, 0, 1023, 0, 90);
+    }
+
+//    if (abs(rightScale - pastrightScale) > 7)
+//    {
+//      pastrightScale = rightScale;
+//      rightLimit = map(rightScale, 0, 1023, 0, 90);
+//    }   
+    //--------------END SCALING FROM SLIDE POTS----------------
+    
+    
+    
+    //NEW DRIVING PROFILE     
+  
+    leftActualY = leftActualY - 512; 
+    leftActualX = leftActualX - 512; 
+    
+    //OUTPUT to variables
+    leftMotorSpeed = map(leftActualY+leftActualX, -512, 512, -leftLimit, leftLimit);
+    rightMotorSpeed = map(leftActualY-  leftActualX, -512, 512, -leftLimit, leftLimit);
+    
   }
   else if (drivingProfile == 3)
   {

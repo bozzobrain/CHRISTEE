@@ -73,7 +73,7 @@ boolean initialized;
 // pixel power leads, add 300 - 500 Ohm resistor on first pixel's data input
 // and minimize distance between Arduino and first pixel.  Avoid connecting
 // on a live circuit...if you must, connect GND first.
-Timers safetyTimer(1500);
+Timers safetyTimer(2000);
 void setup() {
   //begin easy transfer communications.
   Serial.begin(57600);
@@ -100,56 +100,58 @@ uint8_t blue;
 void loop() {
   if (LED.receiveData()) {
     
+    digitalWrite(13, !digitalRead(13));
     safetyTimer.resetTimer();
-    initialized = false;
+    //initialized = false;
     state = received[STATE];
     blue = (uint8_t)((received[COLOR] & 0x001F) << 3); //0000 0000 0001 1111 -> 0000 0000 1111 1000
     green = (uint8_t)((received[COLOR] & 0x07E0) >> 3); //0000 0111 1110 0000 -> 0000 0000 1111 1100
     red  = (uint8_t)((received[COLOR] & 0xF800) >> 8); //1111 1000 0000 0000 -> 0000 0000 1111 1000
   }
-  if (safetyTimer.timerDone()) {
+  else if (safetyTimer.timerDone()) {
      state = 0; 
      blue = 0;
      green = 0;
      red = 0;  
     }
+   if ((state == AUTONOMOUS || state == MACRO || state == NORMAL)&&(!initialized))
+  {
+    UALogo();
+  }
   if (state == GETTING_COMMS)
   {
     gettingComms();
+    initialized = false;
   }
-  if (state == AUTONOMOUS && !initialized)
+  else if (state == AUTONOMOUS  &&!initialized)
   {
     colorWipe(Core.Color(0, 0, 255));
     initialized = true;
   }
-  if (state == MACRO && !initialized)
+  else if (state == MACRO )
   {
     colorWipe(Core.Color(255, 0, 255));
     initialized = true;
   }
-  if (state == NORMAL && !initialized)
+  else if (state == NORMAL &&!initialized)
   {
     colorWipe(Core.Color(0, 255, 0));
     initialized = true;
-  }
-  if (state == AUTONOMOUS || state == MACRO || state == NORMAL)
-  {
-    UALogo();
-  }
-  if (state == COLOR_OVERRIDE && !initialized)
+  }  
+  else if (state == COLOR_OVERRIDE && !initialized)
   {
     colorWipe(Core.Color(red, green, blue));
     initialized = true;
   }
-  if (state == RAINBOW)
+  else if (state == RAINBOW)
   {
     rainbow();
   }
-  if (state == CHRISTMAS)
+  else if (state == CHRISTMAS)
   {
     christmas();
   }
-  if (state == STROBE)
+  else if (state == STROBE)
   {
     colorWipe(Core.Color(0, 0, 0));
     delay(STROBE_DELAY);
@@ -157,7 +159,7 @@ void loop() {
     delay(STROBE_DELAY); 
     //colorWipe(Core.Color(red, green, blue));
   }
-  if (state == PARTY) 
+  else if (state == PARTY) 
   {
    //strobe in multi color
    static int ColorState = 0; 
@@ -183,7 +185,7 @@ void loop() {
       break;   
     }
   }
-  if(state == POLICE)
+  else if(state == POLICE)
   {
     //left side lights up red, right side lights up blue, then they switch
     for (int i = 0; i < 27; i++)
@@ -215,7 +217,7 @@ void loop() {
     Core.show();
     delay(POLICE_DELAY); 
   }
-  if(state == UA)
+  else if(state == UA)
   {
     //battery boxes go blue, all else goes yellow
      for (int i = 0; i < 27; i++)
@@ -233,9 +235,9 @@ void loop() {
     Core.show();
     delay(POLICE_DELAY); //delay just so not to be constantly writing to LEDs
   }
-  blink(); 
+  //blink(); 
   
-  delay(5);
+  delay(1);
 
 
 
@@ -274,7 +276,7 @@ void colorWipe(uint32_t c)
 {
   for (uint16_t i = 0; i < 27; i++)
   {
-    if (i < RIGHTMAIN_MAX-6)  RightMain.setPixelColor(i, c);
+    if (i < RIGHTMAIN_MAX-4)  RightMain.setPixelColor(i, c);
     if (i < LEFTMAIN_MAX-6)   LeftMain.setPixelColor(i, c);
     if (i < MOTORBOX_MAX)     MotorBox.setPixelColor(i, c);
     if (i < CONTROLBOX_MAX)   ControlBox.setPixelColor(i, c);

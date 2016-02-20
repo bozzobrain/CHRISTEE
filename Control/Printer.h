@@ -6,7 +6,7 @@
 //#include "logo.cpp"
 //#include "qr.cpp"
 
-Adafruit_Thermal printer(16, 17); //(38, 4); //38 is the only good pin.... other nneds to be assinged to bs
+//Adafruit_Thermal printer(16, 17); //(38, 4); //38 is the only good pin.... other nneds to be assinged to bs
 
 int thisguy;
 void printerPrint()

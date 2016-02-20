@@ -4,12 +4,15 @@
 #define STOP 255
 #define UPOVERRIDE 252
 #define DOWNOVERRIDE 251
-#define lowerLIMIT 6
-#define upperLIMIT 90
+#define lowerLIMIT 1 //6
+#define upperLIMIT 91  //90
 #define ACTUATOR_DEADBAND 3
-#define ACTUATOR_SPEED_LOWER_LIMIT 55
+#define ACTUATOR_SPEED_LOWER_LIMIT 35
 #define ACTUATOR_SPEED_UPPER_LIMIT 90
-
+#define SLOW_LIMIT_ANGLE_LOW 35
+#define SLOW_LIMIT_ANGLE_HIGH 75
+#define ACTUATOR_SPEED_LOWER_LIMIT_SLOW 5
+#define ACTUATOR_SPEED_UPPER_LIMIT_SLOW 15
 #define VIBRATING_MOTOR_ON_HIGH 80
 #define VIBRATING_MOTOR_ON_LOW 10
 //// attage names to servos
@@ -118,60 +121,89 @@ inline static void updateSpeeds()
   actuator.write((currentActuatorSpeed + 90));
 }
 
+
+
 inline void updateServos()
 {
   updateRamp();
   updateSpeeds();
   setAct(actuatorValue);
 }
+static Timers t1(20);
+float error, prev_error, deriv, integ;
+float kp=0.01 , kd=1000 , ki=0.1 , dt=0.02 , output=0;
 
-
-
-inline int setAct(int act){
-  bucketAngle = updateAngle();
-  switch(act)
+inline int setAct(int act)
+{
+  if(t1.timerDone())
   {
-    case UP:
-      if (bucketAngle<upperLIMIT){
-        actuatorSpeed= constrain(upperLIMIT-bucketAngle,ACTUATOR_SPEED_LOWER_LIMIT,ACTUATOR_SPEED_UPPER_LIMIT);  
-      }
-      else
-        actuatorSpeed=0;
-      break;
-    case DOWN:
-      if (bucketAngle>lowerLIMIT){
-        actuatorSpeed= constrain(-(bucketAngle-lowerLIMIT),-ACTUATOR_SPEED_UPPER_LIMIT,-ACTUATOR_SPEED_LOWER_LIMIT);  
-      }
-      else
-       actuatorSpeed=0;
-      break;
-    case STOP:
-      actuatorSpeed=0;
-      break;
-    case UPOVERRIDE:      
-      actuatorSpeed= ACTUATOR_SPEED_UPPER_LIMIT;  
-      break;
-    case DOWNOVERRIDE:      
-      actuatorSpeed= -ACTUATOR_SPEED_UPPER_LIMIT;  
-      break;
-    default:
-      if((act<=93)&&(act>=0)){
-        if(!((bucketAngle>(act-ACTUATOR_DEADBAND))  &&   (bucketAngle< (act+ACTUATOR_DEADBAND)))){
-          
-          if (bucketAngle>act){
-            actuatorSpeed= constrain(-(act-bucketAngle),-ACTUATOR_SPEED_UPPER_LIMIT,-ACTUATOR_SPEED_LOWER_LIMIT);
+    prev_error=error;
+    bucketAngle = updateAngle();
+    switch(act)
+    {
+      case UP:
+        if (bucketAngle<upperLIMIT){
+          error=upperLIMIT-bucketAngle;
+          deriv=(error-prev_error)/dt;
+          integ+=(error)*dt;
+          output=error*(kp)+deriv*kd+integ*ki;
+          if(bucketAngle>SLOW_LIMIT_ANGLE_HIGH)
+          {
+            actuatorSpeed= constrain(output,ACTUATOR_SPEED_LOWER_LIMIT_SLOW+10,ACTUATOR_SPEED_UPPER_LIMIT_SLOW+10); 
           }
-          else if(bucketAngle<act){
-            actuatorSpeed= constrain((act-bucketAngle),ACTUATOR_SPEED_LOWER_LIMIT,ACTUATOR_SPEED_UPPER_LIMIT);        
-          }
-         
+          else
+            actuatorSpeed= constrain(output,ACTUATOR_SPEED_LOWER_LIMIT,ACTUATOR_SPEED_UPPER_LIMIT);  
         }
-        else {
-          actuatorValue=255;
+        else
           actuatorSpeed=0;
+        break;
+      case DOWN:
+        if (bucketAngle>lowerLIMIT){          
+          error=bucketAngle-lowerLIMIT;
+          deriv=(error-prev_error)/dt;
+          //integ+=(error)*dt;
+          output=error*kp+deriv*kd;//+integ*ki;
+          if(bucketAngle<SLOW_LIMIT_ANGLE_LOW)
+          {
+            
+          actuatorSpeed= constrain(-output,-ACTUATOR_SPEED_UPPER_LIMIT_SLOW,-ACTUATOR_SPEED_LOWER_LIMIT_SLOW);
+          }
+          else         
+            actuatorSpeed= constrain(-output,-ACTUATOR_SPEED_UPPER_LIMIT,-ACTUATOR_SPEED_LOWER_LIMIT); 
         }
-      }
-      break;
+        else
+         actuatorSpeed=0;
+        break;
+      case STOP:
+        actuatorSpeed=0;
+        integ=0;
+        break;
+      case UPOVERRIDE:      
+        actuatorSpeed= ACTUATOR_SPEED_UPPER_LIMIT;  
+        break;
+      case DOWNOVERRIDE:      
+        actuatorSpeed= -ACTUATOR_SPEED_UPPER_LIMIT;  
+        break;
+      default:
+        if((act<=93)&&(act>=0)){
+          if(!((bucketAngle>(act-ACTUATOR_DEADBAND))  &&   (bucketAngle< (act+ACTUATOR_DEADBAND)))){
+            
+            if (bucketAngle>act){
+              actuatorSpeed= constrain(-(act-bucketAngle),-ACTUATOR_SPEED_UPPER_LIMIT,-ACTUATOR_SPEED_LOWER_LIMIT);
+            }
+            else if(bucketAngle<act){
+              actuatorSpeed= constrain((act-bucketAngle),ACTUATOR_SPEED_LOWER_LIMIT,ACTUATOR_SPEED_UPPER_LIMIT);        
+            }
+           
+          }
+          else {
+            actuatorValue=255;
+            actuatorSpeed=0;
+          }
+        }
+        break;
+    }
+    
   }
 }
 

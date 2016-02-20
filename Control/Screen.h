@@ -186,7 +186,7 @@ inline static bool readObject()
               macro_sub_command = 1;
               break;
             case 8:
-              printerPrint();
+              //printerPrint();
               break;
             case 32:
               static bool leftRight = true;

@@ -1,6 +1,6 @@
 //pins.h
 #define ACTUATOR_FEEDBACK A3
-#define ANGLE_OFFSET 7
+#define ANGLE_OFFSET 2 
 #define VOLT_OFFSET 0.1
 #define ANGLE_RANGE 90.0
 #define VOLT_RANGE 3.0

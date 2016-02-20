@@ -31,7 +31,7 @@ void loop()
 {
   updateSensorReading();
   calculatePower();
-  updateCommunication();
+  //updateCommunication();
   //updateDebug();
   updateLED();
 }
