@@ -120,6 +120,7 @@ inline void initializeCommunications()
   // Send Actuator Stop Command
   sendActuatorCommand(255);
   
+  
 }
 
 void prepManualData()
@@ -239,24 +240,24 @@ void pullDataFromPacket() {
       break;  
     case PIC_ADDRESS:
       //----------------PIC ENCODER DATA---------------------------
-      encoderR                += ((int) navigation_receive[ENCODER_R_PIC_RECEIVE] - encoderPastR)   / 100.0;    //IMPLIED CM*100 -> IMPLIED CM
-      encoderL                += ((int) navigation_receive[ENCODER_L_PIC_RECEIVE] - encoderPastL)   / 100.0;
+      encoderR                = ((unsigned int) navigation_receive[ENCODER_R_PIC_RECEIVE] ) / 4.12  ;    //IMPLIED CM*100 -> IMPLIED CM
+      encoderL                = ((unsigned int) navigation_receive[ENCODER_L_PIC_RECEIVE] ) / 4.12  ;
       //Store values as the older values after using them for difference calculation
       encoderPastR=navigation_receive[ENCODER_R_PIC_RECEIVE];
       encoderPastL=navigation_receive[ENCODER_L_PIC_RECEIVE];
       
-      keeper1                  = navigation_receive[ENCODER_SPEED_R_PIC_RECEIVE] / 100.0;//IMPLIED CM/SEC*100 -> IMPLIED CM/SEC
-      keeper2                  = navigation_receive[ENCODER_SPEED_L_PIC_RECEIVE] / 100.0;
-      encoderSpeedR            = ((encoderSpeedR * 3) + keeper1) / 4.0;
-      encoderSpeedL            = ((encoderSpeedL * 3) + keeper2) / 4.0;
+      //keeper1                  = navigation_receive[ENCODER_SPEED_R_PIC_RECEIVE] / 100.0;//IMPLIED CM/SEC*100 -> IMPLIED CM/SEC
+      //keeper2                  = navigation_receive[ENCODER_SPEED_L_PIC_RECEIVE] / 100.0;
+      //encoderSpeedR            = ((encoderSpeedR * 3) + keeper1) / 4.0;
+      //encoderSpeedL            = ((encoderSpeedL * 3) + keeper2) / 4.0;
       
-      //    Serial.print(encoderL);
-      //    Serial.print(",");
-      //    Serial.print(encoderR);
-      //    Serial.print(",");
-      //    Serial.print(encoderSpeedL);
-      //    Serial.print(",");
-      //    Serial.println(encoderSpeedR);
+    Serial.print(encoderL);
+    Serial.print(",");
+    Serial.println(encoderR);
+    //Serial.print(",");
+    //Serial.print(encoderSpeedL);
+    //Serial.print(",");
+    //Serial.println(encoderSpeedR);
 
       //--------------WII DATA FROM PIC--------------------------------------
       beaconCentered[LEFT_CAMERA] = navigation_receive[WII_LEFT_CAMERA_LOCKED];
@@ -273,8 +274,8 @@ void pullDataFromPacket() {
       beaconAngle[RIGHT_CAMERA]   = navigation_receive[WII_RIGHT_CAMERA_ANGLE];
       //    navigation_receive[WII_RIGHT_CAMERA_LOCKED]=0;
       //   }
-      numberSweeps[LEFT_CAMERA]                = navigation_receive[WII_NUMBER_SWEEPS_LEFT];
-      numberSweeps[RIGHT_CAMERA]                = navigation_receive[WII_NUMBER_SWEEPS_RIGHT];
+      numberSweeps[LEFT_CAMERA]   = navigation_receive[WII_NUMBER_SWEEPS_LEFT];
+      numberSweeps[RIGHT_CAMERA]  = navigation_receive[WII_NUMBER_SWEEPS_RIGHT];
       beaconSeen[LEFT_CAMERA]     = navigation_receive[WII_BEACON_SEEN_LEFT];
       beaconSeen[RIGHT_CAMERA]    = navigation_receive[WII_BEACON_SEEN_RIGHT];
       break;
@@ -299,10 +300,12 @@ inline void packetWait()
   {
     if(sendDataTimer.timerDone())
     {
-      Navigation.receiveData();
+      
+      pullDataFromPacket();
+      //Navigation.receiveData();
       sendLEDstate(0);
     }
-    delayMicroseconds(50);
+    delay(50);
   }
   readyToSend = true;      //make not we got a good one
   latency.resetTimer();  //delay till send after not received

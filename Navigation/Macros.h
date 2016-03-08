@@ -37,10 +37,10 @@ inline void initMacroSystem()
     switch (stored_macro_command)
     {
       case 2:
-        runEncoderDistanceEvenly(25);
+        runEncoderDistanceEvenly(1000);
         break;
       case 3:
-        runEncoderDistanceEvenly(-25);
+        runEncoderDistanceEvenly(-1000);
         break;
       case MACRO_SNIPPIT:
         switch (macro_sub_command)
@@ -89,7 +89,7 @@ inline void initMacroSystem()
             doTurn(-90);
             break;
           case 15:
-            runEncoderDistanceEvenly(25);
+            runEncoderDistanceEvenly(1000);
             break;
         }
         break;
@@ -193,8 +193,8 @@ void fiftyForwardFiftyBackward()
 {
   while (macro_stop != 1)
   {
-    runEncoderDistanceEvenly(50);
-    runEncoderDistanceEvenly(-50);
+    runEncoderDistanceEvenly(500);
+    runEncoderDistanceEvenly(-500);
   }
 }
 
@@ -202,7 +202,7 @@ void squareRoutine()
 {
   while (macro_stop != 1)
   {
-    runEncoderDistanceEvenly(50);
+    runEncoderDistanceEvenly(500);
     doTurn(90);
   }
 }
