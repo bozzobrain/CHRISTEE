@@ -144,6 +144,7 @@ inline void updateComms()
   //Data has been received from the Communication Board
   if (readyToSend && minimumResendTimer.timerDone())
   {
+    digitalWrite(13,!digitalRead(13));
     prepManualData();
     //prepAutoData();
     Navigation.ToSend(LAST_BOARD_ADDRESS_RECEIVE, NAVIGATION_ADDRESS);
@@ -154,10 +155,10 @@ inline void updateComms()
 }
 
 inline void macroCommunicationsUpdate()
-{
-  
+{  
   static Timers LEDresend(100);
-  if(LEDresend.timerDone()){
+  if(LEDresend.timerDone())
+  {
     sendLEDstate(MACRO);
   }
   if (Navigation.receiveData())
@@ -192,10 +193,7 @@ void updateFromControlBoard()
   //Data received from the Communications Board
   if (Navigation.receiveData())
   {
-     pullDataFromPacket();
-     
-    
- 
+     pullDataFromPacket(); 
     //If sent a macro command -- do it
     if (stored_macro_command != 0)
     {
@@ -225,10 +223,13 @@ void pullDataFromPacket() {
       stored_macro_command     = navigation_receive[MACRO_COMMAND_RECEIVE];
       macro_sub_command        = navigation_receive[MACRO_SUB_COMMAND_RECEIVE];
       macro_stop               = navigation_receive[MACRO_STOP];
+      //Serial.print("Stored Macro Command: ");
+      //Serial.println(stored_macro_command);
        if (stored_macro_command == 0)
        {
          if(LEDresendTimer.timerDone())
          {    
+           //Serial.println("LED");
             sendLEDstate(MANUAL);
          }
       }
@@ -240,8 +241,8 @@ void pullDataFromPacket() {
       break;  
     case PIC_ADDRESS:
       //----------------PIC ENCODER DATA---------------------------
-      encoderR                = ((unsigned int) navigation_receive[ENCODER_R_PIC_RECEIVE] ) / 4.12  ;    //IMPLIED CM*100 -> IMPLIED CM
-      encoderL                = ((unsigned int) navigation_receive[ENCODER_L_PIC_RECEIVE] ) / 4.12  ;
+      encoderR                = ((unsigned int) navigation_receive[ENCODER_R_PIC_RECEIVE] ) / 100.0  ;    //IMPLIED CM*100 -> IMPLIED CM
+      encoderL                = ((unsigned int) navigation_receive[ENCODER_L_PIC_RECEIVE] ) / 100.0  ;
       //Store values as the older values after using them for difference calculation
       encoderPastR=navigation_receive[ENCODER_R_PIC_RECEIVE];
       encoderPastL=navigation_receive[ENCODER_L_PIC_RECEIVE];
@@ -251,9 +252,9 @@ void pullDataFromPacket() {
       //encoderSpeedR            = ((encoderSpeedR * 3) + keeper1) / 4.0;
       //encoderSpeedL            = ((encoderSpeedL * 3) + keeper2) / 4.0;
       
-    Serial.print(encoderL);
-    Serial.print(",");
-    Serial.println(encoderR);
+    //Serial.print(encoderL);
+    //Serial.print(",");
+    //Serial.println(encoderR);
     //Serial.print(",");
     //Serial.print(encoderSpeedL);
     //Serial.print(",");
@@ -294,18 +295,19 @@ inline void commSafety()
 //DELAY TIMEOUT OCCURRED METHOD
 inline void packetWait()
 {
-  static Timers sendDataTimer(150);
+  static Timers sendDataTimer(50);
   //sendMotorCommand(0, 0, 255);
   while (navigation_receive[LAST_BOARD_ADDRESS_RECEIVE]!=CONTROL_ADDRESS)
   {
     if(sendDataTimer.timerDone())
     {
+     // Serial.println("Sending in packet wait");
       
-      pullDataFromPacket();
-      //Navigation.receiveData();
-      sendLEDstate(0);
+      //pullDataFromPacket();
+      Navigation.receiveData();
+      //sendLEDstate(0);
     }
-    delay(50);
+    delay(5);
   }
   readyToSend = true;      //make not we got a good one
   latency.resetTimer();  //delay till send after not received

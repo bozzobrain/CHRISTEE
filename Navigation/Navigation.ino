@@ -58,7 +58,7 @@ void loop() {
   updateComms();
   if(MPUTimer.timerDone()) updateMPU();
   //USBdebug();
-  if(LEDTimer.timerDone()) digitalWrite(13,!digitalRead(13));
+  //if(LEDTimer.timerDone()) digitalWrite(13,!digitalRead(13));
 }
 
 
