@@ -43,14 +43,14 @@ bool continuable;
 int continueMacro = 0;
 
 /********************* CONTROL TIMERS *************************/
-Timers PIDTimer(5);
+Timers PIDTimer(25);
 Timers PIDTimer2(100);
 Timers latency(5);
 Timers decisionTimer(50);
 Timers linkTimer(50);
 Timers safetyTimer(2000);
 Timers sendTimer(50);
-Timers MPUTimer(20);
+Timers MPUTimer(5);
 
 /***************Communications variables*******************/
 bool readyToSend = false;

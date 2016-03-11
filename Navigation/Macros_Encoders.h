@@ -271,7 +271,7 @@ void runEncoderDistanceDiggingly(float cm)
 
     macroCommunicationsUpdate();    
   }
-
+  
   allStop();
   motor_unStick();
   //wipeEncoders();

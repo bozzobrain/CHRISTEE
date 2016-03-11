@@ -116,10 +116,12 @@ void Filter::calibrateFilter(int samples[100])
   //fluctuations from the center point
   for (int i = 0; i < 100; i++)
   {
-    if (samples[i] > high) {
+    if (samples[i] > high) 
+    {
       high = samples[i];
     }
-    if (samples[i] < low) {
+    if (samples[i] < low) 
+    {
       low = samples[i];
     }
   }
@@ -137,11 +139,13 @@ void Filter::calibrateFilter(int samples[100])
   _lastTime = millis();
 }
 
-void Filter::recordOffset(int offset){
+void Filter::recordOffset(int offset)
+{
   _offset=offset;
 }
 
-void Filter::recordDeadzone(int deadzone){
+void Filter::recordDeadzone(int deadzone)
+{
   _deadzone=deadzone;
 }
 
@@ -156,10 +160,12 @@ void Filter::wipeVelocity()
 }
 
 
-int16_t Filter::averageSet(int numsamples, int16_t sampled[]) {
+int16_t Filter::averageSet(int numsamples, int16_t sampled[]) 
+{
   float temp;
   temp = 0;
-  for (int i = 0; i < numsamples; i++) {
+  for (int i = 0; i < numsamples; i++) 
+  {
     temp = temp + sampled[i];
   }
   return (int16_t)(temp / numsamples);

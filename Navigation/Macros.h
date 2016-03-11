@@ -125,6 +125,7 @@ inline void initMacroSystem()
     }
   }
   terminateMacroSystem();
+  sendLEDstate(MANUAL);
 }
 
 inline bool straightPathMineDump()

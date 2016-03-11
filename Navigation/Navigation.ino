@@ -1,8 +1,8 @@
   //Navigation.ino
 
 //MAX/MIN FOR MACRO MOTOR
-int motorLowForward   = 8;    //with sand 14 // WITHOUT SAND 8
-int motorHighForward  = 15;   //with sand 25 // WITHOUT SAND 15
+int motorLowForward   = 5;    //with sand 14 // WITHOUT SAND 8
+int motorHighForward  = 10;   //with sand 25 // WITHOUT SAND 15
 int motorLowBackward  = 5;    //with sand 11 // WITHOUT SAND 5
 int motorHighBackward = 11;   //with sand 20 // WITHOUT SAND 11
 int motorLowDig       = 8;   //with sand 18 // WITHOUT SAND 8

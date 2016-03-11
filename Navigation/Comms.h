@@ -308,7 +308,7 @@ inline void commSafety()
 //DELAY TIMEOUT OCCURRED METHOD
 inline void packetWait()
 {
-  static Timers sendDataTimer(50);
+  static Timers sendDataTimer(25);
   //sendMotorCommand(0, 0, 255);
   while (navigation_receive[LAST_BOARD_ADDRESS_RECEIVE]!=CONTROL_ADDRESS)
   {
@@ -334,7 +334,7 @@ inline void terminateMacroSystem()
   Navigation.ToSend(MACRO_COMPLETE, 1);
   Navigation.ToSend(MACRO_COMMAND_SEND, stored_macro_command);
   Navigation.sendData(CONTROL_ADDRESS);
-  delay(5);
+  //delay(5);
   Navigation.receiveData();    //See if we hear back quickly
   while (navigation_receive[MACRO_COMMAND_RECEIVE] != 0)
   {
@@ -350,14 +350,16 @@ inline void terminateMacroSystem()
       Navigation.sendData(CONTROL_ADDRESS);
       sender = 0;
     }
-    delay(10);
+    delay(5);
   }
   Navigation.ToSend(LAST_BOARD_ADDRESS_RECEIVE, NAVIGATION_ADDRESS);
   Navigation.ToSend(MACRO_COMPLETE, 0);
   Navigation.sendData(CONTROL_ADDRESS);
   sendActuatorCommand(255);
   lM = 0;
-  rM = 0;
+  rM = 0;  
+  Navigation.receiveData();
+  stored_macro_command = 0;
 }
 
 //MOTOR COMMAND HELPER COMMUNICATIONS METHODS
