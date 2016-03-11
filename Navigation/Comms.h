@@ -241,12 +241,25 @@ void pullDataFromPacket() {
       break;  
     case PIC_ADDRESS:
       //----------------PIC ENCODER DATA---------------------------
-      encoderR                = ((unsigned int) navigation_receive[ENCODER_R_PIC_RECEIVE] ) / 100.0  ;    //IMPLIED CM*100 -> IMPLIED CM
-      encoderL                = ((unsigned int) navigation_receive[ENCODER_L_PIC_RECEIVE] ) / 100.0  ;
-      //Store values as the older values after using them for difference calculation
-      encoderPastR=navigation_receive[ENCODER_R_PIC_RECEIVE];
-      encoderPastL=navigation_receive[ENCODER_L_PIC_RECEIVE];
-      
+      //DISTANCE PULSES
+      encoderR                =(int) ( navigation_receive[ENCODER_R_PIC_RECEIVE]  / 100.0 ) ;    //IMPLIED CM*100 -> IMPLIED CM
+      encoderL                =(int) ( navigation_receive[ENCODER_L_PIC_RECEIVE]  / 100.0 ) ;      
+      if(encoderL!=encoderPastL)
+      {  
+         //Use old value to calculate the increment
+         updateMacroEncoderValueL(encoderL-encoderPastL);
+          //Store current value as old 
+         encoderPastL=encoderL;
+      }
+      if(encoderR!=encoderPastR)
+      {
+         //Use old value to calculate the increment
+         updateMacroEncoderValueR(encoderR-encoderPastR);
+         //Store current value as old 
+         encoderPastR=encoderR;
+      }
+     
+     //SPEED CALCULATIONS HANDLING
       //keeper1                  = navigation_receive[ENCODER_SPEED_R_PIC_RECEIVE] / 100.0;//IMPLIED CM/SEC*100 -> IMPLIED CM/SEC
       //keeper2                  = navigation_receive[ENCODER_SPEED_L_PIC_RECEIVE] / 100.0;
       //encoderSpeedR            = ((encoderSpeedR * 3) + keeper1) / 4.0;

@@ -4,7 +4,17 @@
 #define encoderKi 0
 #define encoderKd 0
 
+uint16_t macroEncoderL, macroEncoderR;
 
+void updateMacroEncoderValueR(uint16_t increment)
+{
+  macroEncoderR+=increment;
+}
+
+void updateMacroEncoderValueL(uint16_t increment)
+{
+  macroEncoderL+=increment;
+}
 
 void encoderRun1()
 { 
@@ -18,7 +28,7 @@ void encoderRun1()
 void encoderRun2()
 {
   wipeEncoders();
-  while (((encoderL < 40) || (encoderR < 40)) && (macro_stop != 1))
+  while (((macroEncoderL < 40) || (macroEncoderR < 40)) && (macro_stop != 1))
   {
     static Timers motorSend(50);
     if(MPUTimer.timerDone()) updateMPU();
@@ -102,13 +112,13 @@ void runRightEncoder(int cm)
   //Position PID loop to target an end distance
   PID output(cm, encoderKp, encoderKi, encoderKd, 2);
   PIDTimer.resetTimer();
-  while((encoderR<abs(cm)) && (macro_stop != 1))
+  while((macroEncoderR<abs(cm)) && (macro_stop != 1))
   {
 
     if(MPUTimer.timerDone()) updateMPU();
     if(PIDTimer.timerDone())
     {
-      motorOutputControlRight(output.updateOutput(encoderR));
+      motorOutputControlRight(output.updateOutput(macroEncoderR));
       //output.verboseCalc();
     }
 
@@ -126,13 +136,13 @@ void runLeftEncoder(int cm)
   //Position PID loop to target an end distance
   PID output(cm, encoderKp, encoderKi, encoderKd, 2);
   PIDTimer.resetTimer();
-  while(((encoderL<abs(cm))) && (macro_stop != 1))
+  while(((macroEncoderL<abs(cm))) && (macro_stop != 1))
   {
 
     if(MPUTimer.timerDone()) updateMPU();
     if(PIDTimer.timerDone())
     {
-      motorOutputControlLeft(output.updateOutput(encoderL));
+      motorOutputControlLeft(output.updateOutput(macroEncoderL));
       //output.verboseCalc();
     }
 
@@ -150,16 +160,16 @@ void runEncoderDistance(int cm)
   //Position PID loop to target an end distance
   PID output(abs(cm), encoderKp, encoderKi, encoderKd, 2);
   PIDTimer.resetTimer();
-  while(((encoderL<abs(cm))||(encoderR<abs(cm))) && (macro_stop != 1))
+  while(((macroEncoderL<abs(cm))||(macroEncoderR<abs(cm))) && (macro_stop != 1))
   {
 
     if(MPUTimer.timerDone()) updateMPU();
     if(PIDTimer.timerDone())
     {
       if(cm>0)
-        motorOutputControl(output.updateOutput((encoderL+encoderR)/2));
+        motorOutputControl(output.updateOutput((macroEncoderL+macroEncoderR)/2));
       else       
-        motorOutputControl(-output.updateOutput((encoderL+encoderR)/2));
+        motorOutputControl(-output.updateOutput((macroEncoderL+macroEncoderR)/2));
       //output.verboseCalc();
     }
 
@@ -184,7 +194,7 @@ void runEncoderDistanceEvenly(float cm)
   //Position PID loop to target an end distance
   PID output(abs(cm), encoderKp, encoderKi, encoderKd, 2);
   PIDTimer.resetTimer();
-  while(((encoderL<abs(cm))||(encoderR<abs(cm))) && (macro_stop != 1))
+  while(((macroEncoderL<abs(cm))||(macroEncoderR<abs(cm))) && (macro_stop != 1))
   {
 
     
@@ -192,20 +202,20 @@ void runEncoderDistanceEvenly(float cm)
     if(PIDTimer.timerDone())
     {
     //Serial.println("IN MACRO");  
-      if(encoderL==encoderR)
+      if(macroEncoderL==macroEncoderR)
       {
         if(cm>0)
-            motorOutputControl(constrain(output.updateOutput(encoderL),0,75));
+            motorOutputControl(constrain(output.updateOutput(macroEncoderL),0,75));
           else
-            motorOutputControl(-constrain((output.updateOutput(encoderL)),0,75));
+            motorOutputControl(-constrain((output.updateOutput(macroEncoderL)),0,75));
           
       }
       else
       {
         if(cm>0)
-          motorOutputControlCorrect(constrain((output.updateOutput((encoderL+encoderR)/2.0)),0,75),encoderL,encoderR,GYRO);
+          motorOutputControlCorrect(constrain((output.updateOutput((macroEncoderL+macroEncoderR)/2.0)),0,75),macroEncoderL,macroEncoderR,GYRO);
         else
-          motorOutputControlCorrect(-constrain((output.updateOutput((encoderL+encoderR)/2.0)),0,75),encoderL,encoderR,GYRO);
+          motorOutputControlCorrect(-constrain((output.updateOutput((macroEncoderL+macroEncoderR)/2.0)),0,75),macroEncoderL,macroEncoderR,GYRO);
       }
     
     
@@ -231,7 +241,7 @@ void runEncoderDistanceDiggingly(float cm)
   //Position PID loop to target an end distance
   PID output(abs(cm), encoderKp, encoderKi, encoderKd, 2);
   PIDTimer.resetTimer();
-  while(((encoderL<abs(cm))||(encoderR<abs(cm))) && (macro_stop != 1))
+  while(((macroEncoderL<abs(cm))||(macroEncoderR<abs(cm))) && (macro_stop != 1))
   {
 
     
@@ -239,20 +249,20 @@ void runEncoderDistanceDiggingly(float cm)
     if(PIDTimer.timerDone())
     {
     //Serial.println("IN MACRO");  
-      if(encoderL==encoderR)
+      if(macroEncoderL==macroEncoderR)
       {
         if(cm>0)
-            motorOutputControlDig(constrain(output.updateOutput(encoderL),0,75));
+            motorOutputControlDig(constrain(output.updateOutput(macroEncoderL),0,75));
           else
-            motorOutputControlDig(-constrain((output.updateOutput(encoderL)),0,75));
+            motorOutputControlDig(-constrain((output.updateOutput(macroEncoderL)),0,75));
           
       }
       else
       {
         if(cm>0)
-          motorOutputControlCorrectDig(constrain((output.updateOutput((encoderL+encoderR)/2.0)),0,75),encoderL,encoderR,GYRO);
+          motorOutputControlCorrectDig(constrain((output.updateOutput((macroEncoderL+macroEncoderR)/2.0)),0,75),macroEncoderL,macroEncoderR,GYRO);
         else
-          motorOutputControlCorrectDig(-constrain((output.updateOutput((encoderL+encoderR)/2.0)),0,75),encoderL,encoderR,GYRO);
+          motorOutputControlCorrectDig(-constrain((output.updateOutput((macroEncoderL+macroEncoderR)/2.0)),0,75),macroEncoderL,macroEncoderR,GYRO);
       }
     
     
@@ -270,7 +280,7 @@ void runEncoderDistanceDiggingly(float cm)
 
 void wipeEncoders()
 {
-  encoderL = 0;
-  encoderR = 0;
+  macroEncoderL = 0;
+  macroEncoderR = 0;
 }
 
