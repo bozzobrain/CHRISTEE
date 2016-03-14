@@ -5,6 +5,7 @@
 #include "main.h"
 
 //
+//#define DIST_PER_PULSE_MM 1
 
 
 
