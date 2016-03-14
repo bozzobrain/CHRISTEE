@@ -8,6 +8,7 @@
 #ifndef INITIALIZE_H
 #define	INITIALIZE_H
 
+extern void delay(int ms);
 extern int receiveArray[20];
 void initialize(void);
 void oscillator(void);

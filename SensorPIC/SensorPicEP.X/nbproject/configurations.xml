@@ -12,6 +12,7 @@
       <itemPath>wiiCamera.h</itemPath>
       <itemPath>FastTransfer.h</itemPath>
       <itemPath>UART_handler.h</itemPath>
+      <itemPath>encoderCalculator.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -29,6 +30,7 @@
       <itemPath>FastTransfer.c</itemPath>
       <itemPath>UART_handler.c</itemPath>
       <itemPath>Configuration_Bits.c</itemPath>
+      <itemPath>encoderCalculator.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -236,6 +238,7 @@
         <property key="UART 2" value="true"/>
         <property key="UART 3" value="true"/>
         <property key="UART 4" value="true"/>
+        <property key="firmware.download.all" value="false"/>
         <property key="hwtoolclock.frcindebug" value="false"/>
         <property key="memories.aux" value="false"/>
         <property key="memories.bootflash" value="true"/>

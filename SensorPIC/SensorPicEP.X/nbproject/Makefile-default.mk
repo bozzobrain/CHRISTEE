@@ -45,17 +45,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=I2C_API.c PWM.c initialize.c interrupt_handler.c main.c wiiCamera.c FastTransfer.c UART_handler.c Configuration_Bits.c
+SOURCEFILES_QUOTED_IF_SPACED=I2C_API.c PWM.c initialize.c interrupt_handler.c main.c wiiCamera.c FastTransfer.c UART_handler.c Configuration_Bits.c encoderCalculator.c
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/I2C_API.o ${OBJECTDIR}/PWM.o ${OBJECTDIR}/initialize.o ${OBJECTDIR}/interrupt_handler.o ${OBJECTDIR}/main.o ${OBJECTDIR}/wiiCamera.o ${OBJECTDIR}/FastTransfer.o ${OBJECTDIR}/UART_handler.o ${OBJECTDIR}/Configuration_Bits.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/I2C_API.o.d ${OBJECTDIR}/PWM.o.d ${OBJECTDIR}/initialize.o.d ${OBJECTDIR}/interrupt_handler.o.d ${OBJECTDIR}/main.o.d ${OBJECTDIR}/wiiCamera.o.d ${OBJECTDIR}/FastTransfer.o.d ${OBJECTDIR}/UART_handler.o.d ${OBJECTDIR}/Configuration_Bits.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/I2C_API.o ${OBJECTDIR}/PWM.o ${OBJECTDIR}/initialize.o ${OBJECTDIR}/interrupt_handler.o ${OBJECTDIR}/main.o ${OBJECTDIR}/wiiCamera.o ${OBJECTDIR}/FastTransfer.o ${OBJECTDIR}/UART_handler.o ${OBJECTDIR}/Configuration_Bits.o ${OBJECTDIR}/encoderCalculator.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/I2C_API.o.d ${OBJECTDIR}/PWM.o.d ${OBJECTDIR}/initialize.o.d ${OBJECTDIR}/interrupt_handler.o.d ${OBJECTDIR}/main.o.d ${OBJECTDIR}/wiiCamera.o.d ${OBJECTDIR}/FastTransfer.o.d ${OBJECTDIR}/UART_handler.o.d ${OBJECTDIR}/Configuration_Bits.o.d ${OBJECTDIR}/encoderCalculator.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/I2C_API.o ${OBJECTDIR}/PWM.o ${OBJECTDIR}/initialize.o ${OBJECTDIR}/interrupt_handler.o ${OBJECTDIR}/main.o ${OBJECTDIR}/wiiCamera.o ${OBJECTDIR}/FastTransfer.o ${OBJECTDIR}/UART_handler.o ${OBJECTDIR}/Configuration_Bits.o
+OBJECTFILES=${OBJECTDIR}/I2C_API.o ${OBJECTDIR}/PWM.o ${OBJECTDIR}/initialize.o ${OBJECTDIR}/interrupt_handler.o ${OBJECTDIR}/main.o ${OBJECTDIR}/wiiCamera.o ${OBJECTDIR}/FastTransfer.o ${OBJECTDIR}/UART_handler.o ${OBJECTDIR}/Configuration_Bits.o ${OBJECTDIR}/encoderCalculator.o
 
 # Source Files
-SOURCEFILES=I2C_API.c PWM.c initialize.c interrupt_handler.c main.c wiiCamera.c FastTransfer.c UART_handler.c Configuration_Bits.c
+SOURCEFILES=I2C_API.c PWM.c initialize.c interrupt_handler.c main.c wiiCamera.c FastTransfer.c UART_handler.c Configuration_Bits.c encoderCalculator.c
 
 
 CFLAGS=
@@ -145,6 +145,13 @@ ${OBJECTDIR}/Configuration_Bits.o: Configuration_Bits.c  nbproject/Makefile-${CN
 	${MP_CC} $(MP_EXTRA_CC_PRE)  Configuration_Bits.c  -o ${OBJECTDIR}/Configuration_Bits.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/Configuration_Bits.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -mno-eds-warn  -omf=elf -O0 -msmart-io=1 -Wall -msfr-warn=off
 	@${FIXDEPS} "${OBJECTDIR}/Configuration_Bits.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
+${OBJECTDIR}/encoderCalculator.o: encoderCalculator.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/encoderCalculator.o.d 
+	@${RM} ${OBJECTDIR}/encoderCalculator.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  encoderCalculator.c  -o ${OBJECTDIR}/encoderCalculator.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/encoderCalculator.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -mno-eds-warn  -omf=elf -O0 -msmart-io=1 -Wall -msfr-warn=off
+	@${FIXDEPS} "${OBJECTDIR}/encoderCalculator.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
+	
 else
 ${OBJECTDIR}/I2C_API.o: I2C_API.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
@@ -208,6 +215,13 @@ ${OBJECTDIR}/Configuration_Bits.o: Configuration_Bits.c  nbproject/Makefile-${CN
 	@${RM} ${OBJECTDIR}/Configuration_Bits.o 
 	${MP_CC} $(MP_EXTRA_CC_PRE)  Configuration_Bits.c  -o ${OBJECTDIR}/Configuration_Bits.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/Configuration_Bits.o.d"      -mno-eds-warn  -g -omf=elf -O0 -msmart-io=1 -Wall -msfr-warn=off
 	@${FIXDEPS} "${OBJECTDIR}/Configuration_Bits.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
+	
+${OBJECTDIR}/encoderCalculator.o: encoderCalculator.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/encoderCalculator.o.d 
+	@${RM} ${OBJECTDIR}/encoderCalculator.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  encoderCalculator.c  -o ${OBJECTDIR}/encoderCalculator.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/encoderCalculator.o.d"      -mno-eds-warn  -g -omf=elf -O0 -msmart-io=1 -Wall -msfr-warn=off
+	@${FIXDEPS} "${OBJECTDIR}/encoderCalculator.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 endif
 

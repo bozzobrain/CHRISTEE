@@ -144,7 +144,6 @@ inline void updateComms()
   //Data has been received from the Communication Board
   if (readyToSend && minimumResendTimer.timerDone())
   {
-    digitalWrite(13,!digitalRead(13));
     prepManualData();
     //prepAutoData();
     Navigation.ToSend(LAST_BOARD_ADDRESS_RECEIVE, NAVIGATION_ADDRESS);
@@ -160,6 +159,8 @@ inline void macroCommunicationsUpdate()
   if(LEDresend.timerDone())
   {
     sendLEDstate(MACRO);
+    
+    digitalWrite(13,!digitalRead(13));
   }
   if (Navigation.receiveData())
   {
@@ -242,8 +243,13 @@ void pullDataFromPacket() {
     case PIC_ADDRESS:
       //----------------PIC ENCODER DATA---------------------------
       //DISTANCE PULSES
-      encoderR                =(int) ( navigation_receive[ENCODER_R_PIC_RECEIVE]  / 100.0 ) ;    //IMPLIED CM*100 -> IMPLIED CM
-      encoderL                =(int) ( navigation_receive[ENCODER_L_PIC_RECEIVE]  / 100.0 ) ;      
+      encoderR                =(int) ( navigation_receive[ENCODER_R_PIC_RECEIVE]  ) ;    //IMPLIED CM*100 -> IMPLIED CM
+      encoderL                =(int) ( navigation_receive[ENCODER_L_PIC_RECEIVE]  ) ;
+      if(encoderR==0 && encoderL==0)
+      {
+          encoderPastL=0;
+          encoderPastR=0;
+      }      
       if(encoderL!=encoderPastL)
       {  
          //Use old value to calculate the increment

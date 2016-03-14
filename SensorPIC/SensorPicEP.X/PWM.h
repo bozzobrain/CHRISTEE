@@ -8,8 +8,8 @@
 #ifndef PWM_H
 #define	PWM_H
 
-#define SERVO_MAX               1450
-#define SERVO_MIN               350
+#define SERVO_MAX 1790
+#define SERVO_MIN  10
 
 void initPWM1(int offset_correction);
 void setAngle1(unsigned int update_angle);

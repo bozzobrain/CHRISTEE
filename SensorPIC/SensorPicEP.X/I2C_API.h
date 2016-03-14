@@ -14,6 +14,9 @@
 #define TRANSMIT 1
 #define RECEIVE 2
 
+#define LEFT_CAMERA             0
+#define RIGHT_CAMERA            1
+
 void InitI2Cone(void);
 void InitI2Ctwo(void);
 
@@ -62,6 +65,11 @@ unsigned char StatusI2Ctwo(void);
 void SendStartI2Ctwo(void);
 void SendStartI2Cone(void);
 
+void I2ConeReset(void);
+void I2CtwoReset(void);
+
+extern void delay(int ms);
+extern void initCamera(int cameraNumber);
 
 #endif	/* I2C_API_H */
 

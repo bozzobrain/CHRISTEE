@@ -8,21 +8,11 @@
 #ifndef INTERRUPT_HANDLER_H
 #define	INTERRUPT_HANDLER_H
 
-extern unsigned int time;
-extern unsigned int encoderTime;
-bool SpeedCalcRight;
-bool SpeedCalcLeft;
-
-
-unsigned int EncoderRight;
-unsigned int EncoderLeft;
-unsigned int EncoderRightStorage;
-unsigned int EncoderLeftStorage;
-
-unsigned int EncoderCurrentTimeRight;
-unsigned int EncoderCurrentTimeLeft;
-unsigned int EncoderPastTimeRight;
-unsigned int EncoderPastTimeLeft;
-
+extern const int wiiUpdateFrequency;
+extern volatile unsigned int wiiTime;
+extern volatile unsigned int time;
+extern volatile int encoderTime;
+extern volatile unsigned int rolloverRight;
+extern volatile unsigned int rolloverLeft;
 #endif	/* INTERRUPT_HANDLER_H */
 

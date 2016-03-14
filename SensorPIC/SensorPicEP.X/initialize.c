@@ -10,37 +10,57 @@
 #define INDICATOR4 LATGbits.LATG8
 #define WATCHDOG   LATEbits.LATE7
 
+#define GLOBAL_INTERRUPTS  INTCON2bits.GIE
+#define SOFTWARE_TRAP INTCON2bits.SWTRAP
 void initialize(void)
 {
 
+    ANSELEbits.ANSE5  = 0; // turn off analog
+    TRISEbits.TRISE5  = 0; // RE5 set to output
+    ANSELEbits.ANSE6  = 0; // turn off analog
+    TRISEbits.TRISE6  = 0; // RE6 set to output
+    ANSELEbits.ANSE7  = 0; // turn off analog
+    TRISEbits.TRISE7  = 0; // RE7 set to output
+    ANSELGbits.ANSG7  = 0; // turn off analog
+    TRISGbits.TRISG7  = 0; // RG7 set to output
+    ANSELGbits.ANSG8  = 0; // turn off analog
+    TRISGbits.TRISG8  = 0; // RG8 set to output
+    INTCON1bits.NSTDIS= 0;
+    TRISFbits.TRISF6 = 0; // Right camera reset pin
+    LATFbits.LATF6 = 1; // set pin high
+    TRISDbits.TRISD0 = 0; // Left camera reset pin
+    LATDbits.LATD0 = 1; // set pin high
+
+    GLOBAL_INTERRUPTS = 0;
     oscillator();
+    INDICATOR1=ON;
     InitI2Cone();
     InitI2Ctwo();
+    INDICATOR2=ON;
     initPWM1(0);
     initPWM2(0);
+    INDICATOR3=ON;
+    begin(receiveArray, 15, 1, false, Send_put, Receive_get, Receive_available, Receive_peek);
+    INDICATOR4=ON;
     UART_init();
+
+    INDICATOR1=OFF;
+    INDICATOR2=OFF;
+    INDICATOR3=OFF;
+    INDICATOR4=OFF;
     //initUART1();
     timerOne();
     timerTwo();
+    INDICATOR3=ON;
     inputCapture();
-    begin(receiveArray, 15, 4, false, Send_put, Receive_get, Receive_available, Receive_peek);
-
-    ANSELEbits.ANSE5 = 0; // turn off analog
-    TRISEbits.TRISE5 = 0; // RE5 set to output
-    ANSELEbits.ANSE6 = 0; // turn off analog
-    TRISEbits.TRISE6 = 0; // RE6 set to output
-    ANSELEbits.ANSE7 = 0; // turn off analog
-    TRISEbits.TRISE7 = 0; // RE7 set to output
-    ANSELGbits.ANSG7 = 0; // turn off analog
-    TRISGbits.TRISG7 = 0; // RG7 set to output
-    ANSELGbits.ANSG8 = 0; // turn off analog
-    TRISGbits.TRISG8 = 0; // RG8 set to output
 
 
     INDICATOR1=OFF;
     INDICATOR2=OFF;
     INDICATOR3=OFF;
     INDICATOR4=OFF;
+    GLOBAL_INTERRUPTS = 1;
+    
 }
 
 void oscillator(void)
@@ -63,6 +83,7 @@ void oscillator(void)
 
 void timerOne(void)
 {
+
     T1CONbits.TCKPS = 0b10; // 64 divider
     PR1 = 938; // 0.001s timer
     IPC0bits.T1IP = 1; // interrupt priority level 1
@@ -70,20 +91,22 @@ void timerOne(void)
     IEC0bits.T1IE = 1; // enable timer 1 interrupt
     T1CONbits.TON = 1; // turn on timer
 }
+
 void timerTwo(void)
 {
         // timer 2
     T2CONbits.TON = 0; //disable timer 2
-    T2CONbits.TCS = 0; //internal instruction clock
+    T2CONbits.TCS = 0; //internal instruction clock (60,000,000 Hertz)
     T2CONbits.TGATE = 0; //disable gated timer mode
-    T2CONbits.TCKPS = 0b11; // 1:256 prescalar
-    TMR2 = 0x00; //clar timer register
-    PR2 = 65535;
+    T2CONbits.TCKPS = 0b11; // 1:256 prescalar    60MHz/256= 234.375KHz (4.266us)
+    TMR2 = 0x00; //clear timer register
+    PR2 = 65535; //- set to 279 ms per overflow (4.266 us * 65535)= 279 ms
     IPC1bits.T2IP = 0x01; // timer lowest priority level
     IFS0bits.T2IF = 0; // clear timer1 interrupt flag
     IEC0bits.T2IE = 0; // disable timer1 interrupt
     T2CONbits.TON = 1; //enable timer 2
 }
+
 void initUART1(void)
 {
 
@@ -93,14 +116,34 @@ void initUART1(void)
     U1BRG = 64; // 57600 baud rate
     U1MODEbits.UARTEN = 1; // enable uart
 }
+/*
+ ICM<2:0>: Input Capture Mode Select bits
+111 = Input capture functions as interrupt pin only in CPU Sleep and Idle modes (rising edge detect
+only, all other control bits are not applicable)
+110 = Unused (module disabled)
+101 = Capture mode, every 16th rising edge (Prescaler Capture mode)
+100 = Capture mode, every 4th rising edge (Prescaler Capture mode)
+011 = Capture mode, every rising edge (Simple Capture mode)
+010 = Capture mode, every falling edge (Simple Capture mode)
+001 = Capture mode, every edge rising and falling
+ */
 
+/*
+
+ICI<1:0>: Number of Captures per Interrupt Select bits (this field is not used if ICM<2:0> = 001 or 111)
+11 = Interrupt on every fourth capture event
+10 = Interrupt on every third capture event
+01 = Interrupt on every second capture event
+00 = Interrupt on every capture event
+ 
+ */
 void inputCapture(void)
 {
     // Initialize the Input Capture Module
     IC1CON1bits.ICM = 0b00; // Disable Input Capture 1 module
     IC1CON1bits.ICTSEL= 1; // Select Timer2 as the IC1 Time base
     IC1CON1bits.ICI = 0b00; // Interrupt on every capture event
-    IC1CON1bits.ICM = 0b010; // Generate capture event on every Falling edge
+    IC1CON1bits.ICM = 0b001; // Generate capture event on every Falling edge
 
     // Enable Capture Interrupt And Timer2
     IPC0bits.IC1IP = 1; // Setup IC1 interrupt priority level
@@ -114,8 +157,7 @@ void inputCapture(void)
     IC2CON1bits.ICM = 0b00; // Disable Input Capture 2 module
     IC2CON1bits.ICTSEL = 1; // Select Timer2 as the IC2 Time base
     IC2CON1bits.ICI = 0b00; // Interrupt on every capture event
-    IC2CON1bits.ICM = 0b010; // Generate capture event on every Falling edge
-
+    IC2CON1bits.ICM = 0b001; // Generate capture event on every Falling edge
 
     // Enable Capture Interrupt And Timer2
     IPC1bits.IC2IP = 1; // Setup IC2 interrupt priority level

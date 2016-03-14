@@ -3,9 +3,16 @@
 #include <stdlib.h>
 #include "UART_handler.h"
 
+#define ON         0
+#define OFF        1
+#define INDICATOR1 LATEbits.LATE5
+#define INDICATOR2 LATEbits.LATE6
+#define INDICATOR3 LATGbits.LATG7
+#define INDICATOR4 LATGbits.LATG8
+#define WATCHDOG   LATEbits.LATE7
 void UART_init(void)
 {
-    RPINR18bits.U1RXR = 0b1000010; //configures the input RX to a programable pin RP34
+    RPINR18bits.U1RXR = 0b1000010; //configures the input RX to a programable pin RP36
     RPOR0bits.RP65R = 0b000001; //configures the output TX to configurale pin RP65
 //    LATDbits.LATD1 = 1;
 //    LATDbits.LATD2 = 1;
@@ -130,13 +137,16 @@ void Send_put(unsigned char _data)
 
 void __attribute__((interrupt, no_auto_psv)) _U1RXInterrupt(void)
 {
+    //INDICATOR1=ON;
     unsigned char data = U1RXREG;
     UART_buff_put(&input_buffer, data);
     IFS0bits.U1RXIF = 0; // Clear RX interrupt flag
+    //INDICATOR1=OFF;
 }
 
 void __attribute__((interrupt, no_auto_psv)) _U1TXInterrupt(void)
 {
+    //INDICATOR2=ON;
     if (UART_buff_size(&output_buffer) > 0)
     {
         U1TXREG = UART_buff_get(&output_buffer);
@@ -146,4 +156,6 @@ void __attribute__((interrupt, no_auto_psv)) _U1TXInterrupt(void)
         Transmit_stall = true;
     }
     IFS0bits.U1TXIF = 0; // Clear TX interrupt flag
+
+    //INDICATOR2=OFF;
 }

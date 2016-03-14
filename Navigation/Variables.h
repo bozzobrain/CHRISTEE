@@ -43,7 +43,7 @@ bool continuable;
 int continueMacro = 0;
 
 /********************* CONTROL TIMERS *************************/
-Timers PIDTimer(25);
+Timers PIDTimer(5);
 Timers PIDTimer2(100);
 Timers latency(5);
 Timers decisionTimer(50);

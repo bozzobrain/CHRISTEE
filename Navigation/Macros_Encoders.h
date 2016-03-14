@@ -1,6 +1,6 @@
 //macros_encoders.h
 
-#define encoderKp 2
+#define encoderKp 1
 #define encoderKi 0
 #define encoderKd 0
 

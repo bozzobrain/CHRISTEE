@@ -2,22 +2,28 @@
 #include <stdbool.h>
 #include "interrupt_handler.h"
 
+#define ON         0
+#define OFF        1
+#define INDICATOR1 LATEbits.LATE5
+#define INDICATOR2 LATEbits.LATE6
+#define INDICATOR3 LATGbits.LATG7
+#define INDICATOR4 LATGbits.LATG8
+#define WATCHDOG   LATEbits.LATE7
 void __attribute__((interrupt, no_auto_psv)) _T1Interrupt(void)
 {
+    //INDICATOR3=ON;
     time++;
+    if(wiiTime<=wiiUpdateFrequency) wiiTime++;
     encoderTime++;
+
     IFS0bits.T1IF = 0; // clear interrupt flag
-}
-void __attribute__((interrupt, no_auto_psv)) _IC1Interrupt(void) {
-    EncoderRight++;
-    EncoderCurrentTimeRight = IC1BUF;
-    SpeedCalcRight = true;
-    IFS0bits.IC1IF = 0; // Clear IC1 Interrupt Status Flag
+    //INDICATOR3=OFF;
 }
 
-void __attribute__((interrupt, no_auto_psv)) _IC2Interrupt(void) {
-    EncoderLeft++;
-    EncoderCurrentTimeLeft = IC2BUF;
-    SpeedCalcLeft = true;
-    IFS0bits.IC2IF = 0; // Clear IC2 Interrupt Status Flag
+void __attribute__((interrupt, no_auto_psv)) _T2Interrupt(void)
+{
+
+    rolloverRight++;
+    rolloverLeft++;
+    IFS0bits.T2IF = 0; // clear timer interrupt flag
 }

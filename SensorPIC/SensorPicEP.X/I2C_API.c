@@ -16,6 +16,12 @@ struct operator_values
     unsigned char status;
 };
 
+// initialize the setting struct
+static struct operator_values I2C_1_values = {0, 0, 0, 0, 0, 0, 1};
+
+// function pointer for transition functions
+void (*FunctionI2Cone)(void);
+
 void InitI2Cone(void)
 {
     I2C1BRG = 591; // set baud rate 
@@ -25,11 +31,19 @@ void InitI2Cone(void)
     I2C1CONbits.I2CEN = 1; // enable i2c one
 }
 
-// initialize the setting struct
-static struct operator_values I2C_1_values = {0, 0, 0, 0, 0, 0, 1};
+//right camera reset
+void I2ConeReset(void)
+{
+    I2C1CONbits.I2CEN = 0; // disable i2c one
+    LATFbits.LATF6 = 0; // pull reset line low
+    delay(30);
+    LATFbits.LATF6 = 1; //pull reset line high
+    I2C1CONbits.I2CEN = 1; // enable i2c one
+    I2C_1_values.status = FAILED;
+    initCamera(RIGHT_CAMERA);
+}
 
-// function pointer for transition functions
-void (*FunctionI2Cone)(void);
+
 
 // initiates a send of an array containing a set number of data
 
@@ -48,7 +62,8 @@ bool SendI2Cone(unsigned char s_address, unsigned char * dat, unsigned char how_
         FunctionI2Cone = &SendSlaveAddressI2Cone; // load the send slave address function
         I2C1CONbits.SEN = 1; // send start condition
         return true; // return successful
-    } else
+    }
+    else
     {
         return false; // return failed if an i2c request is already running
     }
@@ -72,7 +87,8 @@ bool ReceiveI2Cone(unsigned char s_address, unsigned char d_address, unsigned ch
         FunctionI2Cone = &SendSlaveAddressI2Cone; // load the send slave address function
         I2C1CONbits.SEN = 1; // send start condition
         return true; // return successful
-    } else
+    }
+    else
     {
         return false; // return failed if an i2c request is already running
     }
@@ -98,7 +114,8 @@ void SendDataAddressI2Cone(void)
         {
             I2C1TRN = I2C_1_values.data_address; // load data address value
             FunctionI2Cone = &SendRestartI2Cone; // load send restart function
-        } else if (I2C_1_values.direction == TRANSMIT) // transmitting
+        }
+        else if (I2C_1_values.direction == TRANSMIT) // transmitting
         {
             // check if something is sitting in the array
             if (I2C_1_values.data_index < I2C_1_values.how_much_data) // data found
@@ -106,17 +123,20 @@ void SendDataAddressI2Cone(void)
                 I2C1TRN = I2C_1_values.data[I2C_1_values.data_index]; // load data
                 I2C_1_values.data_index++; // increment index
                 FunctionI2Cone = &SendDataI2Cone; // load function that will continue sending
-            } else //all data has been sent
+            }
+            else //all data has been sent
             {
                 StopFunctionI2Cone(); // since all data hase been sent initiate stop
                 FunctionI2Cone = &SuccessFunctionI2Cone; // load sucess function
             }
-        } else //neither transmit or receive (just in case)
+        }
+        else //neither transmit or receive (just in case)
         {
             StopFunctionI2Cone(); // initiate stop
             FunctionI2Cone = &FailFunctionI2Cone; // load fail function
         }
-    } else //nack received
+    }
+    else //nack received
     {
         StopFunctionI2Cone(); // since nack redeived stop the buss
         FunctionI2Cone = &FailFunctionI2Cone; // load fail function
@@ -132,12 +152,14 @@ void SendDataI2Cone(void)
         {
             I2C1TRN = I2C_1_values.data[I2C_1_values.data_index]; // load data into buffer
             I2C_1_values.data_index++; // increment index
-        } else //all data has been sent
+        }
+        else //all data has been sent
         {
             StopFunctionI2Cone(); // since all data hase been sent initiate stop
             FunctionI2Cone = &SuccessFunctionI2Cone; // load sucess function
         }
-    } else //nack received
+    }
+    else //nack received
     {
         StopFunctionI2Cone(); // since nack redeived stop the buss
         FunctionI2Cone = &FailFunctionI2Cone; // load fail function
@@ -174,7 +196,8 @@ void FirstReceiveI2Cone(void)
     {
         I2C1CONbits.RCEN = 1; // enable receive
         FunctionI2Cone = &ReceiveByteI2Cone;
-    } else //nack received
+    }
+    else //nack received
     {
         StopFunctionI2Cone();
         FunctionI2Cone = &FailFunctionI2Cone;
@@ -189,7 +212,8 @@ void ReceiveByteI2Cone(void)
     {
         I2C1CONbits.ACKEN = 1; // send ACK
         FunctionI2Cone = &EnableReceiveI2Cone;
-    } else
+    }
+    else
     {
         StopFunctionI2Cone();
         FunctionI2Cone = &SuccessFunctionI2Cone;
@@ -228,13 +252,14 @@ void __attribute__((interrupt, no_auto_psv)) _MI2C1Interrupt(void)
     {
         StopFunctionI2Cone();
         FunctionI2Cone = &FailFunctionI2Cone;
-    } else
+        I2C1STATbits.BCL = 0;
+    }
+    else
     {
         FunctionI2Cone();
     }
     IFS1bits.MI2C1IF = 0; // clear interrupt flag
 }
-
 
 /******************************************************************************/
 
@@ -251,6 +276,18 @@ static struct operator_values I2C_2_values = {0, 0, 0, 0, 0, 0, 1};
 
 void (*FunctionI2Ctwo)(void);
 
+//left camera
+void I2CtwoReset(void)
+{
+    I2C2CONbits.I2CEN = 0; // disable i2c one
+    LATDbits.LATD0 = 0; // pull reset line low
+    delay(30);
+    LATDbits.LATD0 = 1; //pull reset line high
+    I2C2CONbits.I2CEN = 1; // enable i2c one
+    I2C_2_values.status = FAILED;
+    initCamera(LEFT_CAMERA);
+}
+
 bool SendI2Ctwo(unsigned char s_address, unsigned char * dat, unsigned char how_much)
 {
     //see if a transmit or receive is in prograss
@@ -266,7 +303,8 @@ bool SendI2Ctwo(unsigned char s_address, unsigned char * dat, unsigned char how_
         FunctionI2Ctwo = &SendSlaveAddressI2Ctwo;
         I2C2CONbits.SEN = 1; // send start condition
         return true;
-    } else
+    }
+    else
     {
         return false; //operation already in progress
     }
@@ -288,7 +326,8 @@ bool ReceiveI2Ctwo(unsigned char s_address, unsigned char d_address, unsigned ch
         FunctionI2Ctwo = &SendSlaveAddressI2Ctwo;
         I2C2CONbits.SEN = 1; // send start condition
         return true;
-    } else
+    }
+    else
     {
         return false; //operation already in progress
     }
@@ -309,25 +348,29 @@ void SendDataAddressI2Ctwo(void)
         {
             I2C2TRN = I2C_2_values.data_address;
             FunctionI2Ctwo = &SendRestartI2Ctwo;
-        } else if (I2C_2_values.direction == TRANSMIT)
+        }
+        else if (I2C_2_values.direction == TRANSMIT)
         {
             if (I2C_2_values.data_index < I2C_2_values.how_much_data)
             {
                 I2C2TRN = I2C_2_values.data[I2C_2_values.data_index];
                 I2C_2_values.data_index++;
                 FunctionI2Ctwo = &SendDataI2Ctwo;
-            } else //all data has been sent
+            }
+            else //all data has been sent
             {
                 StopFunctionI2Ctwo();
                 FunctionI2Ctwo = &SuccessFunctionI2Ctwo;
             }
 
-        } else //neither transmit or receive
+        }
+        else //neither transmit or receive
         {
             StopFunctionI2Ctwo();
             FunctionI2Ctwo = &FailFunctionI2Ctwo;
         }
-    } else //nack received
+    }
+    else //nack received
     {
         StopFunctionI2Ctwo();
         FunctionI2Ctwo = &FailFunctionI2Ctwo;
@@ -343,12 +386,14 @@ void SendDataI2Ctwo(void)
         {
             I2C2TRN = I2C_2_values.data[I2C_2_values.data_index];
             I2C_2_values.data_index++;
-        } else //all data has been sent
+        }
+        else //all data has been sent
         {
             StopFunctionI2Ctwo();
             FunctionI2Ctwo = &SuccessFunctionI2Ctwo;
         }
-    } else //nack received
+    }
+    else //nack received
     {
         StopFunctionI2Ctwo();
         FunctionI2Ctwo = &FailFunctionI2Ctwo;
@@ -379,7 +424,8 @@ void FirstReceiveI2Ctwo(void)
     {
         I2C2CONbits.RCEN = 1; // enable receive
         FunctionI2Ctwo = &ReceiveByteI2Ctwo;
-    } else //nack received
+    }
+    else //nack received
     {
         StopFunctionI2Ctwo();
         FunctionI2Ctwo = &FailFunctionI2Ctwo;
@@ -394,7 +440,8 @@ void ReceiveByteI2Ctwo(void)
     {
         I2C2CONbits.ACKEN = 1; // send ACK
         FunctionI2Ctwo = &EnableReceiveI2Ctwo;
-    } else
+    }
+    else
     {
         StopFunctionI2Ctwo();
         FunctionI2Ctwo = &SuccessFunctionI2Ctwo;
@@ -433,7 +480,9 @@ void __attribute__((interrupt, no_auto_psv)) _MI2C2Interrupt(void)
     {
         StopFunctionI2Ctwo();
         FunctionI2Ctwo = &FailFunctionI2Ctwo;
-    } else
+        I2C2STATbits.BCL = 0;
+    }
+    else
     {
         FunctionI2Ctwo();
     }

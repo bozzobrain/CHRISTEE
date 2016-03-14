@@ -17,10 +17,10 @@
 //    PDC1 = 23000;     //90 degrees
 //    PDC1 = 36900;     //180 Degrees
 
-static int slope_1 = 15; //     m/10
-static int slope_2 = 15; //     m/10
-static int offset_1 = 9683;
-static int offset_2 = 9683;
+static float slope_1 = 6.66;//15;//     m/10    [1.66 @100Hz][15   @300Hz][SLOPE REPRESENTS CLOCK DIVIDER/PERIOD]
+static float slope_2 = 6.66;//15;//     m/10    [1.66 @100Hz][15   @300Hz][SLOPE REPRESENTS CLOCK DIVIDER/PERIOD]
+static int offset_1 = 16500;//before5/16/2015 9683;//          [4125 @100Hz][9683 @300Hz]
+static int offset_2 = 16500;//before5/16/2015 9683;//          [4125 @100Hz][9683 @300Hz]
 
 static unsigned int current_angle_1 = 900; //  angle*10
 static unsigned int current_angle_2 = 900; //  angle*10
@@ -29,11 +29,11 @@ void initPWM1(int offset_correction)
 {
     offset_1 = offset_1 + (slope_1 * offset_correction);
     PTCONbits.PTEN = 0; //pwm module disabled
-    PTCON2bits.PCLKDIV = 0b011; //clock divider of 8
-    //PTPER = [Fosc]/[(Fpwm)*(PWMClockPrescaler)]
-    PTPER = 50000; //master time base
-    //    PTPER = [80Mhz] / [(200 Hz)*(64)] = 6250
-    //    200 Hz is total period @ 500 usec)
+    PTCON2bits.PCLKDIV = 0b011; //clock divider of [32->0b101 @ 100Hz]  [8->0b011]  [SLOPE dependent]
+    //PTPER = [Fosc]        / [(Fpwm)*(PWMClockPrescaler)]   = Period
+    //PTPER = [120Mhz/8(^)] / [(200 Hz)*(64)]                = 6250
+    PTPER = 50000; //master time base             [65535 -> 50 Hz @ 32 div] [37500->100Hz @ 32 div]  []               [50000-> 300Hz @ 8 div]
+    //    (200 Hz is total period @ 500 usec)
     //    45degree marks are +-400usec @# +-2500 Hz for each 45 degrees
     IOCON1bits.PENH = 1; //Output on PWM1H is active low
     IOCON1bits.PMOD = 3; /* Select True Independent Output PWM mode == 00*/
@@ -60,16 +60,16 @@ void initPWM2(int offset_correction)
 
 void setAngle1(unsigned int update_angle)
 {
-    if(update_angle>SERVO_MIN && update_angle<SERVO_MAX){
-    PDC1 = update_angle * slope_1 + offset_1; //update PWM pulse width for PWM1
+    if((update_angle>SERVO_MIN) && (update_angle<SERVO_MAX)){
+    PDC1 = (int)(((float)update_angle * (float)slope_1) + offset_1); //update PWM pulse width for PWM1
     current_angle_1 = update_angle; //update the PWM angle with the angle input to function call
     }
 }
 
 void setAngle2(unsigned int update_angle)
 {
-    if(update_angle>SERVO_MIN && update_angle<SERVO_MAX){
-    PDC2 = update_angle * slope_2 + offset_2; //update PWM pulse width for PWM2
+    if((update_angle>SERVO_MIN) && (update_angle<SERVO_MAX)){
+    PDC2 = (int)(((float)update_angle * (float)slope_2) + offset_2); //update PWM pulse width for PWM2
     current_angle_2 = update_angle; //update the PWM angle with the angle input to function call
     }
 }

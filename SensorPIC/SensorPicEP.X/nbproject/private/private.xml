@@ -4,13 +4,15 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Zac/Desktop/CHRISTEE%20REPO/christee/SensorPIC/SensorPicEP.X/main.c</file>
-            <file>file:/C:/Users/Zac/Desktop/CHRISTEE%20REPO/christee/SensorPIC/SensorPicEP.X/wiiCamera.c</file>
-            <file>file:/C:/Users/Zac/Desktop/CHRISTEE%20REPO/christee/SensorPIC/SensorPicEP.X/PWM.c</file>
-            <file>file:/C:/Users/Zac/Desktop/CHRISTEE%20REPO/christee/SensorPIC/SensorPicEP.X/initialize.c</file>
-            <file>file:/C:/Users/Zac/Desktop/CHRISTEE%20REPO/christee/SensorPIC/SensorPicEP.X/FastTransfer.c</file>
-            <file>file:/C:/Users/Zac/Desktop/CHRISTEE%20REPO/christee/SensorPIC/SensorPicEP.X/Configuration_Bits.c</file>
-            <file>file:/C:/Users/Zac/Desktop/CHRISTEE%20REPO/christee/SensorPIC/SensorPicEP.X/interrupt_handler.c</file>
+            <file>file:/C:/Users/Zac/Desktop/CHRISTEE%20REPO/sensor/sensorpicep/SensorPicEP.X/encoderCalculator.h</file>
+            <file>file:/C:/Users/Zac/Desktop/CHRISTEE%20REPO/sensor/sensorpicep/SensorPicEP.X/FastTransfer.c</file>
+            <file>file:/C:/Users/Zac/Desktop/CHRISTEE%20REPO/sensor/sensorpicep/SensorPicEP.X/interrupt_handler.c</file>
+            <file>file:/C:/Users/Zac/Desktop/CHRISTEE%20REPO/sensor/sensorpicep/SensorPicEP.X/main.c</file>
+            <file>file:/C:/Users/Zac/Desktop/CHRISTEE%20REPO/sensor/sensorpicep/SensorPicEP.X/wiiCamera.c</file>
+            <file>file:/C:/Users/Zac/Desktop/CHRISTEE%20REPO/sensor/sensorpicep/SensorPicEP.X/initialize.c</file>
+            <file>file:/C:/Users/Zac/Desktop/CHRISTEE%20REPO/sensor/sensorpicep/SensorPicEP.X/UART_handler.c</file>
+            <file>file:/C:/Users/Zac/Desktop/CHRISTEE%20REPO/sensor/sensorpicep/SensorPicEP.X/encoderCalculator.c</file>
+            <file>file:/C:/Users/Zac/Desktop/CHRISTEE%20REPO/sensor/sensorpicep/SensorPicEP.X/wiiCamera.h</file>
         </group>
     </open-files>
 </project-private>

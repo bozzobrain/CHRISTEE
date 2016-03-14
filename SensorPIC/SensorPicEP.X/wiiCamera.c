@@ -6,6 +6,7 @@
 #include <math.h>
 #include "wiiCamera.h"
 #include "PWM.h"
+
 #define ON         0
 #define OFF        1
 #define INDICATOR1 LATEbits.LATE5
@@ -18,16 +19,222 @@ bool vertical = true;
 unsigned char camera = 0xB0;
 unsigned char data_address = 0x36;
 
-void delay(int ms);
+
+void sendWiiData(int beaconLeft, int beaconRight); //Send sweeps and seen data
+void sendAngles(int beaconLeft, int beaconRight); //Send the camera locked true and angles
+int horizontalBeaconCentered(); //Check for and clear the horizontal flag and angle
+int verticalBeaconCentered(); //Check for and clear the vertical flag and angle
+int customBeaconCentered(int left, int right); //Check for a unique beacon request
+void calculateCamera(int cameraNumber, int beaconNumber); //Calculate the presence of a beacon in the data
+void seekBeacon(int cameraNumber, int beaconNumber); //Use the servo functions and control logic to search
 int isAbout(int compareThis, int toThis, int range);
 unsigned char read(int cameraNumber);
+
+void seekBeacon(int cameraNumber, int beaconNumber) {
+    if (centerBlob[beaconNumber][cameraNumber] == INVALID) {
+        beaconSeen[cameraNumber] = 0;
+        beaconCentered[cameraNumber][beaconNumber] = 0;
+        if ((angleSet[cameraNumber] < (SERVO_MAX - SERVO_STEP_WIDE)) && !rotatingLeft[cameraNumber]) {
+            angleSet[cameraNumber] += SERVO_STEP_WIDE;
+            if (cameraNumber == LEFT_CAMERA) setAngle1(angleSet[cameraNumber]);
+            else setAngle2(angleSet[cameraNumber]);
+        } else if (!rotatingLeft[cameraNumber]) {
+            rotatingLeft[cameraNumber] = 1;
+            numberSweeps[cameraNumber]++;
+        }
+        if ((angleSet[cameraNumber] > (SERVO_MIN + SERVO_STEP_WIDE)) && rotatingLeft[cameraNumber]) {
+            angleSet[cameraNumber] -= SERVO_STEP_WIDE;
+            if (cameraNumber == LEFT_CAMERA) setAngle1(angleSet[cameraNumber]);
+            else setAngle2(angleSet[cameraNumber]);
+        } else if (rotatingLeft[cameraNumber]) {
+            rotatingLeft[cameraNumber] = 0;
+            numberSweeps[cameraNumber]++;
+        }
+    } else {
+        int increment;
+        if (cameraNumber == LEFT_CAMERA) {
+            if (!isAbout(centerBlob[beaconNumber][cameraNumber], CENTER_PIXEL_LEFT, ACCEPTABLE_CENTER_WIDTH)) {
+                beaconSeen[cameraNumber] = 1;
+                beaconCentered[cameraNumber][beaconNumber] = 0;
+                if (centerBlob[beaconNumber][cameraNumber] > CENTER_PIXEL_LEFT) {
+                    increment = ((centerBlob[beaconNumber][cameraNumber] - CENTER_PIXEL_LEFT)) / 10;
+                    if (angleSet[cameraNumber] > (SERVO_MIN + increment)) {
+                        angleSet[cameraNumber] -= increment;
+                        setAngle1(angleSet[cameraNumber]);
+                    }
+                } else {
+                    increment = ((CENTER_PIXEL_LEFT - centerBlob[beaconNumber][cameraNumber])) / 10;
+                    if (angleSet[cameraNumber] < (SERVO_MAX - increment)) {
+                        angleSet[cameraNumber] += increment;
+                        setAngle1(angleSet[cameraNumber]);
+                    }
+                }
+            } else {
+                beaconSeen[cameraNumber] = 1;
+                beaconAngle[beaconNumber][cameraNumber] = angleSet[cameraNumber];
+                beaconCentered[cameraNumber][beaconNumber] = 1;
+            }
+        } else {
+            if (!isAbout(centerBlob[beaconNumber][cameraNumber], CENTER_PIXEL_RIGHT, ACCEPTABLE_CENTER_WIDTH)) {
+                beaconSeen[cameraNumber] = 1;
+                beaconCentered[cameraNumber][beaconNumber] = 0;
+                if (centerBlob[beaconNumber][cameraNumber] > CENTER_PIXEL_RIGHT) {
+                    increment = ((centerBlob[beaconNumber][cameraNumber] - CENTER_PIXEL_RIGHT)) / 10;
+                    if (angleSet[cameraNumber] > (SERVO_MIN + increment)) {
+                        angleSet[cameraNumber] -= increment;
+                        setAngle2(angleSet[cameraNumber]);
+                    }
+                } else {
+                    increment = ((CENTER_PIXEL_RIGHT - centerBlob[beaconNumber][cameraNumber])) / 10;
+                    if (angleSet[cameraNumber] < (SERVO_MAX - increment)) {
+                        angleSet[cameraNumber] += increment;
+                        setAngle2(angleSet[cameraNumber]);
+                    }
+                }
+            } else {
+                beaconSeen[cameraNumber] = 1;
+                beaconAngle[beaconNumber][cameraNumber] = angleSet[cameraNumber];
+                beaconCentered[cameraNumber][beaconNumber] = 1;
+            }
+        }
+    }
+}
+
+void sendWiiData(int beaconLeft, int beaconRight) {
+//    ToSend(LAST_BOARD_ADDRESS_RECEIVE, PIC_ADDRESS);
+//    ToSend(WII_BEACON_SEEN_LEFT, beaconSeen[LEFT_CAMERA]);
+//    ToSend(WII_BEACON_SEEN_RIGHT, beaconSeen[RIGHT_CAMERA]);
+//    ToSend(WII_NUMBER_SWEEPS_LEFT, numberSweeps[LEFT_CAMERA]);
+//    ToSend(WII_NUMBER_SWEEPS_RIGHT, numberSweeps[RIGHT_CAMERA]);
+//    ToSend(WII_LEFT_CAMERA_ANGLE, angleSet[LEFT_CAMERA] / 10.0);
+//    ToSend(WII_RIGHT_CAMERA_ANGLE, angleSet[RIGHT_CAMERA] / 10.0);
+//    ToSend(WII_LEFT_CAMERA_LOCKED, beaconCentered[LEFT_CAMERA][beaconLeft]);
+//    ToSend(WII_RIGHT_CAMERA_LOCKED, beaconCentered[RIGHT_CAMERA][beaconRight]);
+//    sendData(NAVIGATION_ADDRESS);    
+//    ToSend(LAST_BOARD_ADDRESS_RECEIVE, PIC_ADDRESS);
+//    ToSend(WII_CAMERA_LEFT_ANGLE, angleSet[LEFT_CAMERA] / 10.0);
+//    ToSend(WII_CAMERA_RIGHT_ANGLE, angleSet[RIGHT_CAMERA] / 10.0);
+//    ToSend(WII_CAMERA_LEFT_BEACON, beaconLeft);
+//    ToSend(WII_CAMERA_RIGHT_BEACON, beaconRight);
+//    ToSend(WII_CAMERA_LEFT_LOCKED, beaconCentered[LEFT_CAMERA][beaconLeft]);
+//    ToSend(WII_CAMERA_RIGHT_LOCKED, beaconCentered[RIGHT_CAMERA][beaconRight]);
+//    sendData(CONTROL_ADDRESS);
+}
+
+void sendAngles(int beaconLeft, int beaconRight) {
+//    ToSend(LAST_BOARD_ADDRESS_RECEIVE, PIC_ADDRESS);
+//    ToSend(WII_BEACON_SEEN_LEFT, beaconSeen[LEFT_CAMERA]);
+//    ToSend(WII_BEACON_SEEN_RIGHT, beaconSeen[RIGHT_CAMERA]);
+//    ToSend(WII_LEFT_CAMERA_ANGLE, angleSet[LEFT_CAMERA] / 10.0);
+//    ToSend(WII_RIGHT_CAMERA_ANGLE, angleSet[RIGHT_CAMERA] / 10.0);
+//    ToSend(WII_NUMBER_SWEEPS_LEFT, numberSweeps[LEFT_CAMERA]);
+//    ToSend(WII_NUMBER_SWEEPS_RIGHT, numberSweeps[RIGHT_CAMERA]);
+//    ToSend(WII_LEFT_CAMERA_LOCKED, beaconCentered[LEFT_CAMERA][beaconLeft]);
+//    ToSend(WII_RIGHT_CAMERA_LOCKED, beaconCentered[RIGHT_CAMERA][beaconRight]);
+//    sendData(NAVIGATION_ADDRESS);
+//    ToSend(LAST_BOARD_ADDRESS_RECEIVE, PIC_ADDRESS);
+//    ToSend(WII_CAMERA_LEFT_ANGLE, angleSet[LEFT_CAMERA] / 10.0);
+//    ToSend(WII_CAMERA_RIGHT_ANGLE, angleSet[RIGHT_CAMERA] / 10.0);
+//    ToSend(WII_CAMERA_LEFT_BEACON, beaconLeft);
+//    ToSend(WII_CAMERA_RIGHT_BEACON, beaconRight);
+//    ToSend(WII_CAMERA_LEFT_LOCKED, beaconCentered[LEFT_CAMERA][beaconLeft]);
+//    ToSend(WII_CAMERA_RIGHT_LOCKED, beaconCentered[RIGHT_CAMERA][beaconRight]);
+//    sendData(CONTROL_ADDRESS);
+}
+
+void calculateCamera(int cameraNumber, int beaconNumber) {
+
+    int minHeight = 999;
+    int minWidth = 999;
+
+    Camera[cameraNumber].result = read(cameraNumber);
+    //debugBlobs(cameraNumber);
+
+    //Clear the center blob marker before continuing
+    centerBlob[beaconNumber][cameraNumber] = INVALID;
+
+    if ((Camera[cameraNumber].result & BLOB1) && (Camera[cameraNumber].result & BLOB2)) {
+        if (isAbout(Camera[cameraNumber].Blob1.Y, Camera[cameraNumber].Blob2.Y, HEIGH_WIDTH_COMPARE))
+            if (abs((Camera[cameraNumber].Blob1.Y - Camera[cameraNumber].Blob2.Y)) < minHeight) {
+                centerBlob[HORIZONTAL_BEACON][cameraNumber] = (Camera[cameraNumber].Blob1.X + Camera[cameraNumber].Blob2.X) / 2;
+                minHeight = centerBlob[HORIZONTAL_BEACON][cameraNumber];
+            }
+        if (isAbout(Camera[cameraNumber].Blob1.X, Camera[cameraNumber].Blob2.X, HEIGH_WIDTH_COMPARE))
+            if (abs((Camera[cameraNumber].Blob1.X - Camera[cameraNumber].Blob2.X)) < minWidth) {
+                centerBlob[VERTICAL_BEACON][cameraNumber] = (Camera[cameraNumber].Blob1.X + Camera[cameraNumber].Blob2.X) / 2;
+                minWidth = centerBlob[VERTICAL_BEACON][cameraNumber];
+            }
+    }
+    if ((Camera[cameraNumber].result & BLOB1) && (Camera[cameraNumber].result & BLOB3)) {
+        if (isAbout(Camera[cameraNumber].Blob1.Y, Camera[cameraNumber].Blob3.Y, HEIGH_WIDTH_COMPARE))
+            if (abs((Camera[cameraNumber].Blob1.Y - Camera[cameraNumber].Blob3.Y)) < minHeight) {
+                centerBlob[HORIZONTAL_BEACON][cameraNumber] = (Camera[cameraNumber].Blob1.X + Camera[cameraNumber].Blob3.X) / 2;
+                minHeight = centerBlob[HORIZONTAL_BEACON][cameraNumber];
+            }
+        if (isAbout(Camera[cameraNumber].Blob1.X, Camera[cameraNumber].Blob3.X, HEIGH_WIDTH_COMPARE))
+            if (abs((Camera[cameraNumber].Blob1.X - Camera[cameraNumber].Blob3.X)) < minWidth) {
+                centerBlob[VERTICAL_BEACON][cameraNumber] = (Camera[cameraNumber].Blob1.X + Camera[cameraNumber].Blob3.X) / 2;
+                minWidth = centerBlob[VERTICAL_BEACON][cameraNumber];
+            }
+    }
+    if ((Camera[cameraNumber].result & BLOB1) && (Camera[cameraNumber].result & BLOB4)) {
+        if (isAbout(Camera[cameraNumber].Blob1.Y, Camera[cameraNumber].Blob4.Y, HEIGH_WIDTH_COMPARE))
+            if (abs((Camera[cameraNumber].Blob1.Y - Camera[cameraNumber].Blob4.Y)) < minHeight) {
+                centerBlob[HORIZONTAL_BEACON][cameraNumber] = (Camera[cameraNumber].Blob1.X + Camera[cameraNumber].Blob4.X) / 2;
+                minHeight = centerBlob[HORIZONTAL_BEACON][cameraNumber];
+            }
+        if (isAbout(Camera[cameraNumber].Blob1.X, Camera[cameraNumber].Blob4.X, HEIGH_WIDTH_COMPARE))
+            if (abs((Camera[cameraNumber].Blob1.X - Camera[cameraNumber].Blob4.X)) < minWidth) {
+                centerBlob[VERTICAL_BEACON][cameraNumber] = (Camera[cameraNumber].Blob1.X + Camera[cameraNumber].Blob4.X) / 2;
+                minWidth = centerBlob[VERTICAL_BEACON][cameraNumber];
+            }
+    }
+    if ((Camera[cameraNumber].result & BLOB2) && (Camera[cameraNumber].result & BLOB3)) {
+        if (isAbout(Camera[cameraNumber].Blob2.Y, Camera[cameraNumber].Blob3.Y, HEIGH_WIDTH_COMPARE))
+            if (abs((Camera[cameraNumber].Blob2.Y - Camera[cameraNumber].Blob3.Y)) < minHeight) {
+                centerBlob[HORIZONTAL_BEACON][cameraNumber] = (Camera[cameraNumber].Blob2.X + Camera[cameraNumber].Blob3.X) / 2;
+                minHeight = centerBlob[HORIZONTAL_BEACON][cameraNumber];
+            }
+        if (isAbout(Camera[cameraNumber].Blob2.X, Camera[cameraNumber].Blob3.X, HEIGH_WIDTH_COMPARE))
+            if (abs((Camera[cameraNumber].Blob2.X - Camera[cameraNumber].Blob3.X)) < minWidth) {
+                centerBlob[VERTICAL_BEACON][cameraNumber] = (Camera[cameraNumber].Blob2.X + Camera[cameraNumber].Blob3.X) / 2;
+                minWidth = centerBlob[VERTICAL_BEACON][cameraNumber];
+            }
+    }
+    if ((Camera[cameraNumber].result & BLOB2) && (Camera[cameraNumber].result & BLOB4)) {
+        if (isAbout(Camera[cameraNumber].Blob2.Y, Camera[cameraNumber].Blob4.Y, HEIGH_WIDTH_COMPARE))
+            if (abs((Camera[cameraNumber].Blob2.Y - Camera[cameraNumber].Blob4.Y)) < minHeight) {
+                centerBlob[HORIZONTAL_BEACON][cameraNumber] = (Camera[cameraNumber].Blob2.X + Camera[cameraNumber].Blob4.X) / 2;
+                minHeight = centerBlob[HORIZONTAL_BEACON][cameraNumber];
+            }
+        if (isAbout(Camera[cameraNumber].Blob2.X, Camera[cameraNumber].Blob4.X, HEIGH_WIDTH_COMPARE))
+            if (abs((Camera[cameraNumber].Blob2.X - Camera[cameraNumber].Blob4.X)) < minWidth) {
+                centerBlob[VERTICAL_BEACON][cameraNumber] = (Camera[cameraNumber].Blob2.X + Camera[cameraNumber].Blob4.X) / 2;
+                minWidth = centerBlob[VERTICAL_BEACON][cameraNumber];
+            }
+    }
+    if ((Camera[cameraNumber].result & BLOB3) && (Camera[cameraNumber].result & BLOB4)) {
+        if (isAbout(Camera[cameraNumber].Blob3.Y, Camera[cameraNumber].Blob4.Y, HEIGH_WIDTH_COMPARE))
+            if (abs((Camera[cameraNumber].Blob3.Y - Camera[cameraNumber].Blob4.Y)) < minHeight) {
+                centerBlob[HORIZONTAL_BEACON][cameraNumber] = (Camera[cameraNumber].Blob3.X + Camera[cameraNumber].Blob4.X) / 2;
+                minHeight = centerBlob[HORIZONTAL_BEACON][cameraNumber];
+            }
+        if (isAbout(Camera[cameraNumber].Blob3.X, Camera[cameraNumber].Blob4.X, HEIGH_WIDTH_COMPARE))
+            if (abs((Camera[cameraNumber].Blob3.X - Camera[cameraNumber].Blob4.X)) < minWidth) {
+                centerBlob[VERTICAL_BEACON][cameraNumber] = (Camera[cameraNumber].Blob3.X + Camera[cameraNumber].Blob4.X) / 2;
+                minWidth = centerBlob[VERTICAL_BEACON][cameraNumber];
+            }
+    }
+}
 
 void resetWiiBeaconStates() {
     vertical = true;
     beaconSeen[LEFT_CAMERA] = 0;
     beaconSeen[RIGHT_CAMERA] = 0;
-    beaconCentered[LEFT_CAMERA] = 0;
-    beaconCentered[RIGHT_CAMERA] = 0;
+    beaconCentered[LEFT_CAMERA][LEFT_BEACON] = 0;
+    beaconCentered[LEFT_CAMERA][RIGHT_BEACON] = 0;
+    beaconCentered[RIGHT_CAMERA][LEFT_BEACON] = 0;
+    beaconCentered[RIGHT_CAMERA][RIGHT_BEACON] = 0;
     Camera[LEFT_CAMERA].result = 0;
     Camera[RIGHT_CAMERA].result = 0;
     beaconAngle[LEFT_CAMERA][LEFT_BEACON] = 0;
@@ -41,8 +248,7 @@ void doBeaconAcquisition(int cLBeacon, int cRBeacon) {
     calculateCamera(RIGHT_CAMERA, cRBeacon);
     seekBeacon(LEFT_CAMERA, cLBeacon);
     seekBeacon(RIGHT_CAMERA, cRBeacon);
-    sendWiiData();
-    delay(150);
+    sendWiiData(cLBeacon, cRBeacon);
     //printf("\nLeft Camera Angle: %d\n", angleSet[LEFT_CAMERA]);
     //printf("Right Camera Angle: %d\n", angleSet[RIGHT_CAMERA]);
 }
@@ -101,7 +307,7 @@ void doXYAcquisition() {
 }
 
 int verticalBeaconCentered() {
-    if (beaconCentered[LEFT_CAMERA] && beaconCentered[RIGHT_CAMERA]) {
+    if (beaconCentered[LEFT_CAMERA][VERTICAL_BEACON] && beaconCentered[RIGHT_CAMERA][VERTICAL_BEACON]) {
         sendAngles(VERTICAL_BEACON, VERTICAL_BEACON);
         resetWiiBeaconStates();
         rotatingLeft[LEFT_CAMERA] = 0;
@@ -111,7 +317,7 @@ int verticalBeaconCentered() {
 }
 
 int horizontalBeaconCentered() {
-    if (beaconCentered[LEFT_CAMERA] && beaconCentered[RIGHT_CAMERA]) {
+    if (beaconCentered[LEFT_CAMERA][HORIZONTAL_BEACON] && beaconCentered[RIGHT_CAMERA][HORIZONTAL_BEACON]) {
         sendAngles(HORIZONTAL_BEACON, HORIZONTAL_BEACON);
         resetWiiBeaconStates();
         rotatingLeft[LEFT_CAMERA] = 1;
@@ -121,7 +327,7 @@ int horizontalBeaconCentered() {
 }
 
 int customBeaconCentered(int left, int right) {
-    if (beaconCentered[LEFT_CAMERA] && beaconCentered[RIGHT_CAMERA]) {
+    if (beaconCentered[LEFT_CAMERA][left] && beaconCentered[RIGHT_CAMERA][right]) {
         sendAngles(left, right);
         resetWiiBeaconStates();
         rotatingLeft[LEFT_CAMERA] = 1;
@@ -205,18 +411,15 @@ void debugBlobs(int cameraNumber) {
     INDICATOR2 = OFF;
     INDICATOR3 = OFF;
     INDICATOR4 = OFF;
-    if (Camera[cameraNumber].result & BLOB1) {
+
+    if (Camera[cameraNumber].result & BLOB1)
         INDICATOR1 = ON;
-    }
-    if (Camera[cameraNumber].result & BLOB2) {
+    if (Camera[cameraNumber].result & BLOB2)
         INDICATOR2 = ON;
-    }
-    if (Camera[cameraNumber].result & BLOB3) {
+    if (Camera[cameraNumber].result & BLOB3)
         INDICATOR3 = ON;
-    }
-    if (Camera[cameraNumber].result & BLOB4) {
+    if (Camera[cameraNumber].result & BLOB4)
         INDICATOR4 = ON;
-    }
 
     delay(500);
     INDICATOR1 = OFF;
@@ -227,179 +430,9 @@ void debugBlobs(int cameraNumber) {
     delay(500);
 }
 
-void sendWiiData() {
-    ToSend(WII_BEACON_SEEN_LEFT, beaconSeen[LEFT_CAMERA]);
-    ToSend(WII_BEACON_SEEN_RIGHT, beaconSeen[RIGHT_CAMERA]);
-    ToSend(WII_NUMBER_SWEEPS_SINCE_MOVE, numberSweeps[0]);
-    ToSend(WII_LEFT_CAMERA_ANGLE, angleSet[LEFT_CAMERA]);
-    ToSend(WII_RIGHT_CAMERA_ANGLE, angleSet[RIGHT_CAMERA]);
-    ToSend(WII_LEFT_CAMERA_LOCKED, beaconCentered[LEFT_CAMERA]);
-    ToSend(WII_RIGHT_CAMERA_LOCKED, beaconCentered[RIGHT_CAMERA]);
-    sendData(NAVIGATION_ADDRESS);
-}
-
-void sendAngles(int beaconLeft, int beaconRight) {
-    ToSend(WII_LEFT_CAMERA_ANGLE, beaconAngle[LEFT_CAMERA][beaconLeft]);
-    ToSend(WII_RIGHT_CAMERA_ANGLE, beaconAngle[RIGHT_CAMERA][beaconRight]);
-    ToSend(WII_LEFT_CAMERA_LOCKED, beaconCentered[LEFT_CAMERA]);
-    ToSend(WII_RIGHT_CAMERA_LOCKED, beaconCentered[RIGHT_CAMERA]);
-    sendData(NAVIGATION_ADDRESS);
-}
-
-void calculateCamera(int cameraNumber, int beaconNumber) {
-
-    int minHeight = 999;
-    int minWidth = 999;
-
-    Camera[cameraNumber].result = read(cameraNumber);
-    //debugBlobs(cameraNumber);
-
-    //Clear the center blob marker before continuing
-    centerBlob[beaconNumber][cameraNumber] = INVALID;
-
-    if ((Camera[cameraNumber].result & BLOB1) && (Camera[cameraNumber].result & BLOB2)) {
-
-        if (isAbout(Camera[cameraNumber].Blob1.Y, Camera[cameraNumber].Blob2.Y, HEIGH_WIDTH_COMPARE))
-            if (abs((Camera[cameraNumber].Blob1.Y - Camera[cameraNumber].Blob2.Y)) < minHeight) {
-                centerBlob[HORIZONTAL_BEACON][cameraNumber] = (Camera[cameraNumber].Blob1.X + Camera[cameraNumber].Blob2.X) / 2;
-                minHeight = centerBlob[HORIZONTAL_BEACON][cameraNumber];
-            }
-        if (isAbout(Camera[cameraNumber].Blob1.X, Camera[cameraNumber].Blob2.X, HEIGH_WIDTH_COMPARE))
-            if (abs((Camera[cameraNumber].Blob1.X - Camera[cameraNumber].Blob2.X)) < minWidth) {
-                centerBlob[VERTICAL_BEACON][cameraNumber] = (Camera[cameraNumber].Blob1.X + Camera[cameraNumber].Blob2.X) / 2;
-                minWidth = centerBlob[VERTICAL_BEACON][cameraNumber];
-            }
-    }
-    if ((Camera[cameraNumber].result & BLOB1) && (Camera[cameraNumber].result & BLOB3)) {
-        if (isAbout(Camera[cameraNumber].Blob1.Y, Camera[cameraNumber].Blob3.Y, HEIGH_WIDTH_COMPARE))
-            if (abs((Camera[cameraNumber].Blob1.Y - Camera[cameraNumber].Blob3.Y)) < minHeight) {
-                centerBlob[HORIZONTAL_BEACON][cameraNumber] = (Camera[cameraNumber].Blob1.X + Camera[cameraNumber].Blob3.X) / 2;
-                minHeight = centerBlob[HORIZONTAL_BEACON][cameraNumber];
-            }
-
-        if (isAbout(Camera[cameraNumber].Blob1.X, Camera[cameraNumber].Blob3.X, HEIGH_WIDTH_COMPARE))
-            if (abs((Camera[cameraNumber].Blob1.X - Camera[cameraNumber].Blob3.X)) < minWidth) {
-                centerBlob[VERTICAL_BEACON][cameraNumber] = (Camera[cameraNumber].Blob1.X + Camera[cameraNumber].Blob3.X) / 2;
-                minWidth = centerBlob[VERTICAL_BEACON][cameraNumber];
-            }
-    }
-    if ((Camera[cameraNumber].result & BLOB1) && (Camera[cameraNumber].result & BLOB4)) {
-        if (isAbout(Camera[cameraNumber].Blob1.Y, Camera[cameraNumber].Blob4.Y, HEIGH_WIDTH_COMPARE))
-            if (abs((Camera[cameraNumber].Blob1.Y - Camera[cameraNumber].Blob4.Y)) < minHeight) {
-                centerBlob[HORIZONTAL_BEACON][cameraNumber] = (Camera[cameraNumber].Blob1.X + Camera[cameraNumber].Blob4.X) / 2;
-                minHeight = centerBlob[HORIZONTAL_BEACON][cameraNumber];
-            }
-        if (isAbout(Camera[cameraNumber].Blob1.X, Camera[cameraNumber].Blob4.X, HEIGH_WIDTH_COMPARE))
-            if (abs((Camera[cameraNumber].Blob1.X - Camera[cameraNumber].Blob4.X)) < minWidth) {
-                centerBlob[VERTICAL_BEACON][cameraNumber] = (Camera[cameraNumber].Blob1.X + Camera[cameraNumber].Blob4.X) / 2;
-                minWidth = centerBlob[VERTICAL_BEACON][cameraNumber];
-            }
-    }
-    if ((Camera[cameraNumber].result & BLOB2) && (Camera[cameraNumber].result & BLOB3)) {
-        if (isAbout(Camera[cameraNumber].Blob2.Y, Camera[cameraNumber].Blob3.Y, HEIGH_WIDTH_COMPARE))
-            if (abs((Camera[cameraNumber].Blob2.Y - Camera[cameraNumber].Blob3.Y)) < minHeight) {
-                centerBlob[HORIZONTAL_BEACON][cameraNumber] = (Camera[cameraNumber].Blob2.X + Camera[cameraNumber].Blob3.X) / 2;
-                minHeight = centerBlob[HORIZONTAL_BEACON][cameraNumber];
-            }
-        if (isAbout(Camera[cameraNumber].Blob2.X, Camera[cameraNumber].Blob3.X, HEIGH_WIDTH_COMPARE))
-            if (abs((Camera[cameraNumber].Blob2.X - Camera[cameraNumber].Blob3.X)) < minWidth) {
-                centerBlob[VERTICAL_BEACON][cameraNumber] = (Camera[cameraNumber].Blob2.X + Camera[cameraNumber].Blob3.X) / 2;
-                minWidth = centerBlob[VERTICAL_BEACON][cameraNumber];
-            }
-    }
-    if ((Camera[cameraNumber].result & BLOB2) && (Camera[cameraNumber].result & BLOB4)) {
-        if (isAbout(Camera[cameraNumber].Blob2.Y, Camera[cameraNumber].Blob4.Y, HEIGH_WIDTH_COMPARE))
-            if (abs((Camera[cameraNumber].Blob2.Y - Camera[cameraNumber].Blob4.Y)) < minHeight) {
-                centerBlob[HORIZONTAL_BEACON][cameraNumber] = (Camera[cameraNumber].Blob2.X + Camera[cameraNumber].Blob4.X) / 2;
-                minHeight = centerBlob[HORIZONTAL_BEACON][cameraNumber];
-            }
-        if (isAbout(Camera[cameraNumber].Blob2.X, Camera[cameraNumber].Blob4.X, HEIGH_WIDTH_COMPARE))
-            if (abs((Camera[cameraNumber].Blob2.X - Camera[cameraNumber].Blob4.X)) < minWidth) {
-                centerBlob[VERTICAL_BEACON][cameraNumber] = (Camera[cameraNumber].Blob2.X + Camera[cameraNumber].Blob4.X) / 2;
-                minWidth = centerBlob[VERTICAL_BEACON][cameraNumber];
-            }
-    }
-    if ((Camera[cameraNumber].result & BLOB3) && (Camera[cameraNumber].result & BLOB4)) {
-        if (isAbout(Camera[cameraNumber].Blob3.Y, Camera[cameraNumber].Blob4.Y, HEIGH_WIDTH_COMPARE))
-            if (abs((Camera[cameraNumber].Blob3.Y - Camera[cameraNumber].Blob4.Y)) < minHeight) {
-                centerBlob[HORIZONTAL_BEACON][cameraNumber] = (Camera[cameraNumber].Blob3.X + Camera[cameraNumber].Blob4.X) / 2;
-                minHeight = centerBlob[HORIZONTAL_BEACON][cameraNumber];
-            }
-        if (isAbout(Camera[cameraNumber].Blob3.X, Camera[cameraNumber].Blob4.X, HEIGH_WIDTH_COMPARE))
-            if (abs((Camera[cameraNumber].Blob3.X - Camera[cameraNumber].Blob4.X)) < minWidth) {
-                centerBlob[VERTICAL_BEACON][cameraNumber] = (Camera[cameraNumber].Blob3.X + Camera[cameraNumber].Blob4.X) / 2;
-                minWidth = centerBlob[VERTICAL_BEACON][cameraNumber];
-            }
-    }
-}
-
 int isAbout(int compareThis, int toThis, int range) {
     return ((compareThis > toThis - range) && (compareThis < toThis + range));
 }
-
-void seekBeacon(int cameraNumber, int beaconNumber) {
-
-    //centerBlob[beaconNumber][cameraNumber] = INVALID;
-    if (centerBlob[beaconNumber][cameraNumber] == INVALID) {
-        beaconSeen[cameraNumber] = 0;
-        beaconCentered[cameraNumber] = 0;
-        if ((angleSet[cameraNumber] < SERVO_MAX - SERVO_STEP_WIDE) && !rotatingLeft[cameraNumber]) {
-            angleSet[cameraNumber] += SERVO_STEP_WIDE;
-            if (cameraNumber == 0) setAngle1(angleSet[cameraNumber]);
-            else setAngle2(angleSet[cameraNumber]);
-        } else {
-            rotatingLeft[cameraNumber] = 1;
-            numberSweeps[cameraNumber]++;
-        }
-
-        if ((angleSet[cameraNumber] > SERVO_MIN + SERVO_STEP_WIDE) && rotatingLeft[cameraNumber]) {
-            angleSet[cameraNumber] -= SERVO_STEP_WIDE;
-            if (cameraNumber == 0) setAngle1(angleSet[cameraNumber]);
-            else setAngle2(angleSet[cameraNumber]);
-        } else {
-            rotatingLeft[cameraNumber] = 0;
-            numberSweeps[cameraNumber]++;
-        }
-    } else {
-        if (cameraNumber == LEFT_CAMERA) {
-            if (!isAbout(centerBlob[beaconNumber][cameraNumber], CENTER_PIXEL_LEFT, ACCEPTABLE_CENTER_WIDTH)) {
-                beaconSeen[cameraNumber] = 1;
-                beaconCentered[cameraNumber] = 0;
-                if (centerBlob[beaconNumber][cameraNumber] > CENTER_PIXEL_LEFT) {
-                    angleSet[cameraNumber] -= ((centerBlob[beaconNumber][cameraNumber] - CENTER_PIXEL_LEFT)) / 5;
-                    if (cameraNumber == 0) setAngle1(angleSet[cameraNumber]);
-                    else setAngle2(angleSet[cameraNumber]);
-                } else {
-                    angleSet[cameraNumber] += ((CENTER_PIXEL_LEFT - centerBlob[beaconNumber][cameraNumber])) / 5;
-                    if (cameraNumber == 0) setAngle1(angleSet[cameraNumber]);
-                    else setAngle2(angleSet[cameraNumber]);
-                }
-            } else {
-                beaconAngle[beaconNumber][cameraNumber] = angleSet[cameraNumber];
-                beaconCentered[cameraNumber] = 1;
-            }
-        } else {
-            if (!isAbout(centerBlob[beaconNumber][cameraNumber], CENTER_PIXEL_RIGHT, ACCEPTABLE_CENTER_WIDTH)) {
-                beaconSeen[cameraNumber] = 1;
-                beaconCentered[cameraNumber] = 0;
-                if (centerBlob[beaconNumber][cameraNumber] > CENTER_PIXEL_RIGHT) {
-                    angleSet[cameraNumber] -= ((centerBlob[beaconNumber][cameraNumber] - CENTER_PIXEL_RIGHT)) / 5;
-                    if (cameraNumber == 0) setAngle1(angleSet[cameraNumber]);
-                    else setAngle2(angleSet[cameraNumber]);
-                } else {
-                    angleSet[cameraNumber] += ((CENTER_PIXEL_RIGHT - centerBlob[beaconNumber][cameraNumber])) / 5;
-                    if (cameraNumber == 0) setAngle1(angleSet[cameraNumber]);
-                    else setAngle2(angleSet[cameraNumber]);
-                }
-            } else {
-                beaconAngle[beaconNumber][cameraNumber] = angleSet[cameraNumber];
-                beaconCentered[cameraNumber] = 1;
-            }
-        }
-    }
-}
-
-unsigned int time = 0;
 
 void delay(int ms) {
     time = 0;
@@ -410,7 +443,7 @@ void initCamera(int cameraNumber) {
     unsigned char data[2];
     data[0] = 0x30;
     data[1] = 0x01;
-    if (cameraNumber == 0) {
+    if (cameraNumber == RIGHT_CAMERA) {
         SendI2Cone(camera, data, 2);
         while (StatusI2Cone() == 0);
     } else {
@@ -420,7 +453,7 @@ void initCamera(int cameraNumber) {
 
     data[0] = 0x30;
     data[1] = 0x08;
-    if (cameraNumber == 0) {
+    if (cameraNumber == RIGHT_CAMERA) {
         SendI2Cone(camera, data, 2);
         while (StatusI2Cone() == 0);
     } else {
@@ -430,7 +463,7 @@ void initCamera(int cameraNumber) {
 
     data[0] = 0x06;
     data[1] = 0x90;
-    if (cameraNumber == 0) {
+    if (cameraNumber == RIGHT_CAMERA) {
         SendI2Cone(camera, data, 2);
         while (StatusI2Cone() == 0);
     } else {
@@ -440,7 +473,7 @@ void initCamera(int cameraNumber) {
 
     data[0] = 0x08;
     data[1] = 0xC0;
-    if (cameraNumber == 0) {
+    if (cameraNumber == RIGHT_CAMERA) {
         SendI2Cone(camera, data, 2);
         while (StatusI2Cone() == 0);
     } else {
@@ -450,7 +483,7 @@ void initCamera(int cameraNumber) {
 
     data[0] = 0x1A;
     data[1] = 0x40;
-    if (cameraNumber == 0) {
+    if (cameraNumber == RIGHT_CAMERA) {
         SendI2Cone(camera, data, 2);
         while (StatusI2Cone() == 0);
     } else {
@@ -460,7 +493,7 @@ void initCamera(int cameraNumber) {
 
     data[0] = 0x33;
     data[1] = 0x33;
-    if (cameraNumber == 0) {
+    if (cameraNumber == RIGHT_CAMERA) {
         SendI2Cone(camera, data, 2);
         while (StatusI2Cone() == 0);
     } else {
@@ -470,27 +503,27 @@ void initCamera(int cameraNumber) {
 
 }
 
-unsigned char read(int cameraNumber) {
-    int returnable;
-    if (cameraNumber == 1) {
-        ReceiveI2Ctwo(camera, data_address, Camera[cameraNumber].data_buf, 16);
-        returnable = StatusI2Ctwo();
-        while (returnable == 0) {
-            returnable = StatusI2Ctwo();
-        }
-        if (returnable == 2)
-            return 0;
+void readCamera(int cameraNumber) {
+    if (cameraNumber == RIGHT_CAMERA) {
+        ReceiveI2Cone(camera, data_address, Camera[RIGHT_CAMERA].data_buf, 16);
 
     } else {
-        ReceiveI2Cone(camera, data_address, Camera[cameraNumber].data_buf, 16);
-        returnable = StatusI2Cone();
-        while (returnable == 0) {
-            returnable = StatusI2Cone();
-        }
-        if (returnable == 2)
-            return 0;
+        ReceiveI2Ctwo(camera, data_address, Camera[LEFT_CAMERA].data_buf, 16);
     }
+}
 
+int cameraReady(int cameraNumber) {
+    int returnable;
+    if (cameraNumber == RIGHT_CAMERA) {
+        returnable = StatusI2Cone();
+
+    } else {
+        returnable = StatusI2Ctwo();
+    }
+    return returnable;
+}
+
+unsigned char read(int cameraNumber) {
     int s;
     unsigned char blobcount = 0;
 

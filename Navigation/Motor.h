@@ -1,6 +1,6 @@
 //Control the motor signal via feedback from the encoders
 
-#define motorKp 1.5
+#define motorKp 1
 #define motorKi 0
 #define motorKd 0
 
