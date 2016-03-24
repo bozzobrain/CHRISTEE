@@ -190,9 +190,9 @@ section                    address   length (PC units)   length (bytes) (dec)
 .const                      0x21f4                0xa4            0xf6  (246)
 .text                       0x2298              0x27a0          0x3b70  (15216)
 .dinit                      0x4a38               0x256           0x381  (897)
-.text                       0x4c8e               0x72e           0xac5  (2757)
+.text                       0x4c8e               0x762           0xb13  (2835)
 
-                     Total program memory used (bytes):         0x7a9a  (31386) 5%
+                     Total program memory used (bytes):         0x7ae8  (31464) 5%
 
 
 Auxflash Memory  [Origin = 0x7fc000, Length = 0x3ffa]
@@ -587,20 +587,20 @@ External Symbols in Program Memory (by address):
                   0x004f40                  _LeftSpeedCalculation
                   0x004fc4                  _updateEncoders
                   0x005020                  __IC1Interrupt
-                  0x005038                  __IC2Interrupt
-                  0x005050                  _sendEncoderValues
-                  0x00508a                  _initialize
-                  0x0050f4                  _oscillator
-                  0x00514a                  _timerOne
-                  0x00516c                  _timerTwo
-                  0x005198                  _initUART1
-                  0x0051be                  _inputCapture
-                  0x005244                  _initPWM1
-                  0x0052a4                  _initPWM2
-                  0x005304                  _setAngle1
-                  0x005356                  _setAngle2
-                  0x0053a8                  _presentAngle1
-                  0x0053b2                  _presentAngle2
+                  0x00504e                  __IC2Interrupt
+                  0x00507c                  _sendEncoderValues
+                  0x0050b6                  _initialize
+                  0x005128                  _oscillator
+                  0x00517e                  _timerOne
+                  0x0051a0                  _timerTwo
+                  0x0051cc                  _initUART1
+                  0x0051f2                  _inputCapture
+                  0x005278                  _initPWM1
+                  0x0052d8                  _initPWM2
+                  0x005338                  _setAngle1
+                  0x00538a                  _setAngle2
+                  0x0053dc                  _presentAngle1
+                  0x0053e6                  _presentAngle2
 
 External Symbols in Program Memory (by name):
 
@@ -663,7 +663,7 @@ External Symbols in Program Memory (by name):
                   0x004c8e                  _UART_init
                   0x00037a                  __DefaultInterrupt
                   0x005020                  __IC1Interrupt
-                  0x005038                  __IC2Interrupt
+                  0x00504e                  __IC2Interrupt
                   0x0044f8                  __MI2C1Interrupt
                   0x00478c                  __MI2C2Interrupt
                   0x00033a                  __T1Interrupt
@@ -763,19 +763,19 @@ External Symbols in Program Memory (by name):
                   0x003018                  _horizontalBeaconCentered
                   0x0047c0                  _indicatorsOFF
                   0x003630                  _initCamera
-                  0x005244                  _initPWM1
-                  0x0052a4                  _initPWM2
-                  0x005198                  _initUART1
-                  0x00508a                  _initialize
-                  0x0051be                  _inputCapture
+                  0x005278                  _initPWM1
+                  0x0052d8                  _initPWM2
+                  0x0051cc                  _initUART1
+                  0x0050b6                  _initialize
+                  0x0051f2                  _inputCapture
                   0x0035f2                  _isAbout
                   0x0047fa                  _main
                   0x000a6e                  _malloc
                   0x000c22                  _memcpy
                   0x000c34                  _memset
-                  0x0050f4                  _oscillator
-                  0x0053a8                  _presentAngle1
-                  0x0053b2                  _presentAngle2
+                  0x005128                  _oscillator
+                  0x0053dc                  _presentAngle1
+                  0x0053e6                  _presentAngle2
                   0x0037f8                  _read
                   0x0037a0                  _readCamera
                   0x000ba0                  _realloc
@@ -784,14 +784,14 @@ External Symbols in Program Memory (by name):
                   0x002298                  _seekBeacon
                   0x002670                  _sendAngles
                   0x003bd2                  _sendData
-                  0x005050                  _sendEncoderValues
+                  0x00507c                  _sendEncoderValues
                   0x002666                  _sendWiiData
-                  0x005304                  _setAngle1
-                  0x005356                  _setAngle2
+                  0x005338                  _setAngle1
+                  0x00538a                  _setAngle2
                   0x0007dc                  _sinf
                   0x000a04                  _sqrtf
-                  0x00514a                  _timerOne
-                  0x00516c                  _timerTwo
+                  0x00517e                  _timerOne
+                  0x0051a0                  _timerTwo
                   0x004fc4                  _updateEncoders
                   0x002fea                  _verticalBeaconCentered
                   0x002296                  _wiiUpdateFrequency
@@ -1077,17 +1077,17 @@ __FUID0
 .comment
  *(.comment)
 
-.debug_info       0x000000       0x7d7d
+.debug_info       0x000000       0x821f
  *(.debug_info)
  .debug_info      0x000000       0x199c build/default/production/I2C_API.o
  .debug_info      0x00199c        0x98b build/default/production/PWM.o
- .debug_info      0x002327       0x2475 build/default/production/initialize.o
- .debug_info      0x00479c        0x343 build/default/production/interrupt_handler.o
- .debug_info      0x004adf        0x583 build/default/production/main.o
- .debug_info      0x005062        0xc38 build/default/production/wiiCamera.o
- .debug_info      0x005c9a        0xb65 build/default/production/FastTransfer.o
- .debug_info      0x0067ff        0xf4a build/default/production/UART_handler.o
- .debug_info      0x007749        0x634 build/default/production/encoderCalculator.o
+ .debug_info      0x002327       0x27a7 build/default/production/initialize.o
+ .debug_info      0x004ace        0x343 build/default/production/interrupt_handler.o
+ .debug_info      0x004e11        0x583 build/default/production/main.o
+ .debug_info      0x005394        0xc38 build/default/production/wiiCamera.o
+ .debug_info      0x005fcc        0xb65 build/default/production/FastTransfer.o
+ .debug_info      0x006b31        0xf4a build/default/production/UART_handler.o
+ .debug_info      0x007a7b        0x7a4 build/default/production/encoderCalculator.o
  *(.gnu.linkonce.wi.*)
 
 .debug_abbrev     0x000000        0xbf7
@@ -1103,18 +1103,18 @@ __FUID0
  .debug_abbrev    0x000afe          0x1 build/default/production/Configuration_Bits.o
  .debug_abbrev    0x000aff         0xf8 build/default/production/encoderCalculator.o
 
-.debug_line       0x000000       0x3090
+.debug_line       0x000000       0x30e0
  *(.debug_line)
  .debug_line      0x000000        0xa1b build/default/production/I2C_API.o
  .debug_line      0x000a1b        0x1e9 build/default/production/PWM.o
- .debug_line      0x000c04        0x3e0 build/default/production/initialize.o
- .debug_line      0x000fe4        0x11e build/default/production/interrupt_handler.o
- .debug_line      0x001102        0x36d build/default/production/main.o
- .debug_line      0x00146f        0xd43 build/default/production/wiiCamera.o
- .debug_line      0x0021b2        0x848 build/default/production/FastTransfer.o
- .debug_line      0x0029fa        0x3cc build/default/production/UART_handler.o
- .debug_line      0x002dc6         0x24 build/default/production/Configuration_Bits.o
- .debug_line      0x002dea        0x2a6 build/default/production/encoderCalculator.o
+ .debug_line      0x000c04        0x400 build/default/production/initialize.o
+ .debug_line      0x001004        0x11e build/default/production/interrupt_handler.o
+ .debug_line      0x001122        0x36d build/default/production/main.o
+ .debug_line      0x00148f        0xd43 build/default/production/wiiCamera.o
+ .debug_line      0x0021d2        0x848 build/default/production/FastTransfer.o
+ .debug_line      0x002a1a        0x3cc build/default/production/UART_handler.o
+ .debug_line      0x002de6         0x24 build/default/production/Configuration_Bits.o
+ .debug_line      0x002e0a        0x2d6 build/default/production/encoderCalculator.o
 
 .debug_frame      0x000000        0x9c8
  *(.debug_frame)
@@ -1128,17 +1128,17 @@ __FUID0
  .debug_frame     0x000860         0xf4 build/default/production/UART_handler.o
  .debug_frame     0x000954         0x74 build/default/production/encoderCalculator.o
 
-.debug_str        0x000000        0x678
+.debug_str        0x000000        0x697
  *(.debug_str)
  .debug_str       0x000000         0xb6 build/default/production/I2C_API.o
  .debug_str       0x0000b6         0x4a build/default/production/PWM.o
- .debug_str       0x000100        0x119 build/default/production/initialize.o
- .debug_str       0x000219         0x43 build/default/production/interrupt_handler.o
- .debug_str       0x00025c         0x87 build/default/production/main.o
- .debug_str       0x0002e3         0xca build/default/production/wiiCamera.o
- .debug_str       0x0003ad        0x132 build/default/production/FastTransfer.o
- .debug_str       0x0004df         0x6d build/default/production/UART_handler.o
- .debug_str       0x00054c        0x12c build/default/production/encoderCalculator.o
+ .debug_str       0x000100        0x12e build/default/production/initialize.o
+ .debug_str       0x00022e         0x43 build/default/production/interrupt_handler.o
+ .debug_str       0x000271         0x87 build/default/production/main.o
+ .debug_str       0x0002f8         0xca build/default/production/wiiCamera.o
+ .debug_str       0x0003c2        0x132 build/default/production/FastTransfer.o
+ .debug_str       0x0004f4         0x6d build/default/production/UART_handler.o
+ .debug_str       0x000561        0x136 build/default/production/encoderCalculator.o
 
 .debug_loc
  *(.debug_loc)
@@ -1206,7 +1206,7 @@ __FUID0
                   0x000018          0x4 LONG 0x37a DEFINED (__OC1Interrupt)?ABSOLUTE (__OC1Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x00001a          0x4 LONG 0x33a DEFINED (__T1Interrupt)?ABSOLUTE (__T1Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x00001c          0x4 LONG 0x37a DEFINED (__DMA0Interrupt)?ABSOLUTE (__DMA0Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x00001e          0x4 LONG 0x5038 DEFINED (__IC2Interrupt)?ABSOLUTE (__IC2Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x00001e          0x4 LONG 0x504e DEFINED (__IC2Interrupt)?ABSOLUTE (__IC2Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x000020          0x4 LONG 0x37a DEFINED (__OC2Interrupt)?ABSOLUTE (__OC2Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x000022          0x4 LONG 0x362 DEFINED (__T2Interrupt)?ABSOLUTE (__T2Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x000024          0x4 LONG 0x37a DEFINED (__T3Interrupt)?ABSOLUTE (__T3Interrupt):ABSOLUTE (__DefaultInterrupt)
@@ -3810,172 +3810,172 @@ LOAD heap
 LOAD data_init
 
 .debug_pubtypes
-                  0x0000d8        0x7d1
+                  0x0000d8        0x830
  .debug_pubtypes
                   0x0000d8        0x1a0 build/default/production/I2C_API.o
  .debug_pubtypes
                   0x000278         0x94 build/default/production/PWM.o
  .debug_pubtypes
-                  0x00030c        0x348 build/default/production/initialize.o
+                  0x00030c        0x388 build/default/production/initialize.o
  .debug_pubtypes
-                  0x000654         0x2f build/default/production/interrupt_handler.o
+                  0x000694         0x2f build/default/production/interrupt_handler.o
  .debug_pubtypes
-                  0x000683         0x5a build/default/production/main.o
+                  0x0006c3         0x5a build/default/production/main.o
  .debug_pubtypes
-                  0x0006dd         0x87 build/default/production/wiiCamera.o
+                  0x00071d         0x87 build/default/production/wiiCamera.o
  .debug_pubtypes
-                  0x000764         0x35 build/default/production/FastTransfer.o
+                  0x0007a4         0x35 build/default/production/FastTransfer.o
  .debug_pubtypes
-                  0x000799         0xe1 build/default/production/UART_handler.o
+                  0x0007d9         0xe1 build/default/production/UART_handler.o
  .debug_pubtypes
-                  0x00087a         0x2f build/default/production/encoderCalculator.o
+                  0x0008ba         0x4e build/default/production/encoderCalculator.o
 
 __c30_signature
-                  0x0008a9        0x1b0
+                  0x000908        0x1b0
  __c30_signature
-                  0x0008a9          0x6 build/default/production/I2C_API.o
+                  0x000908          0x6 build/default/production/I2C_API.o
  __c30_signature
-                  0x0008af          0x6 build/default/production/PWM.o
+                  0x00090e          0x6 build/default/production/PWM.o
  __c30_signature
-                  0x0008b5          0x6 build/default/production/initialize.o
+                  0x000914          0x6 build/default/production/initialize.o
  __c30_signature
-                  0x0008bb          0x6 build/default/production/interrupt_handler.o
+                  0x00091a          0x6 build/default/production/interrupt_handler.o
  __c30_signature
-                  0x0008c1          0x6 build/default/production/main.o
+                  0x000920          0x6 build/default/production/main.o
  __c30_signature
-                  0x0008c7          0x6 build/default/production/wiiCamera.o
+                  0x000926          0x6 build/default/production/wiiCamera.o
  __c30_signature
-                  0x0008cd          0x6 build/default/production/FastTransfer.o
+                  0x00092c          0x6 build/default/production/FastTransfer.o
  __c30_signature
-                  0x0008d3          0x6 build/default/production/UART_handler.o
+                  0x000932          0x6 build/default/production/UART_handler.o
  __c30_signature
-                  0x0008d9          0x6 build/default/production/Configuration_Bits.o
+                  0x000938          0x6 build/default/production/Configuration_Bits.o
  __c30_signature
-                  0x0008df          0x6 build/default/production/encoderCalculator.o
+                  0x00093e          0x6 build/default/production/encoderCalculator.o
  __c30_signature
-                  0x0008e5          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libpic30-elf.a(crt0_extendedep.o)
+                  0x000944          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libpic30-elf.a(crt0_extendedep.o)
  __c30_signature
-                  0x0008eb          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libpic30-elf.a(data_init_extendedep.o)
+                  0x00094a          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libpic30-elf.a(data_init_extendedep.o)
  __c30_signature
-                  0x0008f1          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(addsf3.epeo)
+                  0x000950          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(addsf3.epeo)
  __c30_signature
-                  0x0008f7          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(asinf.epeo)
+                  0x000956          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(asinf.epeo)
  __c30_signature
-                  0x0008fd          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(cosf.epeo)
+                  0x00095c          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(cosf.epeo)
  __c30_signature
-                  0x000903          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(divsf3.epeo)
+                  0x000962          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(divsf3.epeo)
  __c30_signature
-                  0x000909          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(feqltle.epeo)
+                  0x000968          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(feqltle.epeo)
  __c30_signature
-                  0x00090f          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(fgtge.epeo)
+                  0x00096e          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(fgtge.epeo)
  __c30_signature
-                  0x000915          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(fixsfsi.epeo)
+                  0x000974          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(fixsfsi.epeo)
  __c30_signature
-                  0x00091b          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(fixunssfsi.epeo)
+                  0x00097a          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(fixunssfsi.epeo)
  __c30_signature
-                  0x000921          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(floatsisf.epeo)
+                  0x000980          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(floatsisf.epeo)
  __c30_signature
-                  0x000927          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(floatunsisf.epeo)
+                  0x000986          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(floatunsisf.epeo)
  __c30_signature
-                  0x00092d          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(fpack.epeo)
+                  0x00098c          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(fpack.epeo)
  __c30_signature
-                  0x000933          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(funpack.epeo)
+                  0x000992          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(funpack.epeo)
  __c30_signature
-                  0x000939          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(funpack2.epeo)
+                  0x000998          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(funpack2.epeo)
  __c30_signature
-                  0x00093f          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(futil.epeo)
+                  0x00099e          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(futil.epeo)
  __c30_signature
-                  0x000945          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(mulsf3.epeo)
+                  0x0009a4          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(mulsf3.epeo)
  __c30_signature
-                  0x00094b          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(sincosf.epeo)
+                  0x0009aa          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(sincosf.epeo)
  __c30_signature
-                  0x000951          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(sinf.epeo)
+                  0x0009b0          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(sinf.epeo)
  __c30_signature
-                  0x000957          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(asinacosf.epeo)
+                  0x0009b6          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(asinacosf.epeo)
  __c30_signature
-                  0x00095d          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(errno.epeo)
+                  0x0009bc          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(errno.epeo)
  __c30_signature
-                  0x000963          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(fcompare.epeo)
+                  0x0009c2          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(fcompare.epeo)
  __c30_signature
-                  0x000969          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(floatdisf.epeo)
+                  0x0009c8          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(floatdisf.epeo)
  __c30_signature
-                  0x00096f          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(floatundisf.epeo)
+                  0x0009ce          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(floatundisf.epeo)
  __c30_signature
-                  0x000975          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(fmodf.epeo)
+                  0x0009d4          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(fmodf.epeo)
  __c30_signature
-                  0x00097b          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(fmodrem.epeo)
+                  0x0009da          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(fmodrem.epeo)
  __c30_signature
-                  0x000981          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(sqrtf.epeo)
+                  0x0009e0          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(sqrtf.epeo)
  __c30_signature
-                  0x000987          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libc-elf.a(malloc.epeo)
+                  0x0009e6          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libc-elf.a(malloc.epeo)
  __c30_signature
-                  0x00098d          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libc-elf.a(memcpy.epeo)
+                  0x0009ec          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libc-elf.a(memcpy.epeo)
  __c30_signature
-                  0x000993          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libc-elf.a(memset.epeo)
+                  0x0009f2          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libc-elf.a(memset.epeo)
  __c30_signature
-                  0x000999          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libc-elf.a(printf_fF.EPeo)
+                  0x0009f8          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libc-elf.a(printf_fF.EPeo)
  __c30_signature
-                  0x00099f          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libc-elf.a(_iob.epeo)
+                  0x0009fe          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libc-elf.a(_iob.epeo)
  __c30_signature
-                  0x0009a5          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libc-elf.a(doprnt_fF.EPeo)
+                  0x000a04          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libc-elf.a(doprnt_fF.EPeo)
  __c30_signature
-                  0x0009ab          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libc-elf.a(fputc.epeo)
+                  0x000a0a          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libc-elf.a(fputc.epeo)
  __c30_signature
-                  0x0009b1          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libc-elf.a(powers.epeo)
+                  0x000a10          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libc-elf.a(powers.epeo)
  __c30_signature
-                  0x0009b7          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libc-elf.a(flsbuf.epeo)
+                  0x000a16          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libc-elf.a(flsbuf.epeo)
  __c30_signature
-                  0x0009bd          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libpic30-elf.a(writeep.eo)
+                  0x000a1c          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libpic30-elf.a(writeep.eo)
  __c30_signature
-                  0x0009c3          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libpic30-elf.a(sbrkep.eo)
+                  0x000a22          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libpic30-elf.a(sbrkep.eo)
  __c30_signature
-                  0x0009c9          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libpic30-elf.a(c30_uartep.eo)
+                  0x000a28          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libpic30-elf.a(c30_uartep.eo)
  __c30_signature
-                  0x0009cf          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libpic30-elf.a(brkep.elo)
+                  0x000a2e          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libpic30-elf.a(brkep.elo)
  __c30_signature
-                  0x0009d5          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(adddf3.epeo)
+                  0x000a34          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(adddf3.epeo)
  __c30_signature
-                  0x0009db          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(deqltle.epeo)
+                  0x000a3a          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(deqltle.epeo)
  __c30_signature
-                  0x0009e1          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(dgtge.epeo)
+                  0x000a40          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(dgtge.epeo)
  __c30_signature
-                  0x0009e7          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(divdf3.epeo)
+                  0x000a46          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(divdf3.epeo)
  __c30_signature
-                  0x0009ed          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(dne.epeo)
+                  0x000a4c          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(dne.epeo)
  __c30_signature
-                  0x0009f3          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(dpack.epeo)
+                  0x000a52          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(dpack.epeo)
  __c30_signature
-                  0x0009f9          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(dunpack2.epeo)
+                  0x000a58          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(dunpack2.epeo)
  __c30_signature
-                  0x0009ff          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(extendsfdf.epeo)
+                  0x000a5e          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(extendsfdf.epeo)
  __c30_signature
-                  0x000a05          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(fixunsdfdi.epeo)
+                  0x000a64          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(fixunsdfdi.epeo)
  __c30_signature
-                  0x000a0b          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(floatundidf.epeo)
+                  0x000a6a          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(floatundidf.epeo)
  __c30_signature
-                  0x000a11          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(frexp.epeo)
+                  0x000a70          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(frexp.epeo)
  __c30_signature
-                  0x000a17          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(muldf3.epeo)
+                  0x000a76          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(muldf3.epeo)
  __c30_signature
-                  0x000a1d          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(subdf3.epeo)
+                  0x000a7c          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(subdf3.epeo)
  __c30_signature
-                  0x000a23          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(udivsi3.epeo)
+                  0x000a82          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(udivsi3.epeo)
  __c30_signature
-                  0x000a29          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(mulsi3.epeo)
+                  0x000a88          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(mulsi3.epeo)
  __c30_signature
-                  0x000a2f          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(divmoddi3.epeo)
+                  0x000a8e          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(divmoddi3.epeo)
  __c30_signature
-                  0x000a35          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(muldi3.epeo)
+                  0x000a94          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(muldi3.epeo)
  __c30_signature
-                  0x000a3b          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(dcompare.epeo)
+                  0x000a9a          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(dcompare.epeo)
  __c30_signature
-                  0x000a41          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(dpropagateNaN.epeo)
+                  0x000aa0          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(dpropagateNaN.epeo)
  __c30_signature
-                  0x000a47          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(dtype.epeo)
+                  0x000aa6          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(dtype.epeo)
  __c30_signature
-                  0x000a4d          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(dunpack.epeo)
+                  0x000aac          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(dunpack.epeo)
  __c30_signature
-                  0x000a53          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(umuldi3.epeo)
+                  0x000ab2          0x6 c:/program files (x86)/microchip/xc16/v1.24/bin/bin/../../lib\libm-elf.a(umuldi3.epeo)
 
 .nbss               0x1000        0x37e
  .nbss              0x1000        0x19c build/default/production/UART_handler.o
@@ -4253,7 +4253,7 @@ __c30_signature
 .dinit            0x004a38        0x256
  .dinit           0x004a38        0x256 data_init
 
-.text             0x004c8e        0x72e
+.text             0x004c8e        0x762
  .text            0x004c8e        0x22e build/default/production/UART_handler.o
                   0x004c8e                  _UART_init
                   0x004ce0                  _UART_buff_init
@@ -4269,24 +4269,24 @@ __c30_signature
                   0x004e34                  _Send_put
                   0x004e5c                  __U1RXInterrupt
                   0x004e82                  __U1TXInterrupt
- .text            0x004ebc        0x1ce build/default/production/encoderCalculator.o
+ .text            0x004ebc        0x1fa build/default/production/encoderCalculator.o
                   0x004ebc                  _RightSpeedCalculation
                   0x004f40                  _LeftSpeedCalculation
                   0x004fc4                  _updateEncoders
                   0x005020                  __IC1Interrupt
-                  0x005038                  __IC2Interrupt
-                  0x005050                  _sendEncoderValues
- .text            0x00508a        0x1ba build/default/production/initialize.o
-                  0x00508a                  _initialize
-                  0x0050f4                  _oscillator
-                  0x00514a                  _timerOne
-                  0x00516c                  _timerTwo
-                  0x005198                  _initUART1
-                  0x0051be                  _inputCapture
- .text            0x005244        0x178 build/default/production/PWM.o
-                  0x005244                  _initPWM1
-                  0x0052a4                  _initPWM2
-                  0x005304                  _setAngle1
-                  0x005356                  _setAngle2
-                  0x0053a8                  _presentAngle1
-                  0x0053b2                  _presentAngle2
+                  0x00504e                  __IC2Interrupt
+                  0x00507c                  _sendEncoderValues
+ .text            0x0050b6        0x1c2 build/default/production/initialize.o
+                  0x0050b6                  _initialize
+                  0x005128                  _oscillator
+                  0x00517e                  _timerOne
+                  0x0051a0                  _timerTwo
+                  0x0051cc                  _initUART1
+                  0x0051f2                  _inputCapture
+ .text            0x005278        0x178 build/default/production/PWM.o
+                  0x005278                  _initPWM1
+                  0x0052d8                  _initPWM2
+                  0x005338                  _setAngle1
+                  0x00538a                  _setAngle2
+                  0x0053dc                  _presentAngle1
+                  0x0053e6                  _presentAngle2

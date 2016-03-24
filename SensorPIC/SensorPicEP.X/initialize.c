@@ -31,6 +31,12 @@ void initialize(void)
     TRISDbits.TRISD0 = 0; // Left camera reset pin
     LATDbits.LATD0 = 1; // set pin high
 
+    
+    //DIrection pins Encoders
+    TRISBbits.TRISB0= 1;
+    TRISBbits.TRISB1= 1;
+    ANSELBbits.ANSB0= 0;
+    ANSELBbits.ANSB1= 0;
     GLOBAL_INTERRUPTS = 0;
     oscillator();
     INDICATOR1=ON;
@@ -143,7 +149,7 @@ void inputCapture(void)
     IC1CON1bits.ICM = 0b00; // Disable Input Capture 1 module
     IC1CON1bits.ICTSEL= 1; // Select Timer2 as the IC1 Time base
     IC1CON1bits.ICI = 0b00; // Interrupt on every capture event
-    IC1CON1bits.ICM = 0b001; // Generate capture event on every Falling edge
+    IC1CON1bits.ICM = 0b101; // Generate capture event on every Falling edge
 
     // Enable Capture Interrupt And Timer2
     IPC0bits.IC1IP = 1; // Setup IC1 interrupt priority level
@@ -157,7 +163,7 @@ void inputCapture(void)
     IC2CON1bits.ICM = 0b00; // Disable Input Capture 2 module
     IC2CON1bits.ICTSEL = 1; // Select Timer2 as the IC2 Time base
     IC2CON1bits.ICI = 0b00; // Interrupt on every capture event
-    IC2CON1bits.ICM = 0b001; // Generate capture event on every Falling edge
+    IC2CON1bits.ICM = 0b101; // Generate capture event on every Falling edge
 
     // Enable Capture Interrupt And Timer2
     IPC1bits.IC2IP = 1; // Setup IC2 interrupt priority level

@@ -67,8 +67,16 @@ void updateEncoders() {
 
 void __attribute__((interrupt, no_auto_psv)) _IC1Interrupt(void) {
     //INDICATOR1=ON;
-    navEncoderRight++;
-    EncoderRight++;
+    if(PORTBbits.RB0)
+    {
+        navEncoderRight++;
+        EncoderRight++;
+    }
+    else
+     {
+       navEncoderRight--;
+        EncoderRight--;  
+     }
 //    rolloverPastRight = rolloverRight;
 //    rolloverRight = 0;
 //    TMR3 = 0x00; //reset timer
@@ -85,8 +93,16 @@ void __attribute__((interrupt, no_auto_psv)) _IC1Interrupt(void) {
 void __attribute__((interrupt, no_auto_psv)) _IC2Interrupt(void) {
 
     // INDICATOR2=ON;
+     if(!PORTBbits.RB1)
+    {
     navEncoderLeft++;
     EncoderLeft++;
+     }
+     else
+     {
+       navEncoderLeft--;
+        EncoderLeft--;  
+     }
 //    rolloverPastLeft = rolloverLeft;
 //    rolloverLeft = 0;
 //    SpeedCalcLeft = true;
