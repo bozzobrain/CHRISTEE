@@ -1,7 +1,0 @@
-Unlock_IOLOCK()
-
-PPS_Mapping_NoLock(23, _INPUT, _U1RX)   ' Sets pin 2 of PIC as USB RX input
-PPS_Mapping_NoLock(22, _OUTPUT, _U1TX)  ' Sets pin 3 of PIC as USB TX output
-PPS_Mapping_NoLock(19, _INPUT, _U2RX)   ' Sets pin 4 of PIC as RS485 RX input
-PPS_Mapping_NoLock(20, _OUTPUT, _U2TX)  ' Sets pin 5 of PIC as RS485 TX output
-Lock_IOLOCK()
