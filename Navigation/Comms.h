@@ -112,9 +112,9 @@ inline void initializeCommunications()
 //...........................
 
   // Sensor PIC direct
-  Serial1.begin(57600);
+  Serial1.begin(115200);
   // Router PIC
-  Serial3.begin(57600);
+  Serial3.begin(115200);
   // Fast Tramsfer Communications
   Navigation.begin(Details(navigation_receive) , NAVIGATION_ADDRESS, false, &Serial3);
   // Send Actuator Stop Command

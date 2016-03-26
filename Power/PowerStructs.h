@@ -36,7 +36,7 @@ void wipeEEPROM();
 void initializeCommunicaton()
 {
   pinMode(LED, OUTPUT);
-  Serial.begin(57600);
+  Serial.begin(115200);
   powerBoardComm.begin(Details(receivedData), POWER_ADDRESS, false, &Serial);
   //recoverEEPROM();
 }

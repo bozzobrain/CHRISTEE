@@ -27,7 +27,7 @@ Queue_handler * queue_pointer[7];
 void initialize(void)
 {
     SYSTEMConfig(SYS_FREQ, SYS_CFG_ALL); // sets up perifiral and clock configuration
-
+    
     DMA(); //initialize dma settings
     Buffers(); //initialize buffers
     Settings(); // initialize settings
@@ -41,7 +41,7 @@ void UART(void)
 
     // uart 1 sensor
     U1MODEbits.BRGH = 0; // set to standard speed mode
-    U1BRG = 85; // 57600 baud
+    U1BRG = 42; // 115200 baud  //85; // 57600 baud
     U1MODEbits.PDSEL = 0b00; // 8-bit no parity
     U1MODEbits.STSEL = 0; // 1 stop bit
     IEC0bits.U1RXIE = 1; // recieve interrupt enable
@@ -60,7 +60,7 @@ void UART(void)
 
     // uart 2 LED
     U2MODEbits.BRGH = 0; // set to standard speed mode
-    U2BRG = 85; // 57600 baud
+    U2BRG = 42; // 115200 baud  //85; // 57600 baud
     U2MODEbits.PDSEL = 0b00; // 8-bit no parity
     U2MODEbits.STSEL = 0; // 1 stop bit
     IEC1bits.U2RXIE = 1; // enable uart recieve
@@ -77,7 +77,7 @@ void UART(void)
 
     // uart 3 power
     U3MODEbits.BRGH = 0; // set to standard speed mode
-    U3BRG = 85; // 57600 baud
+    U3BRG = 42; // 115200 baud  //85; // 57600 baud
     U3MODEbits.PDSEL = 0b00; // 8-bit no parity
     U3MODEbits.STSEL = 0; // 1 stop bit
     IEC1bits.U3RXIE = 1; // enable uart recieve
@@ -93,7 +93,7 @@ void UART(void)
 
     // uart 4 navi
     U4MODEbits.BRGH = 0; // set to standard speed mode
-    U4BRG = 85; // 57600 baud
+    U4BRG = 42; // 115200 baud  //85; // 57600 baud
     U4MODEbits.PDSEL = 0b00; // 8-bit no parity
     U4MODEbits.STSEL = 0; // 1 stop bit
     IEC2bits.U4RXIE = 1; // enable uart recieve
@@ -128,7 +128,7 @@ void UART(void)
 
     // uart 6 motor
     U6MODEbits.BRGH = 0; // set to standard speed mode
-    U6BRG = 85; // 57600 baud
+    U6BRG = 42; // 115200 baud  //85; // 57600 baud
     U6MODEbits.PDSEL = 0b00; // 8-bit no parity
     U6MODEbits.STSEL = 0; // 1 stop bit
     IEC2bits.U6RXIE = 1; // enable uart recieve

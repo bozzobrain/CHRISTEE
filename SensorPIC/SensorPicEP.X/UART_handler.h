@@ -9,7 +9,7 @@
 #define	UART_HANDLER_H
 
 #define UART_BUFFER_SIZE 200
-#define BAUD_RATE (((60000000/57600)/16)-1)
+#define BAUD_RATE (((60000000/115200)/16)-1)
 
 void *memset(void *s, int c, size_t n);
 

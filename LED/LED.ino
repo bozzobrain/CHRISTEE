@@ -76,7 +76,7 @@ boolean initialized;
 Timers safetyTimer(2000);
 void setup() {
   //begin easy transfer communications.
-  Serial.begin(57600);
+  Serial.begin(115200);
   LED.begin(Details(received),LED_ADDRESS,false, &Serial);
   pinMode(13, OUTPUT);
   LeftMain.begin();

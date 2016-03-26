@@ -22,7 +22,7 @@ int motor[7];
 Timers safetyTimer(1500);
 void initializeCommunication()
 {  
-  Serial.begin(57600);
+  Serial.begin(115200);
   
   communicationBoardIn.begin(Details(motor), MOTOR_ADDRESS, false, &Serial);  
 }

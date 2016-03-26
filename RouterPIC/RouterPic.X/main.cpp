@@ -59,13 +59,18 @@ int main(void)
 {
     // starts: uart, dma, settings ...
     initialize();
+    //PIN DIRECTION SETUP
+    ERROR_1_TRIS    = OUTPUT;
+    STATUS_1_TRIS   = OUTPUT;
+    STATUS_1_TRIS   = OUTPUT;
+    STATUS_1_TRIS   = OUTPUT;
+    WATCHDOG_TRIS   = OUTPUT;
 
-    TRISEbits.TRISE4 = 0;
-    TRISEbits.TRISE3 = 0;
-    TRISDbits.TRISD6 = 0;
-
-    LATEbits.LATE4 = 1;
-    LATEbits.LATE3 = 1;
+    //INIT PIN STATES
+    ERROR_1         = ERROR_1_OFF_STATE;
+    STATUS_1        = STATUS_1_OFF_STATE;
+    STATUS_2        = STATUS_2_OFF_STATE;
+    STATUS_3        = STATUS_3_OFF_STATE;
 
     //    volatile unsigned int *check = &DCH1CON;
     //    unsigned char * check2;
@@ -82,7 +87,7 @@ int main(void)
         receive_four.receiveData();
         if(receive_five.receiveData())
         {
-            LATDbits.LATD6 ^= 1;
+            WATCHDOG ^= 1;
         }
         receive_six.receiveData();
 
@@ -95,7 +100,7 @@ int main(void)
         DMA_five.queue_send();
         DMA_six.queue_send();
 
-        LATEbits.LATE3 ^= 1;
+        STATUS_3 ^= 1;
 
     }
 
@@ -131,7 +136,54 @@ void _general_exception_handler(void)
     asm volatile("mfc0 %0,$13" : "=r" (_excep_code));
     asm volatile("mfc0 %0,$14" : "=r" (_excep_addr));
     _excep_code = (feild) ((_excep_code & 0x0000007C) >> 2);
-    LATEbits.LATE4 = 0; // turn on error led
+    ERROR_1 = 0; // turn on error led
+    switch (_excep_code)
+    {
+        case EXCEP_IRQ:  
+            
+            break;
+        case EXCEP_AdEL:  
+            
+            break;
+        case EXCEP_AdES:
+            
+            break;
+        case EXCEP_IBE:  
+            
+            break;
+        case EXCEP_DBE:  
+            
+            break;
+        case EXCEP_Sys:  
+            
+            break;
+        case EXCEP_Bp:    
+            
+            break;
+        case EXCEP_RI:    
+            
+            break;
+        case EXCEP_CpU:   
+            
+            break;
+        case EXCEP_Overflow:  
+            
+            break;
+        case EXCEP_Trap: 
+            
+            break;
+        case EXCEP_IS1:  
+            
+            break;
+        case EXCEP_CEU:  
+            
+            break;
+        case EXCEP_C2E: 
+            
+            break;
+            //....
+        
+    }
     while (1)
     {
         // Examine _excep_code to identify the type of exception
