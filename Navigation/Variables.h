@@ -31,6 +31,8 @@ int actuatorAngle;
 //ENCODER DATA
 int encoder1, encoder2;
 float encoderR=0, encoderL=0;
+
+int macroEncoderL, macroEncoderR;
 unsigned int encoderSpeedR=9999, encoderSpeedL=9999;
 //Motor DATA 
 int lM, rM;

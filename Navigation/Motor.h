@@ -7,6 +7,89 @@
 PID motorOutput(0, motorKp, motorKi, motorKd, 2);
 PID motorOutputL(0, motorKp, motorKi, motorKd, 2);
 PID motorOutputR(0, motorKp, motorKi, motorKd, 2);
+PID simpleMotorOutput(0, 1, 0, 0, 2);
+
+#define TEST_LIMIT_MOTOR_MAG 35
+void simpleMotorDistanceLRDiffCommand(int commandedSpeed);
+
+
+void simpleMotorDistanceCommand(int commandedDistance)
+{
+  //If current target internally is not equal to the received command;
+  if(commandedDistance!=simpleMotorOutput.returnTarget())
+  {
+    simpleMotorOutput.clearSystem();
+    simpleMotorOutput.updateTarget(commandedDistance);
+  }
+  static int counter=0;
+  //for 10 we should be calculating a decision
+  if(counter<10)
+  {
+    simpleMotorOutput.updateOutput((macroEncoderL+macroEncoderR)/2);
+    counter++;
+  }
+  //every 10 we should make a decision
+  else
+  {
+    //Send the resulting output of the PID output error to a LR differential command method
+    simpleMotorDistanceLRDiffCommand(constrain(simpleMotorOutput.updateOutput((macroEncoderL+macroEncoderR)/2),-TEST_LIMIT_MOTOR_MAG,TEST_LIMIT_MOTOR_MAG));
+    counter=0;
+  }
+  
+}
+
+int grabIntegerSign(int i)
+{
+ if(i>=0)
+  return 1;
+ else
+  return -1; 
+}
+
+
+#define distanceForOneTreadOperation 100
+//Meters a speed input into a variable turning capable differential, allows for equal distance as we go on both treads
+//    WILL act as the development for diff driving with new encoders.
+void simpleMotorDistanceLRDiffCommand(int commandedSpeed)
+{
+  if(macroEncoderL==macroEncoderR)
+  {
+     sendMotorCommand(commandedSpeed,commandedSpeed); 
+  }
+  else if(abs(macroEncoderL)>abs(macroEncoderR))
+  {
+    //calculate the magnitude of the difference
+    int diff=abs(macroEncoderL)-abs(macroEncoderR);
+    
+    //scale it to the incoming command magnitude
+    //as difference goes to infinity, the new diff goes to commandedspeed
+    
+    if(diff<distanceForOneTreadOperation)  //if the difference is less than distance offset that will drive the tread to one side full
+        diff = abs(commandedSpeed/(distanceForOneTreadOperation-diff));  //As the difference approaches the full one sided drive, the difference approaches commandedSpeed
+    else 
+        diff = abs(commandedSpeed);
+        
+    int leftCommand=grabIntegerSign(commandedSpeed)*(abs(commandedSpeed)-diff);
+    sendMotorCommand(leftCommand,commandedSpeed);
+  }
+  else
+  {
+       //calculate the magnitude of the difference
+    int diff=abs(macroEncoderR)-abs(macroEncoderL);
+    //scale it to the incoming command magnitude
+    //as difference goes to infinity, the new diff goes to commandedspeed
+    
+    if(diff<distanceForOneTreadOperation)  //if the difference is less than distance offset that will drive the tread to one side full
+        diff = abs(commandedSpeed/(distanceForOneTreadOperation-diff));  //As the difference approaches the full one sided drive, the difference approaches commandedSpeed
+    else 
+        diff = abs(commandedSpeed);
+        
+    int rightCommand=grabIntegerSign(commandedSpeed)*(abs(commandedSpeed)-diff);
+    sendMotorCommand(commandedSpeed,rightCommand); 
+    
+  }
+}
+
 
 
 

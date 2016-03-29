@@ -4,7 +4,6 @@
 #define encoderKi 0
 #define encoderKd 0
 
-uint16_t macroEncoderL, macroEncoderR;
 
 void updateMacroEncoderValueR(uint16_t increment)
 {
@@ -183,40 +182,54 @@ void runEncoderDistance(int cm)
 
 #define GYRO true
 #define NOGYRO false
-
 void runEncoderDistanceEvenly(float cm)
 {
-  //if(cm<0)  cm=cm*0.877;
+  //SET INTERNAL GYRO ANGLE TO ZERO
   gyroF1.zeroInternalAngle();
   gyroF2.zeroInternalAngle();
+  //Internal macroAngle Keeper for this macro
   macroAngle=0;
+  //Zero the encoder variables in the comms system
   wipeEncoders();
-  //Position PID loop to target an end distance
+  
+  //Position PID loop to target the distance requested
   PID output(abs(cm), encoderKp, encoderKi, encoderKd, 2);
+  //Timer queue up for running
   PIDTimer.resetTimer();
-  while(((macroEncoderL<abs(cm))||(macroEncoderR<abs(cm))) && (macro_stop != 1))
+  
+   
+  do
   {
 
     
     if(MPUTimer.timerDone()) updateMPU();
     if(PIDTimer.timerDone())
     {
-    //Serial.println("IN MACRO");  
-      if(macroEncoderL==macroEncoderR)
-      {
-        if(cm>0)
-            motorOutputControl(constrain(output.updateOutput(macroEncoderL),0,75));
-          else
-            motorOutputControl(-constrain((output.updateOutput(macroEncoderL)),0,75));
-          
-      }
-      else
-      {
-        if(cm>0)
-          motorOutputControlCorrect(constrain((output.updateOutput((macroEncoderL+macroEncoderR)/2.0)),0,75),macroEncoderL,macroEncoderR,GYRO);
-        else
-          motorOutputControlCorrect(-constrain((output.updateOutput((macroEncoderL+macroEncoderR)/2.0)),0,75),macroEncoderL,macroEncoderR,GYRO);
-      }
+     
+	//if the encoders (left to right) are equal
+    if(macroEncoderL==macroEncoderR)
+    {
+	  if(cm>0)
+		motorOutputControl(constrain(output.updateOutput(macroEncoderL),0,75));
+	  else
+		motorOutputControl(-constrain((output.updateOutput(macroEncoderL)),0,75));
+	  
+    }
+    //else the encoders are not even
+    else
+    {
+	  //If requested direction is positive
+	  if(cm>0)
+	  {
+		motorOutputControlCorrect(constrain((output.updateOutput((macroEncoderL+macroEncoderR)/2.0)),0,75),macroEncoderL,macroEncoderR,GYRO);
+	  }
+	
+	//If requested direction is negative
+	else
+	  {
+		motorOutputControlCorrect(-constrain((output.updateOutput((macroEncoderL+macroEncoderR)/2.0)),0,75),macroEncoderL,macroEncoderR,GYRO);
+	  }
+    }
     
     
      // output.verboseCalc();
@@ -224,11 +237,55 @@ void runEncoderDistanceEvenly(float cm)
 
     macroCommunicationsUpdate();    
   }
+  while(((macroEncoderL<abs(cm))||(macroEncoderR<abs(cm))) && (macro_stop != 1));
 
   allStop();
   motor_unStick();
   wipeEncoders();
 }
+
+#define DEADZONE_ENCODER 50
+
+bool isInRange(int checkNum, int target, int range)
+{
+  return (((checkNum-range)<target) && ((checkNum+range)>target));
+}
+
+void newEncoders(int cm)
+{
+  //SET INTERNAL GYRO ANGLE TO ZERO
+  gyroF1.zeroInternalAngle();
+  gyroF2.zeroInternalAngle();
+  //Internal macroAngle Keeper for this macro
+  macroAngle=0;
+  //Zero the encoder variables in the comms system
+  wipeEncoders();
+  
+  //Position PID loop to target the distance requested
+  PID output(cm, encoderKp, encoderKi, encoderKd, 2);
+  //Timer queue up for running
+  PIDTimer.resetTimer();
+  Timers CommsDelayTiming(2);
+  do
+  {
+    if(MPUTimer.timerDone()) updateMPU();
+    if(PIDTimer.timerDone())
+    {    
+        simpleMotorDistanceCommand(cm);
+    }
+     // output.verboseCalc();
+     if(CommsDelayTiming.timerDone())
+      macroCommunicationsUpdate();    
+  }
+  while( (!isInRange(macroEncoderL,cm,DEADZONE_ENCODER)||!isInRange(macroEncoderR,cm,DEADZONE_ENCODER)) && (macro_stop != 1));
+
+  allStop();
+  motor_unStick();
+  wipeEncoders();
+}
+
+
+
 
 void runEncoderDistanceDiggingly(float cm)
 {

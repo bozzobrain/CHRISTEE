@@ -98,7 +98,7 @@ inline void initMacroSystem()
         initMPUFilters();
         break;
       case ENCODER_SNIPPIT:
-        runEncoderDistanceEvenly(macro_sub_command);
+        newEncoders(macro_sub_command);
         break;
       case 7:
         if (macro_sub_command >= 0 && macro_sub_command <= 90)
