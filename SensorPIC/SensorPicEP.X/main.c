@@ -33,8 +33,8 @@ void delay(int ms);
 int main(void)
 {
     initialize();
-    initCamera(0);
-    initCamera(1);
+    //initCamera(0);
+    //initCamera(1);
     delay(50);
     while (1)
     {
@@ -62,92 +62,92 @@ int main(void)
 #define FAIL  2
 #define PEND  0
 
-        if (wiiTime > wiiUpdateFrequency)
-        {
-            INDICATOR1 ^= 1;
-
-            static bool leftReady = true, rightReady = true;
-
-                static int counterLeft=0, counterRight=0;
-            if (cameraReady(LEFT_CAMERA) == SUCCESS)
-            {
-                counterLeft=0;
-                leftReady = true;
-                readCamera(LEFT_CAMERA);
-            }
-            else if (cameraReady(LEFT_CAMERA) == FAIL)
-            {
-                readCamera(LEFT_CAMERA);
-                INDICATOR4 ^= 1;
-            }
-            else if (cameraReady(LEFT_CAMERA) == PEND)
-            {
-                leftReady = false;
-                INDICATOR3 ^= 1;
-                counterLeft++;
-                if(counterLeft>2){
-                    counterLeft=0;
-                    I2CtwoReset();
-                }
-            }
-
-            if (cameraReady(RIGHT_CAMERA) == SUCCESS)
-            {
-                counterRight=0;
-                rightReady = true;
-                readCamera(RIGHT_CAMERA);
-            }
-            else if (cameraReady(RIGHT_CAMERA) == FAIL)
-            {
-                readCamera(RIGHT_CAMERA);
-                INDICATOR4 ^= 1;
-            }
-            else if (cameraReady(RIGHT_CAMERA) == PEND)
-            {
-                counterRight++;
-                rightReady = false;
-                INDICATOR3 ^= 1;
-                if(counterRight>2){
-                    I2ConeReset();
-                    counterRight=0;
-                }
-            }
-
-            if (leftReady && rightReady)
-            {
-                WATCHDOG ^= 1;
-                switch (currentState)
-                {
-                    case TRIG:
-                        doXYAcquisition();
-                        break;
-                    case LEFT_BEACON_ANGLES:
-                        doVerticalBeaconAcquisition();
-                        break;
-                    case RIGHT_BEACON_ANGLES:
-                        doHorizontalBeaconAcquisition();
-                        break;
-                    case CAMERA_OVERRIDE_BEACON_ANGLES:
-                        doOverrideBeaconAcquisition(leftCameraTarget, rightCameraTarget);
-                        break;
-                    case CONTINUOUS_AQUISITION:
-                        doContinuousAcquisition();
-                        break;
-                    case SERVO_OVERRIDE_ANGLE:
-                        setAngle1(constrain(leftAngleOverride * 10, SERVO_MIN, SERVO_MAX));
-                        setAngle2(constrain(rightAngleOverride * 10, SERVO_MIN, SERVO_MAX));
-                        break;
-                    case MAXENUMS:
-
-                        break;
-                }
-
-                wiiTime = 0;
-                leftReady = false;
-                rightReady = false;
-            }
-
-        }
+//        if (wiiTime > wiiUpdateFrequency)
+//        {
+//            //INDICATOR1 ^= 1;
+//
+//            static bool leftReady = true, rightReady = true;
+//
+//                static int counterLeft=0, counterRight=0;
+//            if (cameraReady(LEFT_CAMERA) == SUCCESS)
+//            {
+//                counterLeft=0;
+//                leftReady = true;
+//                readCamera(LEFT_CAMERA);
+//            }
+//            else if (cameraReady(LEFT_CAMERA) == FAIL)
+//            {
+//                readCamera(LEFT_CAMERA);
+//                //INDICATOR4 ^= 1;
+//            }
+//            else if (cameraReady(LEFT_CAMERA) == PEND)
+//            {
+//                leftReady = false;
+//                //INDICATOR3 ^= 1;
+//                counterLeft++;
+//                if(counterLeft>2){
+//                    counterLeft=0;
+//                    I2CtwoReset();
+//                }
+//            }
+//
+//            if (cameraReady(RIGHT_CAMERA) == SUCCESS)
+//            {
+//                counterRight=0;
+//                rightReady = true;
+//                readCamera(RIGHT_CAMERA);
+//            }
+//            else if (cameraReady(RIGHT_CAMERA) == FAIL)
+//            {
+//                readCamera(RIGHT_CAMERA);
+//                //INDICATOR4 ^= 1;
+//            }
+//            else if (cameraReady(RIGHT_CAMERA) == PEND)
+//            {
+//                counterRight++;
+//                rightReady = false;
+//                //INDICATOR3 ^= 1;
+//                if(counterRight>2){
+//                    I2ConeReset();
+//                    counterRight=0;
+//                }
+//            }
+//
+//            if (leftReady && rightReady)
+//            {
+//                WATCHDOG ^= 1;
+//                switch (currentState)
+//                {
+//                    case TRIG:
+//                        doXYAcquisition();
+//                        break;
+//                    case LEFT_BEACON_ANGLES:
+//                        doVerticalBeaconAcquisition();
+//                        break;
+//                    case RIGHT_BEACON_ANGLES:
+//                        doHorizontalBeaconAcquisition();
+//                        break;
+//                    case CAMERA_OVERRIDE_BEACON_ANGLES:
+//                        doOverrideBeaconAcquisition(leftCameraTarget, rightCameraTarget);
+//                        break;
+//                    case CONTINUOUS_AQUISITION:
+//                        doContinuousAcquisition();
+//                        break;
+//                    case SERVO_OVERRIDE_ANGLE:
+//                        setAngle1(constrain(leftAngleOverride * 10, SERVO_MIN, SERVO_MAX));
+//                        setAngle2(constrain(rightAngleOverride * 10, SERVO_MIN, SERVO_MAX));
+//                        break;
+//                    case MAXENUMS:
+//
+//                        break;
+//                }
+//
+//                wiiTime = 0;
+//                leftReady = false;
+//                rightReady = false;
+//            }
+//
+//        }
     }
 }
 

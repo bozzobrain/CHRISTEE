@@ -29,10 +29,10 @@ int totalTravelD;
 //ACTUATOR DATA
 int actuatorAngle;
 //ENCODER DATA
-int encoder1, encoder2;
-float encoderR=0, encoderL=0;
+signed long encoder1, encoder2;
+int32_t encoderR, encoderL;
 
-int macroEncoderL, macroEncoderR;
+signed long macroEncoderL, macroEncoderR;
 unsigned int encoderSpeedR=9999, encoderSpeedL=9999;
 //Motor DATA 
 int lM, rM;
@@ -45,7 +45,7 @@ bool continuable;
 int continueMacro = 0;
 
 /********************* CONTROL TIMERS *************************/
-Timers PIDTimer(5);
+Timers PIDTimer(50);
 Timers PIDTimer2(100);
 Timers latency(5);
 Timers decisionTimer(50);

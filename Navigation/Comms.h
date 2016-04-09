@@ -46,7 +46,7 @@ int motor_bucket_angle;
 
 
 
-int navigation_receive[20];
+int navigation_receive[30];
 
 //------------------------------------NAVIGATION RECEIVE------------------------------------------
 //CONTROL RECEIVE
@@ -59,8 +59,8 @@ int navigation_receive[20];
 #define ACTUATOR_ANGLE               4
 
 //RECEIVE FROM PIC
-#define ENCODER_R_PIC_RECEIVE        5
-#define ENCODER_L_PIC_RECEIVE        6
+#define ENCODER_R_L_PIC_RECEIVE        5
+#define ENCODER_L_L_PIC_RECEIVE        6
 #define ENCODER_SPEED_R_PIC_RECEIVE  7
 #define ENCODER_SPEED_L_PIC_RECEIVE  8
 #define WII_BEACON_SEEN_LEFT         9      //Boolean says whether camera is hunting or searching
@@ -74,7 +74,9 @@ int navigation_receive[20];
 #define WII_Y_COORDINATE             17    //^^
 #define WII_FULL_BEACON_WIDTH_PIXELS 18    //Still working on this, thinking look for (horizontal) or (vertical) or (horizontal -> vertical)
 
-#define WII_NUMBER_SWEEPS_RIGHT       22
+#define WII_NUMBER_SWEEPS_RIGHT      22
+#define ENCODER_R_H_PIC_RECEIVE      23
+#define ENCODER_L_H_PIC_RECEIVE      24
 
 #define LEFT_CAMERA 0
 #define RIGHT_CAMERA 1
@@ -169,6 +171,7 @@ inline void macroCommunicationsUpdate()
       stored_macro_command = 0;
       macro_sub_command = 0;
       macro_stop = 1;
+      //terminateMacroSystem();
       return;
     }
     
@@ -198,7 +201,11 @@ void updateFromControlBoard()
     //If sent a macro command -- do it
     if (stored_macro_command != 0)
     {
-      initMacroSystem();
+       navigation_receive[MACRO_COMMAND_RECEIVE]=stored_macro_command;
+       navigation_receive[MACRO_STOP]=0;
+       macro_stop=0;
+       
+       initMacroSystem();
     }  
   }
   else //failed to get fresh packet
@@ -207,9 +214,18 @@ void updateFromControlBoard()
   }
 }
 
+
+union jointhem{
+    int32_t joined;
+    struct {      
+      uint16_t low;
+      uint16_t high;
+    }endian;
+}_16_to_32;
+
 void pullDataFromPacket() {
   static float keeper1, keeper2;
-  static int16_t encoderPastR=0, encoderPastL=0;
+  static signed long encoderPastR=0, encoderPastL=0;
      static Timers LEDresendTimer(100);
     
   
@@ -230,6 +246,7 @@ void pullDataFromPacket() {
        {
          if(LEDresendTimer.timerDone())
          {    
+
            //Serial.println("LED");
             sendLEDstate(MANUAL);
          }
@@ -243,13 +260,23 @@ void pullDataFromPacket() {
     case PIC_ADDRESS:
       //----------------PIC ENCODER DATA---------------------------
       //DISTANCE PULSES
-      encoderR                =(int) ( navigation_receive[ENCODER_R_PIC_RECEIVE]  ) ;    //IMPLIED CM*100 -> IMPLIED CM
-      encoderL                =(int) ( navigation_receive[ENCODER_L_PIC_RECEIVE]  ) ;
+      _16_to_32.endian.high=navigation_receive[ENCODER_R_H_PIC_RECEIVE];
+      _16_to_32.endian.low =navigation_receive[ENCODER_R_L_PIC_RECEIVE];
+      encoderR                = ( _16_to_32.joined  ) ;    //IMPLIED CM*100 -> IMPLIED CM
+      
+      _16_to_32.endian.high=navigation_receive[ENCODER_L_H_PIC_RECEIVE];
+      _16_to_32.endian.low=navigation_receive[ENCODER_L_L_PIC_RECEIVE];
+      encoderL                =( _16_to_32.joined ) ;
+      
       if(encoderR==0 && encoderL==0)
       {
           encoderPastL=0;
           encoderPastR=0;
       }      
+                 Serial.print("Encoder L: ");
+          Serial.print(encoderL);
+          Serial.print("  Encoder R: ");
+          Serial.println(encoderR);
       if(encoderL!=encoderPastL)
       {  
          //Use old value to calculate the increment
@@ -280,24 +307,24 @@ void pullDataFromPacket() {
     //Serial.println(encoderSpeedR);
 
       //--------------WII DATA FROM PIC--------------------------------------
-      beaconCentered[LEFT_CAMERA] = navigation_receive[WII_LEFT_CAMERA_LOCKED];
-      beaconCentered[RIGHT_CAMERA] = navigation_receive[WII_RIGHT_CAMERA_LOCKED];
-
-      //    if(beaconCentered[LEFT_CAMERA])
-      //  {
-      beaconAngle[LEFT_CAMERA]    = navigation_receive[WII_LEFT_CAMERA_ANGLE];
-      //    navigation_receive[WII_LEFT_CAMERA_LOCKED]=0;
-      //  }
-
-      //    if(beaconCentered[RIGHT_CAMERA])
-      //   {
-      beaconAngle[RIGHT_CAMERA]   = navigation_receive[WII_RIGHT_CAMERA_ANGLE];
-      //    navigation_receive[WII_RIGHT_CAMERA_LOCKED]=0;
-      //   }
-      numberSweeps[LEFT_CAMERA]   = navigation_receive[WII_NUMBER_SWEEPS_LEFT];
-      numberSweeps[RIGHT_CAMERA]  = navigation_receive[WII_NUMBER_SWEEPS_RIGHT];
-      beaconSeen[LEFT_CAMERA]     = navigation_receive[WII_BEACON_SEEN_LEFT];
-      beaconSeen[RIGHT_CAMERA]    = navigation_receive[WII_BEACON_SEEN_RIGHT];
+//      beaconCentered[LEFT_CAMERA] = navigation_receive[WII_LEFT_CAMERA_LOCKED];
+//      beaconCentered[RIGHT_CAMERA] = navigation_receive[WII_RIGHT_CAMERA_LOCKED];
+//
+//      //    if(beaconCentered[LEFT_CAMERA])
+//      //  {
+//      beaconAngle[LEFT_CAMERA]    = navigation_receive[WII_LEFT_CAMERA_ANGLE];
+//      //    navigation_receive[WII_LEFT_CAMERA_LOCKED]=0;
+//      //  }
+//
+//      //    if(beaconCentered[RIGHT_CAMERA])
+//      //   {
+//      beaconAngle[RIGHT_CAMERA]   = navigation_receive[WII_RIGHT_CAMERA_ANGLE];
+//      //    navigation_receive[WII_RIGHT_CAMERA_LOCKED]=0;
+//      //   }
+//      numberSweeps[LEFT_CAMERA]   = navigation_receive[WII_NUMBER_SWEEPS_LEFT];
+//      numberSweeps[RIGHT_CAMERA]  = navigation_receive[WII_NUMBER_SWEEPS_RIGHT];
+//      beaconSeen[LEFT_CAMERA]     = navigation_receive[WII_BEACON_SEEN_LEFT];
+//      beaconSeen[RIGHT_CAMERA]    = navigation_receive[WII_BEACON_SEEN_RIGHT];
       break;
   }
 }
@@ -348,7 +375,7 @@ inline void terminateMacroSystem()
     Navigation.receiveData();
 
     sender++;
-    if (sender >= 5)
+    if (sender >= 50)
     {
       Navigation.ToSend(LAST_BOARD_ADDRESS_RECEIVE, NAVIGATION_ADDRESS);
       Navigation.ToSend(MACRO_COMMAND_SEND, 0);
@@ -356,7 +383,7 @@ inline void terminateMacroSystem()
       Navigation.sendData(CONTROL_ADDRESS);
       sender = 0;
     }
-    delay(5);
+    delay(2);
   }
   Navigation.ToSend(LAST_BOARD_ADDRESS_RECEIVE, NAVIGATION_ADDRESS);
   Navigation.ToSend(MACRO_COMPLETE, 0);

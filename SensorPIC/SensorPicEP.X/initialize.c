@@ -40,11 +40,11 @@ void initialize(void)
     GLOBAL_INTERRUPTS = 0;
     oscillator();
     INDICATOR1=ON;
-    InitI2Cone();
-    InitI2Ctwo();
+   // InitI2Cone();
+   // InitI2Ctwo();
     INDICATOR2=ON;
-    initPWM1(0);
-    initPWM2(0);
+   // initPWM1(0);
+   // initPWM2(0);
     INDICATOR3=ON;
     begin(receiveArray, 15, 1, false, Send_put, Receive_get, Receive_available, Receive_peek);
     INDICATOR4=ON;
@@ -146,10 +146,10 @@ ICI<1:0>: Number of Captures per Interrupt Select bits (this field is not used i
 void inputCapture(void)
 {
     // Initialize the Input Capture Module
-    IC1CON1bits.ICM = 0b00; // Disable Input Capture 1 module
-    IC1CON1bits.ICTSEL= 1; // Select Timer2 as the IC1 Time base
-    IC1CON1bits.ICI = 0b00; // Interrupt on every capture event
-    IC1CON1bits.ICM = 0b101; // Generate capture event on every Falling edge
+    IC1CON1bits.ICM = 0b00;  // Disable Input Capture 1 module
+    IC1CON1bits.ICTSEL= 1;   // Select Timer2 as the IC1 Time base
+    IC1CON1bits.ICI = 0b00;  // Interrupt on every capture event
+    IC1CON1bits.ICM = 0b101; // Generate capture event on every 16th Falling edge
 
     // Enable Capture Interrupt And Timer2
     IPC0bits.IC1IP = 1; // Setup IC1 interrupt priority level
@@ -160,10 +160,10 @@ void inputCapture(void)
     RPINR7bits.IC1R = 98; // right tread
 
     // Initialize the Input Capture Module
-    IC2CON1bits.ICM = 0b00; // Disable Input Capture 2 module
-    IC2CON1bits.ICTSEL = 1; // Select Timer2 as the IC2 Time base
-    IC2CON1bits.ICI = 0b00; // Interrupt on every capture event
-    IC2CON1bits.ICM = 0b101; // Generate capture event on every Falling edge
+    IC2CON1bits.ICM = 0b00;  // Disable Input Capture 2 module
+    IC2CON1bits.ICTSEL = 1;  // Select Timer2 as the IC2 Time base
+    IC2CON1bits.ICI = 0b00;  // Interrupt on every capture event
+    IC2CON1bits.ICM = 0b101; // Generate capture event on every 16th Falling edge
 
     // Enable Capture Interrupt And Timer2
     IPC1bits.IC2IP = 1; // Setup IC2 interrupt priority level

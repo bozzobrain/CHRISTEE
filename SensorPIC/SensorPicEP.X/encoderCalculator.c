@@ -12,11 +12,20 @@
 #define WATCHDOG   LATEbits.LATE7
 
 
-#define DISTANCE_PER_PULSE 1//4.18
+#define DISTANCE_PER_PULSE 0.5//4.18
+
+union jointhem{
+    long joined;
+    struct{
+        
+        unsigned int low;
+        unsigned int high;
+    }endian;
+}_16_to_32;
 
 bool RightStopFlag = true, LeftStopFlag = true;
-unsigned int SpeedRight, SpeedLeft;
-unsigned int navEncoderRight, navEncoderLeft;
+unsigned long int SpeedRight, SpeedLeft;
+long navEncoderRight, navEncoderLeft;
 void RightSpeedCalculation(void) {
     if ((SpeedRight == 0) || (rolloverPastRight == 0)) {
         rolloverPastRight = 1;
@@ -41,28 +50,28 @@ void LeftSpeedCalculation(void) {
 }
 
 void updateEncoders() {
-    if (encoderTime > 150) {
+    if (encoderTime > 100) {
         //INDICATOR3^=1;
         encoderTime = 0;
-        if (!EncoderRight) {
-            SpeedRight = 0;
-            RightStopFlag = true;
-        }
-        if (!EncoderLeft) {
-            SpeedLeft = 0;
-            LeftStopFlag = true;
-        }
+//        if (!EncoderRight) {
+//            SpeedRight = 0;
+//            RightStopFlag = true;
+//        }
+//        if (!EncoderLeft) {
+//            SpeedLeft = 0;
+//            LeftStopFlag = true;
+//        }
         sendEncoderValues();
     }
-    if (SpeedCalcRight == true) {
-        SpeedCalcRight = false;
-        RightSpeedCalculation();
-    }
-
-    if (SpeedCalcLeft == true) {
-        SpeedCalcRight = false;
-        LeftSpeedCalculation();
-    }
+//    if (SpeedCalcRight == true) {
+//        SpeedCalcRight = false;
+//        RightSpeedCalculation();
+//    }
+//
+//    if (SpeedCalcLeft == true) {
+//        SpeedCalcRight = false;
+//        LeftSpeedCalculation();
+//    }
 }
 
 void __attribute__((interrupt, no_auto_psv)) _IC1Interrupt(void) {
@@ -95,12 +104,12 @@ void __attribute__((interrupt, no_auto_psv)) _IC2Interrupt(void) {
     // INDICATOR2=ON;
      if(!PORTBbits.RB1)
     {
-    navEncoderLeft++;
-    EncoderLeft++;
+        navEncoderLeft++;
+        EncoderLeft++;
      }
      else
      {
-       navEncoderLeft--;
+        navEncoderLeft--;
         EncoderLeft--;  
      }
 //    rolloverPastLeft = rolloverLeft;
@@ -118,18 +127,42 @@ void __attribute__((interrupt, no_auto_psv)) _IC2Interrupt(void) {
 }
 
 void sendEncoderValues() {
-
+    if(navEncoderRight>0)
+    {
+        INDICATOR1=1;
+    }
+    else
+    {
+        INDICATOR1=0;
+        
+    }
+    if(navEncoderLeft>0)
+    {
+        INDICATOR2=1;
+        
+    }
+    else
+    {
+        
+        INDICATOR2=0;
+    }
     ToSend(LAST_BOARD_ADDRESS_RECEIVE,   PIC_ADDRESS);
-    ToSend(ENCODER_R_NAVIGATION, navEncoderRight*DISTANCE_PER_PULSE);
-    ToSend(ENCODER_L_NAVIGATION, navEncoderLeft*DISTANCE_PER_PULSE);
+    _16_to_32.joined=navEncoderRight;
+    ToSend(ENCODER_R_L_NAVIGATION, _16_to_32.endian.low);
+    ToSend(ENCODER_R_H_NAVIGATION, _16_to_32.endian.high);
+    
+    _16_to_32.joined=navEncoderLeft;
+    ToSend(ENCODER_L_H_NAVIGATION, _16_to_32.endian.high);
+    ToSend(ENCODER_L_L_NAVIGATION, _16_to_32.endian.low);
     //navEncoderLeft=0;
     //navEncoderRight=0;
     //ToSend(ENCODER_SPEED_R_NAVIGATION, SpeedRight);
     //ToSend(ENCODER_SPEED_L_NAVIGATION, SpeedLeft);
     sendData(NAVIGATION_ADDRESS);
+    
     ToSend(LAST_BOARD_ADDRESS_RECEIVE,   PIC_ADDRESS);
-    ToSend(ENCODER_R_CONTROL, EncoderRight*DISTANCE_PER_PULSE);
-    ToSend(ENCODER_L_CONTROL, EncoderLeft*DISTANCE_PER_PULSE);
+    ToSend(ENCODER_R_CONTROL, EncoderRight);
+    ToSend(ENCODER_L_CONTROL, EncoderLeft);
     //ToSend(ENCODER_SPEED_R_CONTROL, SpeedRight);
     //ToSend(ENCODER_SPEED_L_CONTROL, SpeedLeft);
     sendData(CONTROL_ADDRESS);

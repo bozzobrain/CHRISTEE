@@ -3,8 +3,8 @@
 
 
 
-void updateMacroEncoderValueL(uint16_t increment);
-void updateMacroEncoderValueR(uint16_t increment);
+void updateMacroEncoderValueL(long increment);
+void updateMacroEncoderValueR(long increment);
 
 /*********************************************************/
 /*        Communications Method Declarations             */

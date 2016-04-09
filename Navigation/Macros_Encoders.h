@@ -5,12 +5,12 @@
 #define encoderKd 0
 
 
-void updateMacroEncoderValueR(uint16_t increment)
+void updateMacroEncoderValueR(signed long increment)
 {
   macroEncoderR+=increment;
 }
 
-void updateMacroEncoderValueL(uint16_t increment)
+void updateMacroEncoderValueL(signed long increment)
 {
   macroEncoderL+=increment;
 }
@@ -246,12 +246,12 @@ void runEncoderDistanceEvenly(float cm)
 
 #define DEADZONE_ENCODER 50
 
-bool isInRange(int checkNum, int target, int range)
+bool isInRange(signed long checkNum, signed long target, signed long range)
 {
   return (((checkNum-range)<target) && ((checkNum+range)>target));
 }
 
-void newEncoders(int cm)
+void newEncoders(signed long cm)
 {
   //SET INTERNAL GYRO ANGLE TO ZERO
   gyroF1.zeroInternalAngle();
@@ -262,25 +262,25 @@ void newEncoders(int cm)
   wipeEncoders();
   
   //Position PID loop to target the distance requested
-  PID output(cm, encoderKp, encoderKi, encoderKd, 2);
+ // PID output(cm, encoderKp, encoderKi, encoderKd, 2);
   //Timer queue up for running
   PIDTimer.resetTimer();
-  Timers CommsDelayTiming(2);
-  do
+  Timers CommsDelayTiming(5);
+ while( !(isInRange(macroEncoderL,cm,DEADZONE_ENCODER)&&isInRange(macroEncoderR,cm,DEADZONE_ENCODER)) && (macro_stop != 1))
   {
-    if(MPUTimer.timerDone()) updateMPU();
+    //if(MPUTimer.timerDone()) updateMPU();
     if(PIDTimer.timerDone())
     {    
         simpleMotorDistanceCommand(cm);
     }
      // output.verboseCalc();
      if(CommsDelayTiming.timerDone())
-      macroCommunicationsUpdate();    
+        macroCommunicationsUpdate();    
   }
-  while( (!isInRange(macroEncoderL,cm,DEADZONE_ENCODER)||!isInRange(macroEncoderR,cm,DEADZONE_ENCODER)) && (macro_stop != 1));
-
-  allStop();
+  
+  //allStop();
   motor_unStick();
+  delay(15);
   wipeEncoders();
 }
 

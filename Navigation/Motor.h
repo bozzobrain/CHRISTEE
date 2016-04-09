@@ -7,38 +7,38 @@
 PID motorOutput(0, motorKp, motorKi, motorKd, 2);
 PID motorOutputL(0, motorKp, motorKi, motorKd, 2);
 PID motorOutputR(0, motorKp, motorKi, motorKd, 2);
-PID simpleMotorOutput(0, 1, 0, 0, 2);
+PID simpleMotorOutput(0, 0.005, 0, 0, 2);
 
 #define TEST_LIMIT_MOTOR_MAG 35
-void simpleMotorDistanceLRDiffCommand(int commandedSpeed);
+void simpleMotorDistanceLRDiffCommand(signed long commandedSpeed);
 
 
-void simpleMotorDistanceCommand(int commandedDistance)
+void simpleMotorDistanceCommand(signed long commandedDistance)
 {
   //If current target internally is not equal to the received command;
-  if(commandedDistance!=simpleMotorOutput.returnTarget())
+  if(commandedDistance!=(signed long)simpleMotorOutput.returnTarget())
   {
     simpleMotorOutput.clearSystem();
-    simpleMotorOutput.updateTarget(commandedDistance);
+    simpleMotorOutput.updateTarget((float)commandedDistance);
   }
   static int counter=0;
   //for 10 we should be calculating a decision
   if(counter<10)
   {
-    simpleMotorOutput.updateOutput((macroEncoderL+macroEncoderR)/2);
+    simpleMotorOutput.updateOutput((macroEncoderL+macroEncoderR)/2.0);
     counter++;
   }
   //every 10 we should make a decision
   else
   {
     //Send the resulting output of the PID output error to a LR differential command method
-    simpleMotorDistanceLRDiffCommand(constrain(simpleMotorOutput.updateOutput((macroEncoderL+macroEncoderR)/2),-TEST_LIMIT_MOTOR_MAG,TEST_LIMIT_MOTOR_MAG));
+    simpleMotorDistanceLRDiffCommand(constrain(simpleMotorOutput.updateOutput((macroEncoderL+macroEncoderR)/2.0),-TEST_LIMIT_MOTOR_MAG,TEST_LIMIT_MOTOR_MAG));
     counter=0;
   }
   
 }
 
-int grabIntegerSign(int i)
+int grabIntegerSign(signed long i)
 {
  if(i>=0)
   return 1;
@@ -47,10 +47,10 @@ int grabIntegerSign(int i)
 }
 
 
-#define distanceForOneTreadOperation 100
+#define distanceForOneTreadOperation 1000
 //Meters a speed input into a variable turning capable differential, allows for equal distance as we go on both treads
 //    WILL act as the development for diff driving with new encoders.
-void simpleMotorDistanceLRDiffCommand(int commandedSpeed)
+void simpleMotorDistanceLRDiffCommand(signed long commandedSpeed)
 {
   if(macroEncoderL==macroEncoderR)
   {

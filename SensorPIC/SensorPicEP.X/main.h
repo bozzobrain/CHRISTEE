@@ -49,8 +49,10 @@ const int wiiUpdateFrequency=200;
 
 //Send stuff
 //TO NAV
-#define ENCODER_R_NAVIGATION        5
-#define ENCODER_L_NAVIGATION        6
+#define ENCODER_R_L_NAVIGATION      5
+#define ENCODER_R_H_NAVIGATION      23
+#define ENCODER_L_L_NAVIGATION        6
+#define ENCODER_L_H_NAVIGATION      24
 #define ENCODER_SPEED_R_NAVIGATION  7
 #define ENCODER_SPEED_L_NAVIGATION  8
 //To Control
@@ -58,6 +60,7 @@ const int wiiUpdateFrequency=200;
 #define ENCODER_L_CONTROL        12
 #define ENCODER_SPEED_R_CONTROL  13
 #define ENCODER_SPEED_L_CONTROL  14
+
 
 
 

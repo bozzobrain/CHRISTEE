@@ -24,8 +24,10 @@ extern "C" {
 #define LAST_BOARD_ADDRESS_RECEIVE   0
 
 //TO NAV
-#define ENCODER_R_NAVIGATION        5
-#define ENCODER_L_NAVIGATION        6
+#define ENCODER_R_L_NAVIGATION       5
+#define ENCODER_R_H_NAVIGATION      23
+#define ENCODER_L_L_NAVIGATION       6
+#define ENCODER_L_H_NAVIGATION      24
 #define ENCODER_SPEED_R_NAVIGATION  7
 #define ENCODER_SPEED_L_NAVIGATION  8
 
@@ -49,8 +51,8 @@ bool SpeedCalcRight;
 bool SpeedCalcLeft;
 
 
-unsigned int EncoderRight;
-unsigned int EncoderLeft;
+long EncoderRight;
+long EncoderLeft;
 unsigned int EncoderRightStorage;
 unsigned int EncoderLeftStorage;
 

@@ -204,7 +204,61 @@ inline void killMacro()
   sendDataNavigation(0, 0, 1);
   internalMacroKeeper = 0;
   internalSubKeeper = 0;
-  ensureReceived(Ending);
+  
+  //---------------------------------------------------------------------------------------//---------------------------------------------------------------------------------------
+  //ensureReceived(Ending);
+  //ROBOT KILLS MACRO
+    //The robot says we are done, we are finishing on our side to validate state change
+    if (macro_complete == 1)
+    {
+
+      //while the robot has not gotten word back from us
+      while (macro_complete != 0)
+      {
+        //update the information from the robot
+        if (robot.receiveData())
+        {
+          //if good checksum, store data locally.
+          macro_complete = roboMessage[MACRO_COMPLETE];
+        }
+        //count how many times we have checked
+        sender += 1;
+        delay(5);
+        //if we checked 5 times with out a change, resend data
+        if ((int)sender >= 50)
+        {
+
+          sendDataNavigation(0, 0, 1);
+          delay(15);
+          //reset the timer
+          sender = 0;
+        }
+      }
+    }
+    else
+    {
+      //CONTROL BOX KILLS MACRO
+      //while the robot has not gotten the command
+      while (commMacro != 0 )
+      {
+        //update the information from the robot
+        if (robot.receiveData())
+        {
+        commMacro = roboMessage[MACRO_COMMAND_RECEIVE];
+        }
+        //count how many times we have checked
+        sender += 1;
+        delay(5);
+        //if we checked 5 times with out a change, resend data
+        if ((int)sender >= 50)
+        {            
+          sendDataNavigation(0, 0, 1);
+          //reset the timer
+          sender = 0;
+        }
+      }
+    }
+    //---------------------------------------------------------------------------------------//---------------------------------------------------------------------------------------
   commTimer.resetTimer();
 }
 
