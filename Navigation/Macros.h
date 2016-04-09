@@ -9,7 +9,6 @@
 
 inline void initMacroSystem()
 {
-  macro_stop = false;
   continuable = true;
   sendLEDstate(AUTO);  
   Navigation.ToSend(LAST_BOARD_ADDRESS_RECEIVE, NAVIGATION_ADDRESS);
@@ -23,7 +22,7 @@ inline void initMacroSystem()
 
   if (stored_macro_command == 1)
   {
-    while (continuable)
+    while (stored_macro_command != 0)
     {
       straightPathMineDump();
     }
@@ -154,12 +153,12 @@ inline bool orientWithWii()
 
 
 
-  return macro_stop == 0;
+  return stored_macro_command != 0;
 }
 
 void fullRoutine()
 {
-  while (!macro_stop)
+  while (stored_macro_command != 0)
   {
     orientWithWii();
     //Move bucket and drive
@@ -192,7 +191,7 @@ void driveDigDistance()
 
 void fiftyForwardFiftyBackward()
 {
-  while (macro_stop != 1)
+  while (stored_macro_command != 0)
   {
     runEncoderDistanceEvenly(500);
     runEncoderDistanceEvenly(-500);
@@ -201,7 +200,7 @@ void fiftyForwardFiftyBackward()
 
 void squareRoutine()
 {
-  while (macro_stop != 1)
+  while (stored_macro_command != 0)
   {
     runEncoderDistanceEvenly(500);
     doTurn(90);

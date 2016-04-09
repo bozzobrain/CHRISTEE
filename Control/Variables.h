@@ -81,7 +81,6 @@ int rightMotorSpeed = 0;
 int actuatorSpeed = 0;
 //comboard macroback
 int commMacro = 0;
-int macro_complete = 0;
 //macro keeper here on control
 int internalMacroKeeper=0;
 int internalSubKeeper;

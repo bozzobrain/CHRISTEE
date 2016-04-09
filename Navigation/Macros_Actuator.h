@@ -4,7 +4,7 @@ int angleSetIn;
 inline bool sendActuatorPosition(int angle)
 {  
   int count=0;
-  while((macro_stop!=1)&&(count<85))
+  while((stored_macro_command!=0)&&(count<85))
   {
     sendActuatorCommand(angle);
     macroCommunicationsUpdate();
@@ -13,12 +13,12 @@ inline bool sendActuatorPosition(int angle)
   }
   sendActuatorCommand(255);
 
-  return (macro_stop == 0);
+  return (stored_macro_command != 0);
 }
 inline bool sendActuatorPositionFeedback(int angle)
 {  
   
-  while((macro_stop!=1)&&(!isAbout(motor_bucket_angle,angle,2)))
+  while((stored_macro_command!=0)&&(!isAbout(motor_bucket_angle,angle,2)))
   {
     sendActuatorCommand(angle);
     macroCommunicationsUpdate();
@@ -26,12 +26,12 @@ inline bool sendActuatorPositionFeedback(int angle)
   }
   sendActuatorCommand(255);
 
-  return (macro_stop == 0);
+  return (stored_macro_command != 0);
 }
 inline bool sendActuatorPositionDig(int angle)
 {  
   int count=0;
-  while( (macro_stop!=1)&& ((encoderL<DIG_DRIVE_DISTANCE)||(encoderR<DIG_DRIVE_DISTANCE))  )
+  while( (stored_macro_command!=0)&& ((encoderL<DIG_DRIVE_DISTANCE)||(encoderR<DIG_DRIVE_DISTANCE))  )
   {
     if(angle<BUCKET_DIG_DRIVE_BEGIN_ANGLE)
     {
@@ -44,7 +44,7 @@ inline bool sendActuatorPositionDig(int angle)
   }
   sendMotorCommand(0,0,255);
 
-  return (macro_stop == 0);
+  return (stored_macro_command != 0);
 }
 void fullDigRoutine()
 {

@@ -40,7 +40,6 @@ int lM, rM;
 int stored_macro_command;
 int macro_sub_command;
 int sub_command = 0;
-bool macro_stop;
 bool continuable;
 int continueMacro = 0;
 

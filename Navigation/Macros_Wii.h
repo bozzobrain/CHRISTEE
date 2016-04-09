@@ -21,12 +21,12 @@ bool wiiCameraLocalize(int targetBeacon, int targetAngle, int cameraNumber)
   bool doneLocalizing = false;
   int sweepCount = numberSweeps[cameraNumber];
   static Timers decisionTimer(300),sendTimerWii(150);
-  while (!doneLocalizing && (macro_stop != 1))
+  while (!doneLocalizing && (stored_macro_command != 0))
   {
     sweepCount = numberSweeps[cameraNumber];
 
     //while the wii camera doesnt see it..
-    while ((macro_stop != 1) && (!beaconSeen[cameraNumber]))
+    while ((stored_macro_command != 0) && (!beaconSeen[cameraNumber]))
     {
 
       if (sendTimerWii.timerDone()) {
@@ -75,7 +75,7 @@ bool wiiCameraLocalize(int targetBeacon, int targetAngle, int cameraNumber)
 
 
     //Then make angle = what you want;
-    while ( (!(((beaconAngle[cameraNumber] - acceptableGyroBeaconAngle) < targetAngle) && ((beaconAngle[cameraNumber] + acceptableGyroBeaconAngle) > targetAngle))) && ((macro_stop != 1) && (beaconSeen[cameraNumber]) && (beaconCentered[cameraNumber])) && !doneLocalizing)
+    while ( (!(((beaconAngle[cameraNumber] - acceptableGyroBeaconAngle) < targetAngle) && ((beaconAngle[cameraNumber] + acceptableGyroBeaconAngle) > targetAngle))) && ((stored_macro_command != 0) && (beaconSeen[cameraNumber]) && (beaconCentered[cameraNumber])) && !doneLocalizing)
     {
 
       if (decisionTimer.timerDone())
@@ -100,7 +100,7 @@ bool wiiCameraLocalize(int targetBeacon, int targetAngle, int cameraNumber)
       if (( ( (beaconAngle[cameraNumber] - acceptableGyroBeaconAngle) < targetAngle) && ((beaconAngle[cameraNumber] + acceptableGyroBeaconAngle) > targetAngle)))
       {
         doneLocalizing = true;
-        return macro_stop == 0;
+        return stored_macro_command != 0;
       }
     }
 
@@ -108,7 +108,7 @@ bool wiiCameraLocalize(int targetBeacon, int targetAngle, int cameraNumber)
     if (( ( (beaconAngle[cameraNumber] - acceptableGyroBeaconAngle) < targetAngle) && ((beaconAngle[cameraNumber] + acceptableGyroBeaconAngle) > targetAngle)))
     {
       doneLocalizing = true;
-      return macro_stop == 0;
+      return stored_macro_command != 0;
     }
   }
 
@@ -130,13 +130,13 @@ bool wiiCameraFindTwoCamera(int targetBeacon)
   bool doneLocalizing = false;
   int sweepCountLeft = numberSweeps[LEFT_CAMERA], sweepCountRight = numberSweeps[RIGHT_CAMERA];
   static Timers decisionTimer(300), sendTimerWii(100);
-  while (!doneLocalizing && (macro_stop != 1))
+  while (!doneLocalizing && (stored_macro_command != 0))
   {
     sweepCountLeft = numberSweeps[LEFT_CAMERA];
     sweepCountRight = numberSweeps[RIGHT_CAMERA];
 
     //while the wii camera doesnt see it..
-    while ((macro_stop != 1) && (!beaconSeen[RIGHT_CAMERA] || !beaconSeen[LEFT_CAMERA]))
+    while ((stored_macro_command != 0) && (!beaconSeen[RIGHT_CAMERA] || !beaconSeen[LEFT_CAMERA]))
     {
       if (sendTimerWii.timerDone()) {
         

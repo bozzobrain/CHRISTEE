@@ -1,8 +1,10 @@
+//MAY NEED TUNED TO ALLOW THE MACRO TO START SUCCESSFULLY
+static Timers macroSetDelay(100);
 
 inline void macroUpdate()
 {
   //Robot says its Done with macro and control box needs to finish the macro
-  if (macro_complete == 1 && internalMacroKeeper != 0)
+  if ((commMacro == 0) && (internalMacroKeeper != 0) && macroSetDelay.timerDone())
   {
 
     //internal systems reset
@@ -10,62 +12,13 @@ inline void macroUpdate()
     internalSubKeeper = 0;
     //tell the robot we are done as well   
     sendDataNavigation(0, 0, 0);
-    //Make sure the robot gets the update that we are done as well
-    //ROBOT KILLS MACRO
-    //The robot says we are done, we are finishing on our side to validate state change
-    if (macro_complete == 1)
-    {
+    
+  
 
-      //while the robot has not gotten word back from us
-      while (macro_complete != 0)
-      {
-        //update the information from the robot
-        if (robot.receiveData())
-        {
-          //if good checksum, store data locally.
-          macro_complete = roboMessage[MACRO_COMPLETE];
-        }
-        //count how many times we have checked
-        sender += 1;
-        delay(5);
-        //if we checked 5 times with out a change, resend data
-        if ((int)sender >= 50)
-        {
-
-          sendDataNavigation(0, 0, 1);
-          delay(15);
-          //reset the timer
-          sender = 0;
-        }
-      }
-    }
-    else
-    {
-      //CONTROL BOX KILLS MACRO
-      //while the robot has not gotten the command
-      while (commMacro != 0 )
-      {
-        //update the information from the robot
-        if (robot.receiveData())
-        {
-        commMacro = roboMessage[MACRO_COMMAND_RECEIVE];
-        }
-        //count how many times we have checked
-        sender += 1;
-        delay(5);
-        //if we checked 5 times with out a change, resend data
-        if ((int)sender >= 50)
-        {            
-          sendDataNavigation(0, 0, 1);
-          //reset the timer
-          sender = 0;
-        }
-      }
-    }
-
-    //RESET THE TRACKING VARIABLE
-    macro_complete = 0;
+    //wipe any pending commands from screen
     macro_command_screen=0;
+    
+    
     commTimer.resetTimer();
   }
   //---------------------------------------------------------------------
@@ -80,31 +33,15 @@ inline void macroUpdate()
 
     //Tell the comm board about the screens command
     sendDataNavigation(macro_command_screen, macro_sub_command, 0);
-     //while the robot has not gotten the command
-    while (commMacro != internalMacroKeeper)
-    {
-      //update the information from the robot
-      if (robot.receiveData())
-      {
-        //if good checksum, store data locally.
-        commMacro = roboMessage[MACRO_COMMAND_RECEIVE];
-      }
-      //count how many times we have checked
-      sender += 1;
-      delay(5);
-      //if we checked 5 times with out a change, resend data
-      if (sender >= 50)
-      {               
-        sendDataNavigation(internalMacroKeeper, macro_sub_command, 0);
-        delay(15);
-        //reset the timer
-        sender = 0;
-      }
-    }    
+    //trick the system into believing the robot has responded that it got the command (AKA dont exit macro accidently, seeing that the commMacro=0)
+    commMacro= macro_command_screen;
 
     //erase the data from the screen
     macro_command_screen = 0;
     macro_sub_command = 0;
+    
+    //Timer to attempt to let the command propagate into the system, so by the time we check the macrostate of the robot, it will have gotten the command
+    macroSetDelay.resetTimer();
   }
   if (digitalReadFast(MACRO_BUTTON) == HIGH)
   {
@@ -113,29 +50,6 @@ inline void macroUpdate()
 }
 
 
-inline void ensureReceived(bool STARTING)
-{
-  //give it a second to try to recieve the first time reset the resend counter
-  delay(5);
-  sender = 0;
-  //check and store for any valid packet
-  if (robot.receiveData())
-  {
-    //if good checksum, store data locally.
-    commMacro = roboMessage[MACRO_COMMAND_RECEIVE];
-    macro_complete = roboMessage[MACRO_COMPLETE];
-  }
-
-  //Starting a Macro technically doesnt exist
-  if (STARTING)
-  {   
-   
-  }
-  //If you are ending a macro
-  else
-  {    
-  }
-}
 
 
 

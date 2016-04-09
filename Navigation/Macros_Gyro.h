@@ -35,15 +35,13 @@ inline bool doTurn(int setAngle)
   //zero macro angle
   gyroF1.zeroInternalAngle();
   gyroF2.zeroInternalAngle();
-  //set variable to listen to control board
-  continueMacro = 0;
   PID output(setAngle, gyroKp, gyroKi, gyroKd, 2);
   output.clearSystem();
   PIDTimer.resetTimer();
   //while the robot is not0 facing the angle requested
 
   //for (int i = 0; i < 2; i++) {
-  while (!(macroAngle < angleSet + 1 && macroAngle > angleSet - 1) && (continueMacro == 0) && (macro_stop != 1))
+  while (!(macroAngle < angleSet + 1 && macroAngle > angleSet - 1) &&  (stored_macro_command != 0))
   {
     
     macroCommunicationsUpdate();
@@ -72,7 +70,7 @@ inline bool doTurn(int setAngle)
   macroAngle=0;
 
   //END TURNING
-  return (continueMacro == 0);
+  return (stored_macro_command != 0);
 }
 
 

@@ -24,7 +24,6 @@ FastTransfer Navigation;
 //NAVIGATION SEND
 #define MACRO_COMMAND_SEND           1
 #define MACRO_SUB_COMMAND_SEND       2
-#define MACRO_COMPLETE               3
 #define GYRO                         4
 #define LEFT_MOTOR                   5
 #define RIGHT_MOTOR                  6
@@ -53,7 +52,6 @@ int navigation_receive[30];
 #define LAST_BOARD_ADDRESS_RECEIVE   0
 #define MACRO_COMMAND_RECEIVE        1
 #define MACRO_SUB_COMMAND_RECEIVE    2
-#define MACRO_STOP                   3
 
 //MOTOR Receive
 #define ACTUATOR_ANGLE               4
@@ -127,7 +125,6 @@ inline void initializeCommunications()
 
 void prepManualData()
 {
-  Navigation.ToSend(MACRO_COMPLETE, 0);
   Navigation.ToSend(MACRO_COMMAND_SEND, 0);
   Navigation.ToSend(MACRO_SUB_COMMAND_SEND, 0);
 }
@@ -138,7 +135,7 @@ void prepAutoData()
   Navigation.ToSend(GYRO          , macroAngle);
 }
 
-Timers minimumResendTimer(50);
+Timers minimumResendTimer(50), macroSetDelay(100);
 //MAIN UPDATE FOR COMMUNICATIONS WHILE NOT IN A MACRO
 inline void updateComms()
 {
@@ -147,7 +144,7 @@ inline void updateComms()
   if (readyToSend && minimumResendTimer.timerDone())
   {
     prepManualData();
-    //prepAutoData();
+    prepAutoData();
     Navigation.ToSend(LAST_BOARD_ADDRESS_RECEIVE, NAVIGATION_ADDRESS);
     Navigation.sendData(CONTROL_ADDRESS);
     readyToSend = false;
@@ -160,29 +157,23 @@ inline void macroCommunicationsUpdate()
   static Timers LEDresend(100);
   if(LEDresend.timerDone())
   {
-    sendLEDstate(MACRO);
-    
+    sendLEDstate(MACRO);    
     digitalWrite(13,!digitalRead(13));
   }
   if (Navigation.receiveData())
   {
-    if ((stored_macro_command != navigation_receive[MACRO_COMMAND_RECEIVE]) || (navigation_receive[MACRO_STOP] == 1))
+    if ((stored_macro_command != navigation_receive[MACRO_COMMAND_RECEIVE]))
     {
       stored_macro_command = 0;
       macro_sub_command = 0;
-      macro_stop = 1;
-      //terminateMacroSystem();
+      macroSetDelay.timerDone();
       return;
-    }
-    
+    }    
     pullDataFromPacket();
     prepAutoData();
     Navigation.ToSend(LAST_BOARD_ADDRESS_RECEIVE, NAVIGATION_ADDRESS);
-    Navigation.ToSend(MACRO_COMPLETE, 0);
     Navigation.ToSend(MACRO_COMMAND_SEND, stored_macro_command);
-    Navigation.sendData(CONTROL_ADDRESS);
-
-    
+    Navigation.sendData(CONTROL_ADDRESS);    
   }
   else
   {
@@ -199,11 +190,9 @@ void updateFromControlBoard()
   {
      pullDataFromPacket(); 
     //If sent a macro command -- do it
-    if (stored_macro_command != 0)
+    if (stored_macro_command != 0 &&  macroSetDelay.timerDone())
     {
        navigation_receive[MACRO_COMMAND_RECEIVE]=stored_macro_command;
-       navigation_receive[MACRO_STOP]=0;
-       macro_stop=0;
        
        initMacroSystem();
     }  
@@ -226,7 +215,7 @@ union jointhem{
 void pullDataFromPacket() {
   static float keeper1, keeper2;
   static signed long encoderPastR=0, encoderPastL=0;
-     static Timers LEDresendTimer(100);
+  static Timers LEDresendTimer(100);
     
   
   switch ( navigation_receive[LAST_BOARD_ADDRESS_RECEIVE]) {
@@ -234,20 +223,15 @@ void pullDataFromPacket() {
         //time stamp activity from communications board and okay a response to comm
       readyToSend = true;
       safetyTimer.resetTimer();
-
       
       //CONTROL RECEIVE
       stored_macro_command     = navigation_receive[MACRO_COMMAND_RECEIVE];
       macro_sub_command        = navigation_receive[MACRO_SUB_COMMAND_RECEIVE];
-      macro_stop               = navigation_receive[MACRO_STOP];
-      //Serial.print("Stored Macro Command: ");
-      //Serial.println(stored_macro_command);
-       if (stored_macro_command == 0)
-       {
+      
+      if (stored_macro_command == 0)
+      {
          if(LEDresendTimer.timerDone())
          {    
-
-           //Serial.println("LED");
             sendLEDstate(MANUAL);
          }
       }
@@ -273,10 +257,12 @@ void pullDataFromPacket() {
           encoderPastL=0;
           encoderPastR=0;
       }      
-                 Serial.print("Encoder L: ");
-          Serial.print(encoderL);
-          Serial.print("  Encoder R: ");
-          Serial.println(encoderR);
+      
+      Serial.print("Encoder L: ");
+      Serial.print(encoderL);
+      Serial.print("  Encoder R: ");
+      Serial.println(encoderR);
+      
       if(encoderL!=encoderPastL)
       {  
          //Use old value to calculate the increment
@@ -292,39 +278,6 @@ void pullDataFromPacket() {
          encoderPastR=encoderR;
       }
      
-     //SPEED CALCULATIONS HANDLING
-      //keeper1                  = navigation_receive[ENCODER_SPEED_R_PIC_RECEIVE] / 100.0;//IMPLIED CM/SEC*100 -> IMPLIED CM/SEC
-      //keeper2                  = navigation_receive[ENCODER_SPEED_L_PIC_RECEIVE] / 100.0;
-      //encoderSpeedR            = ((encoderSpeedR * 3) + keeper1) / 4.0;
-      //encoderSpeedL            = ((encoderSpeedL * 3) + keeper2) / 4.0;
-      
-    //Serial.print(encoderL);
-    //Serial.print(",");
-    //Serial.println(encoderR);
-    //Serial.print(",");
-    //Serial.print(encoderSpeedL);
-    //Serial.print(",");
-    //Serial.println(encoderSpeedR);
-
-      //--------------WII DATA FROM PIC--------------------------------------
-//      beaconCentered[LEFT_CAMERA] = navigation_receive[WII_LEFT_CAMERA_LOCKED];
-//      beaconCentered[RIGHT_CAMERA] = navigation_receive[WII_RIGHT_CAMERA_LOCKED];
-//
-//      //    if(beaconCentered[LEFT_CAMERA])
-//      //  {
-//      beaconAngle[LEFT_CAMERA]    = navigation_receive[WII_LEFT_CAMERA_ANGLE];
-//      //    navigation_receive[WII_LEFT_CAMERA_LOCKED]=0;
-//      //  }
-//
-//      //    if(beaconCentered[RIGHT_CAMERA])
-//      //   {
-//      beaconAngle[RIGHT_CAMERA]   = navigation_receive[WII_RIGHT_CAMERA_ANGLE];
-//      //    navigation_receive[WII_RIGHT_CAMERA_LOCKED]=0;
-//      //   }
-//      numberSweeps[LEFT_CAMERA]   = navigation_receive[WII_NUMBER_SWEEPS_LEFT];
-//      numberSweeps[RIGHT_CAMERA]  = navigation_receive[WII_NUMBER_SWEEPS_RIGHT];
-//      beaconSeen[LEFT_CAMERA]     = navigation_receive[WII_BEACON_SEEN_LEFT];
-//      beaconSeen[RIGHT_CAMERA]    = navigation_receive[WII_BEACON_SEEN_RIGHT];
       break;
   }
 }
@@ -347,11 +300,8 @@ inline void packetWait()
   {
     if(sendDataTimer.timerDone())
     {
-     // Serial.println("Sending in packet wait");
-      
       //pullDataFromPacket();
       Navigation.receiveData();
-      //sendLEDstate(0);
     }
     delay(5);
   }
@@ -362,37 +312,14 @@ inline void packetWait()
 
 inline void terminateMacroSystem()
 {
-  stored_macro_command = 0;
-  Navigation.ToSend(LAST_BOARD_ADDRESS_RECEIVE, NAVIGATION_ADDRESS);
-  Navigation.ToSend(MACRO_COMPLETE, 1);
-  Navigation.ToSend(MACRO_COMMAND_SEND, stored_macro_command);
-  Navigation.sendData(CONTROL_ADDRESS);
-  //delay(5);
-  Navigation.receiveData();    //See if we hear back quickly
-  while (navigation_receive[MACRO_COMMAND_RECEIVE] != 0)
-  {
-    static int sender = 0;
-    Navigation.receiveData();
-
-    sender++;
-    if (sender >= 50)
-    {
-      Navigation.ToSend(LAST_BOARD_ADDRESS_RECEIVE, NAVIGATION_ADDRESS);
-      Navigation.ToSend(MACRO_COMMAND_SEND, 0);
-      Navigation.ToSend(MACRO_COMPLETE, 1);
-      Navigation.sendData(CONTROL_ADDRESS);
-      sender = 0;
-    }
-    delay(2);
-  }
-  Navigation.ToSend(LAST_BOARD_ADDRESS_RECEIVE, NAVIGATION_ADDRESS);
-  Navigation.ToSend(MACRO_COMPLETE, 0);
-  Navigation.sendData(CONTROL_ADDRESS);
-  sendActuatorCommand(255);
+  stored_macro_command = 0;  
   lM = 0;
   rM = 0;  
-  Navigation.receiveData();
-  stored_macro_command = 0;
+  
+  Navigation.ToSend(LAST_BOARD_ADDRESS_RECEIVE, NAVIGATION_ADDRESS);
+  Navigation.ToSend(MACRO_COMMAND_SEND, stored_macro_command);
+  Navigation.sendData(CONTROL_ADDRESS);
+  
 }
 
 //MOTOR COMMAND HELPER COMMUNICATIONS METHODS

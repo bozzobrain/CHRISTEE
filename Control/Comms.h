@@ -86,7 +86,6 @@ void initializeCommunicaton()
   //Serial.begin(9600);
 
   robot.begin(Details(roboMessage), CONTROL_ADDRESS, false, &Serial1);
-  //Bluetooth.begin(Details(receiveArray), CONTROL_ADDRESS, false, &Serial2);
 }
 
 inline void updateCommunication()
@@ -101,7 +100,6 @@ inline void updateCommunication()
     
     //make a mental note that we have sent
     if (heardBack)  heardBack = false;
-    //else if (notSent) notSent = false;
   }
   //control box is always listening to the robot
   //in order to keep track of macro's and keep
@@ -153,26 +151,8 @@ inline void updateCommunication()
         cameraBeacon[RIGHT_CAMERA]    = roboMessage[WII_CAMERA_LEFT_BEACON];
         break;
     }
-    roboMessage[LAST_BOARD_ADDRESS_RECEIVE] = 0;
-    //only store the value of the complete macro
-    //if we are looking for it
-    if (internalMacroKeeper != 0) macro_complete = roboMessage[MACRO_COMPLETE];
-    else                      macro_complete = 0;
-
-   
+    roboMessage[LAST_BOARD_ADDRESS_RECEIVE] = 0; 
   }
-
-  //  if (Bluetooth.receiveData())
-  //  {
-  //    static int leftMotorBT, rightMotorBT;
-  //    leftMotorBT = receiveArray[0];
-  //    rightMotorBT = receiveArray[1];
-  //    if ((leftMotorSpeed == 0) && (rightMotorSpeed == 0))
-  //    {
-  //      robot.ToSend(LEFTMOTORSPEED, leftMotorBT);
-  //      robot.ToSend(RIGHTMOTORSPEED, rightMotorBT);
-  //    }
-  //  }
 
   if (internalMacroKeeper == 0)
   {
@@ -204,61 +184,6 @@ inline void killMacro()
   sendDataNavigation(0, 0, 1);
   internalMacroKeeper = 0;
   internalSubKeeper = 0;
-  
-  //---------------------------------------------------------------------------------------//---------------------------------------------------------------------------------------
-  //ensureReceived(Ending);
-  //ROBOT KILLS MACRO
-    //The robot says we are done, we are finishing on our side to validate state change
-    if (macro_complete == 1)
-    {
-
-      //while the robot has not gotten word back from us
-      while (macro_complete != 0)
-      {
-        //update the information from the robot
-        if (robot.receiveData())
-        {
-          //if good checksum, store data locally.
-          macro_complete = roboMessage[MACRO_COMPLETE];
-        }
-        //count how many times we have checked
-        sender += 1;
-        delay(5);
-        //if we checked 5 times with out a change, resend data
-        if ((int)sender >= 50)
-        {
-
-          sendDataNavigation(0, 0, 1);
-          delay(15);
-          //reset the timer
-          sender = 0;
-        }
-      }
-    }
-    else
-    {
-      //CONTROL BOX KILLS MACRO
-      //while the robot has not gotten the command
-      while (commMacro != 0 )
-      {
-        //update the information from the robot
-        if (robot.receiveData())
-        {
-        commMacro = roboMessage[MACRO_COMMAND_RECEIVE];
-        }
-        //count how many times we have checked
-        sender += 1;
-        delay(5);
-        //if we checked 5 times with out a change, resend data
-        if ((int)sender >= 50)
-        {            
-          sendDataNavigation(0, 0, 1);
-          //reset the timer
-          sender = 0;
-        }
-      }
-    }
-    //---------------------------------------------------------------------------------------//---------------------------------------------------------------------------------------
   commTimer.resetTimer();
 }
 
