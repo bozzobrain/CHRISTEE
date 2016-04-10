@@ -47,16 +47,26 @@ void setup() {
   pinMode(13,OUTPUT);
   initializeCommunications();
   delay(1000);
-  MPU1.MPUinit();
-  MPU2.MPUinit();
-  initMPUFilters();
-
+ // MPU1.MPUinit();
+ // MPU2.MPUinit();
+ // initMPUFilters();
+ digitalWrite(13,HIGH);
+ delay(100);
+ digitalWrite(13,LOW);
+ delay(100);
+ digitalWrite(13,HIGH);
+ delay(100);
+ digitalWrite(13,LOW);
+ delay(100);
+ digitalWrite(13,HIGH);
+ 
 }
 
 void loop() {
+  
   static Timers LEDTimer(1000);
   updateComms();
-  if(MPUTimer.timerDone()) updateMPU();
+  //if(MPUTimer.timerDone()) updateMPU();
   //USBdebug();
   //if(LEDTimer.timerDone()) digitalWrite(13,!digitalRead(13));
 }

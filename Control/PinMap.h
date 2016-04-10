@@ -20,7 +20,7 @@ void initializePins()
   pinModeFast(ACTUATOR_UP, INPUT);
   pinModeFast(ACTUATOR_DOWN, INPUT);
   pinModeFast(ESTOP, INPUT);
-  pinModeFast(MACRO_BUTTON, INPUT);
+  pinMode(MACRO_BUTTON, INPUT);
 
   pinModeFast(AUTO_LIGHT, OUTPUT);
 

@@ -45,7 +45,7 @@ int motor_bucket_angle;
 
 
 
-int navigation_receive[30];
+int navigation_receive[50];
 
 //------------------------------------NAVIGATION RECEIVE------------------------------------------
 //CONTROL RECEIVE
@@ -118,7 +118,7 @@ inline void initializeCommunications()
   // Fast Tramsfer Communications
   Navigation.begin(Details(navigation_receive) , NAVIGATION_ADDRESS, false, &Serial3);
   // Send Actuator Stop Command
-  sendActuatorCommand(255);
+  //sendActuatorCommand(255);
   
   
 }
@@ -177,6 +177,7 @@ inline void macroCommunicationsUpdate()
   }
   else
   {
+    
     commSafety();
   }
 }
@@ -185,14 +186,15 @@ inline void macroCommunicationsUpdate()
 
 void updateFromControlBoard()
 {
+           // sendLEDstate(MANUAL);
   //Data received from the Communications Board
   if (Navigation.receiveData())
   {
      pullDataFromPacket(); 
     //If sent a macro command -- do it
-    if (stored_macro_command != 0 &&  macroSetDelay.timerDone())
+    if ((stored_macro_command != 0) &&  macroSetDelay.timerDone())
     {
-       navigation_receive[MACRO_COMMAND_RECEIVE]=stored_macro_command;
+       //navigation_receive[MACRO_COMMAND_RECEIVE]=stored_macro_command;
        
        initMacroSystem();
     }  
@@ -258,10 +260,10 @@ void pullDataFromPacket() {
           encoderPastR=0;
       }      
       
-      Serial.print("Encoder L: ");
-      Serial.print(encoderL);
-      Serial.print("  Encoder R: ");
-      Serial.println(encoderR);
+//      Serial.print("Encoder L: ");
+//      Serial.print(encoderL);
+//      Serial.print("  Encoder R: ");
+//      Serial.println(encoderR);
       
       if(encoderL!=encoderPastL)
       {  
@@ -302,8 +304,9 @@ inline void packetWait()
     {
       //pullDataFromPacket();
       Navigation.receiveData();
+      digitalWrite(13,!digitalRead(13));
     }
-    delay(5);
+    delay(1);
   }
   readyToSend = true;      //make not we got a good one
   latency.resetTimer();  //delay till send after not received

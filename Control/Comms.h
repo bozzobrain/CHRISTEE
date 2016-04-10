@@ -90,7 +90,7 @@ void initializeCommunicaton()
 
 inline void updateCommunication()
 {
-  static Timers minimumResponseTimer(15);
+  static Timers minimumResponseTimer(25);
   //So if you have heard from the comm after sending -or- if the resend timer timed out and you havent already sent before a safety timeout condition
   if ((heardBack && minimumResponseTimer.timerDone()) || (resendTimer.timerDone() && notSent))
   {
@@ -100,6 +100,9 @@ inline void updateCommunication()
     
     //make a mental note that we have sent
     if (heardBack)  heardBack = false;
+    else notSent=false;
+    minimumResponseTimer.resetTimer();     
+    resendTimer.resetTimer();
   }
   //control box is always listening to the robot
   //in order to keep track of macro's and keep
@@ -121,6 +124,7 @@ inline void updateCommunication()
         
         //if good checksum, store data locally.
         commMacro             = roboMessage[MACRO_COMMAND_RECEIVE];
+    
         //Gyro Angle
         gyroAngle             = roboMessage[GYRO_ANGLE];
         //Robot Motor States
@@ -181,7 +185,7 @@ inline void commSafety()
 
 inline void killMacro()
 {
-  sendDataNavigation(0, 0, 1);
+  sendDataNavigation(0, 0);
   internalMacroKeeper = 0;
   internalSubKeeper = 0;
   commTimer.resetTimer();
@@ -204,6 +208,7 @@ inline void packetWait()
   totalTime = 0;
   while (!robot.receiveData())
   {
+    
     uptime = 0;
     updateScreen();
     time = millis();
@@ -213,11 +218,13 @@ inline void packetWait()
     }
     if (sendTimerWait.timerDone())
     {
+      digitalWrite(13, !digitalRead(13));
       sendDataNavigation(internalMacroKeeper);
       sendDataMotor(0, 0, 255);
     }
     if (digitalReadFast(MACRO_BUTTON) == HIGH)
     {
+    
       killMacro();
     }
     delayMicroseconds(50);
@@ -226,9 +233,9 @@ inline void packetWait()
   }
   
   delay(1);
-  sendDataNavigation(internalMacroKeeper);
-  delay(5);
-  sendDataMotor(leftMotorSpeed, rightMotorSpeed, actuatorSpeed);
+  //sendDataNavigation(internalMacroKeeper);
+  //delay(5);
+  //sendDataMotor(leftMotorSpeed, rightMotorSpeed, actuatorSpeed);
   commTimer.resetTimer();
   CTS = true;
   //writeObject(FORMMESSAGE, pageKeeper, 1);    //change the page
@@ -237,11 +244,10 @@ inline void packetWait()
 }
 
 
-void sendDataNavigation(int _macro_command, int _macro_sub_command, int _macro_stop)
+void sendDataNavigation(int _macro_command, int _macro_sub_command)
 {
   robot.ToSend(LAST_BOARD_ADDRESS_RECEIVE, CONTROL_ADDRESS);
   robot.ToSend(MACRO_SUB_COMMAND, _macro_sub_command);
-  robot.ToSend(MACRO_STOP, _macro_stop);
   robot.ToSend(MACRO_COMMAND_SEND, _macro_command);
   robot.sendData(NAVIGATION_ADDRESS);
 }

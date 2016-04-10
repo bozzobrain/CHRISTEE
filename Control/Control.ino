@@ -39,6 +39,12 @@ void setup()
   activePage = 0;
   delay(2500);  
   writeObject(FORMMESSAGE, 0, 1);
+  
+ digitalWrite(13,HIGH);
+ delay(500);
+ digitalWrite(13,LOW);
+ delay(500);
+ digitalWrite(13,HIGH);
 }
 
 void loop() {
@@ -47,7 +53,7 @@ void loop() {
   updateCommunication();
   updateScreen();
   updateDebug();
-  ledUpdate();
+  //ledUpdate();
 
 }
 

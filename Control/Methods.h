@@ -17,6 +17,6 @@ void sendDataMotor(int actuator);
 void sendDataMotor(int leftMotor, int rightMotor, int actuator);
 void sendDataMotor(int leftMotor, int rightMotor);
 void sendDataNavigation(int _macro_command);
-void sendDataNavigation(int _macro_command, int _macro_sub_command, int _macro_stop);
+void sendDataNavigation(int _macro_command, int _macro_sub_command);
 void sendLEDdata(int stateOverride, int colorPicker);
 void updateScreen();
