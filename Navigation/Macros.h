@@ -97,7 +97,7 @@ inline void initMacroSystem()
         initMPUFilters();
         break;
       case ENCODER_SNIPPIT:
-        newEncoders((signed long)macro_sub_command*100);
+        newEncoders((signed long)macro_sub_command);
         break;
       case 7:
         if (macro_sub_command >= 0 && macro_sub_command <= 90)

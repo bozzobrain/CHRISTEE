@@ -7,14 +7,17 @@
 PID motorOutput(0, motorKp, motorKi, motorKd, 2);
 PID motorOutputL(0, motorKp, motorKi, motorKd, 2);
 PID motorOutputR(0, motorKp, motorKi, motorKd, 2);
-PID simpleMotorOutput(0, 0.0025, 0, 0, 2);
+PID simpleMotorOutput(0, 0.15, 0, 0, 2);
 
-#define TEST_LIMIT_MOTOR_MAG 35
+#define TEST_LIMIT_MOTOR_MAG 30
 void simpleMotorDistanceLRDiffCommand(signed long commandedSpeed);
 
 
 void simpleMotorDistanceCommand(signed long commandedDistance)
 {
+  
+//        Serial.print("EMacro commanded distance: ");
+//        Serial.println(commandedDistance);
   //If current target internally is not equal to the received command;
   if(commandedDistance!=(signed long)simpleMotorOutput.returnTarget())
   {
@@ -47,11 +50,15 @@ int grabIntegerSign(signed long i)
 }
 
 
-#define distanceForOneTreadOperation 1000
+#define distanceForOneTreadOperation 100
 //Meters a speed input into a variable turning capable differential, allows for equal distance as we go on both treads
 //    WILL act as the development for diff driving with new encoders.
 void simpleMotorDistanceLRDiffCommand(signed long commandedSpeed)
 {
+  
+//        Serial.print("EMacro commanded speed: ");
+//        Serial.println(commandedSpeed);
+        
   if(macroEncoderL==macroEncoderR)
   {
      sendMotorCommand(commandedSpeed,commandedSpeed); 
@@ -70,7 +77,7 @@ void simpleMotorDistanceLRDiffCommand(signed long commandedSpeed)
         diff = abs(commandedSpeed);
         
     int leftCommand=grabIntegerSign(commandedSpeed)*(abs(commandedSpeed)-diff);
-    sendMotorCommand(leftCommand,commandedSpeed);
+    sendMotorCommand(-leftCommand,commandedSpeed);
   }
   else
   {
@@ -85,7 +92,7 @@ void simpleMotorDistanceLRDiffCommand(signed long commandedSpeed)
         diff = abs(commandedSpeed);
         
     int rightCommand=grabIntegerSign(commandedSpeed)*(abs(commandedSpeed)-diff);
-    sendMotorCommand(commandedSpeed,rightCommand); 
+    sendMotorCommand(commandedSpeed,-rightCommand); 
     
   }
 }

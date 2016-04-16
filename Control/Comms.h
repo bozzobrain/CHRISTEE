@@ -31,8 +31,10 @@ int receiveArray[4];
 //PIC (MAYBE NAV)
 #define ENCODERSPEEDL                11
 #define ENCODERSPEEDR                12
-#define ENCODERRIGHT                 13
-#define ENCODERLEFT                  14
+#define ENCODER_R_H_PIC_RECEIVE                 13
+#define ENCODER_R_L_PIC_RECEIVE                 15
+#define ENCODER_L_H_PIC_RECEIVE                 14
+#define ENCODER_L_L_PIC_RECEIVE                 16
 //MOTOR
 #define BUCKET_ANGLE                 15
 //Wii Camera Stuff
@@ -87,6 +89,14 @@ void initializeCommunicaton()
 
   robot.begin(Details(roboMessage), CONTROL_ADDRESS, false, &Serial1);
 }
+
+union jointhem{
+    int32_t joined;
+    struct {      
+      uint16_t low;
+      uint16_t high;
+    }endian;
+}_16_to_32;
 
 inline void updateCommunication()
 {
@@ -145,8 +155,19 @@ inline void updateCommunication()
         //Encoder Details
         encoderSpeedL    = roboMessage[ENCODERSPEEDL];
         encoderSpeedR    = roboMessage[ENCODERSPEEDR];
-        encoderR         = roboMessage[ENCODERRIGHT];
-        encoderL         = roboMessage[ENCODERLEFT];
+        
+        //DISTANCE PULSES
+      _16_to_32.endian.high=roboMessage[ENCODER_R_H_PIC_RECEIVE];
+      _16_to_32.endian.low =roboMessage[ENCODER_R_L_PIC_RECEIVE];
+      encoderR                = ( _16_to_32.joined  ) ;    //IMPLIED CM*100 -> IMPLIED CM
+      
+      _16_to_32.endian.high=roboMessage[ENCODER_L_H_PIC_RECEIVE];
+      _16_to_32.endian.low=roboMessage[ENCODER_L_L_PIC_RECEIVE];
+      encoderL                =( _16_to_32.joined ) ;
+      
+        
+        //encoderR         = roboMessage[ENCODERRIGHT];
+        //encoderL         = roboMessage[ENCODERLEFT];
         leftAngle        = roboMessage[WII_CAMERA_LEFT_ANGLE];
         rightAngle       = roboMessage[WII_CAMERA_RIGHT_ANGLE];
         leftLocked       = roboMessage[WII_CAMERA_LEFT_LOCKED];

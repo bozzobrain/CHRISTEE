@@ -248,7 +248,7 @@ void runEncoderDistanceEvenly(float cm)
 
 bool isInRange(signed long checkNum, signed long target, signed long range)
 {
-  return (((checkNum-range)<target) && ((checkNum+range)>target));
+  return ((checkNum<(target+range)) && (checkNum>(target-range)));
 }
 
 void newEncoders(signed long cm)
@@ -266,22 +266,34 @@ void newEncoders(signed long cm)
   //Timer queue up for running
   PIDTimer.resetTimer();
   Timers CommsDelayTiming(5);
- while( !(isInRange(macroEncoderL,cm,DEADZONE_ENCODER)&&isInRange(macroEncoderR,cm,DEADZONE_ENCODER)) && (stored_macro_command != 0))
-  {
+ while( !(isInRange(macroEncoderL,cm,DEADZONE_ENCODER) && isInRange(macroEncoderR,cm,DEADZONE_ENCODER)) && (stored_macro_command != 0))
+  { 
+//    Serial.print("CM: ");
+//    Serial.print(cm);
+//    Serial.print(", LE: ");
+//    Serial.print(macroEncoderL);
+//    Serial.print(", RE: ");
+//    Serial.print(macroEncoderR);
+//    Serial.print(",  inRL: ");
+//    Serial.print(isInRange(macroEncoderL,cm,DEADZONE_ENCODER)==true);
+//    
+//    Serial.print(",  inRR: ");
+//    Serial.println(isInRange(macroEncoderR,cm,DEADZONE_ENCODER)==true);
     //if(MPUTimer.timerDone()) updateMPU();
     if(PIDTimer.timerDone())
     {    
-        simpleMotorDistanceCommand(cm);
+        simpleMotorDistanceCommand(cm); 
     }
      // output.verboseCalc();
-     if(CommsDelayTiming.timerDone())
-        macroCommunicationsUpdate();    
+     if(CommsDelayTiming.timerDone()){
+        macroCommunicationsUpdate();   
+     }
   }
   
   //allStop();
   motor_unStick();
   delay(15);
-  wipeEncoders();
+  //wipeEncoders();
 }
 
 

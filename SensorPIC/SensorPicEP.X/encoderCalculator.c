@@ -73,19 +73,27 @@ void updateEncoders() {
 //        LeftSpeedCalculation();
 //    }
 }
-
+int prescalerRight=0;
 void __attribute__((interrupt, no_auto_psv)) _IC1Interrupt(void) {
     //INDICATOR1=ON;
-    if(PORTBbits.RB0)
-    {
-        navEncoderRight++;
-        EncoderRight++;
+    
+    if(prescalerRight>10){
+        if(PORTBbits.RB0)
+        {
+            navEncoderRight++;
+            EncoderRight++;
+        }
+        else
+         {
+           navEncoderRight--;
+            EncoderRight--;  
+         }   
+        prescalerRight=0;
     }
     else
-     {
-       navEncoderRight--;
-        EncoderRight--;  
-     }
+    {
+     prescalerRight++;   
+    }
 //    rolloverPastRight = rolloverRight;
 //    rolloverRight = 0;
 //    TMR3 = 0x00; //reset timer
@@ -99,19 +107,28 @@ void __attribute__((interrupt, no_auto_psv)) _IC1Interrupt(void) {
     IFS0bits.IC1IF = 0; // Clear IC1 Interrupt Status Flag
 }
 
+int prescalerLeft=0;
 void __attribute__((interrupt, no_auto_psv)) _IC2Interrupt(void) {
 
     // INDICATOR2=ON;
-     if(!PORTBbits.RB1)
+    if(prescalerLeft>10){
+        if(!PORTBbits.RB1)
+        {
+           navEncoderLeft++;
+           EncoderLeft++;
+        }
+        else
+        {
+           navEncoderLeft--;
+           EncoderLeft--;  
+        }
+        prescalerLeft=0;
+    }
+    else
     {
-        navEncoderLeft++;
-        EncoderLeft++;
-     }
-     else
-     {
-        navEncoderLeft--;
-        EncoderLeft--;  
-     }
+     prescalerLeft++;   
+    }
+    
 //    rolloverPastLeft = rolloverLeft;
 //    rolloverLeft = 0;
 //    SpeedCalcLeft = true;
@@ -161,8 +178,13 @@ void sendEncoderValues() {
     sendData(NAVIGATION_ADDRESS);
     
     ToSend(LAST_BOARD_ADDRESS_RECEIVE,   PIC_ADDRESS);
-    ToSend(ENCODER_R_CONTROL, EncoderRight);
-    ToSend(ENCODER_L_CONTROL, EncoderLeft);
+    _16_to_32.joined=navEncoderRight;
+    ToSend(ENCODER_R_L_CONTROL, _16_to_32.endian.low);
+    ToSend(ENCODER_R_H_CONTROL, _16_to_32.endian.high);
+    
+    _16_to_32.joined=navEncoderLeft;
+    ToSend(ENCODER_L_H_CONTROL, _16_to_32.endian.high);
+    ToSend(ENCODER_L_L_CONTROL, _16_to_32.endian.low);
     //ToSend(ENCODER_SPEED_R_CONTROL, SpeedRight);
     //ToSend(ENCODER_SPEED_L_CONTROL, SpeedLeft);
     sendData(CONTROL_ADDRESS);

@@ -27,8 +27,8 @@ float milliamphours;
 float volts = 2600;
 float milliamps = 200, watts;
 //Encoder Variables
-float encoderR=9999;
-float encoderL=9999;
+long encoderR=9999;
+long encoderL=9999;
 unsigned int encoderSpeedR=9999, encoderSpeedL=9999;
 //Motor Values
 int motorL=85;

@@ -260,10 +260,14 @@ void pullDataFromPacket() {
           encoderPastR=0;
       }      
       
-//      Serial.print("Encoder L: ");
-//      Serial.print(encoderL);
-//      Serial.print("  Encoder R: ");
-//      Serial.println(encoderR);
+        Serial.print("Encoder L: ");
+        Serial.print(encoderL);
+        Serial.print(",  Encoder R: ");
+        Serial.print(encoderR);     
+        Serial.print(",  MEncoder L: ");
+        Serial.print(macroEncoderL);
+        Serial.print(",  MEncoder R: ");
+        Serial.println(macroEncoderR);
       
       if(encoderL!=encoderPastL)
       {  
@@ -322,12 +326,17 @@ inline void terminateMacroSystem()
   Navigation.ToSend(LAST_BOARD_ADDRESS_RECEIVE, NAVIGATION_ADDRESS);
   Navigation.ToSend(MACRO_COMMAND_SEND, stored_macro_command);
   Navigation.sendData(CONTROL_ADDRESS);
+  delay(500);
   
 }
 
 //MOTOR COMMAND HELPER COMMUNICATIONS METHODS
 void sendMotorCommand(int leftMotor, int rightMotor)
 {
+//  Serial.print("Sending motorL: ");
+//  Serial.print(leftMotor);
+//  Serial.print(",  motorR: ");
+//  Serial.println(rightMotor);
   lM = leftMotor;
   rM = rightMotor;
   Navigation.ToSend(LAST_BOARD_ADDRESS_RECEIVE, NAVIGATION_ADDRESS);
