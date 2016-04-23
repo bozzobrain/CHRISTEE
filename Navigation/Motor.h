@@ -7,18 +7,18 @@
 PID motorOutput(0, motorKp, motorKi, motorKd, 2);
 PID motorOutputL(0, motorKp, motorKi, motorKd, 2);
 PID motorOutputR(0, motorKp, motorKi, motorKd, 2);
-PID simpleMotorOutput(0, 0.15, 0, 0, 2);
+PID simpleMotorOutput(0, 0.18, 0, 0, 2);
 
-#define TEST_LIMIT_MOTOR_MAG 30
-void simpleMotorDistanceLRDiffCommand(signed long commandedSpeed);
+#define TEST_LIMIT_MOTOR_MAG 18
+void simpleMotorDistanceLRDiffCommand(signed long commandedSpeed, signed long commandedDistance);
 
-
+//Pass it a value in cm (commandedDistance
 void simpleMotorDistanceCommand(signed long commandedDistance)
 {
   
 //        Serial.print("EMacro commanded distance: ");
 //        Serial.println(commandedDistance);
-  //If current target internally is not equal to the received command;
+  //If current target internally is not equal to the received command tell the PID where to go
   if(commandedDistance!=(signed long)simpleMotorOutput.returnTarget())
   {
     simpleMotorOutput.clearSystem();
@@ -28,14 +28,18 @@ void simpleMotorDistanceCommand(signed long commandedDistance)
   //for 10 we should be calculating a decision
   if(counter<10)
   {
-    simpleMotorOutput.updateOutput((macroEncoderL+macroEncoderR)/2.0);
+   
+      simpleMotorOutput.updateOutput((macroEncoderL+macroEncoderR)/2.0);
+   
     counter++;
   }
   //every 10 we should make a decision
   else
   {
     //Send the resulting output of the PID output error to a LR differential command method
-    simpleMotorDistanceLRDiffCommand(constrain(simpleMotorOutput.updateOutput((macroEncoderL+macroEncoderR)/2.0),-TEST_LIMIT_MOTOR_MAG,TEST_LIMIT_MOTOR_MAG));
+  
+    simpleMotorDistanceLRDiffCommand(constrain(simpleMotorOutput.updateOutput((macroEncoderL+macroEncoderR)/2.0),-TEST_LIMIT_MOTOR_MAG,TEST_LIMIT_MOTOR_MAG), commandedDistance);
+
     counter=0;
   }
   
@@ -50,50 +54,88 @@ int grabIntegerSign(signed long i)
 }
 
 
-#define distanceForOneTreadOperation 100
+#define distanceForOneTreadOperation 20
 //Meters a speed input into a variable turning capable differential, allows for equal distance as we go on both treads
 //    WILL act as the development for diff driving with new encoders.
-void simpleMotorDistanceLRDiffCommand(signed long commandedSpeed)
+void simpleMotorDistanceLRDiffCommand(signed long commandedSpeed, signed long commandedDistance)
 {
   
 //        Serial.print("EMacro commanded speed: ");
 //        Serial.println(commandedSpeed);
-        
+
+  //If the left and right ENCODERS are at the same value
   if(macroEncoderL==macroEncoderR)
   {
+    
      sendMotorCommand(commandedSpeed,commandedSpeed); 
   }
   else if(abs(macroEncoderL)>abs(macroEncoderR))
   {
     //calculate the magnitude of the difference
-    int diff=abs(macroEncoderL)-abs(macroEncoderR);
+    float diff=abs(macroEncoderL)-abs(macroEncoderR);
     
-    //scale it to the incoming command magnitude
-    //as difference goes to infinity, the new diff goes to commandedspeed
-    
+    //scale it for Left versus right speed command... difference is 0-1 for reduction of tread speed
     if(diff<distanceForOneTreadOperation)  //if the difference is less than distance offset that will drive the tread to one side full
-        diff = abs(commandedSpeed/(distanceForOneTreadOperation-diff));  //As the difference approaches the full one sided drive, the difference approaches commandedSpeed
+        diff = ((distanceForOneTreadOperation-diff)/distanceForOneTreadOperation);  //As the difference approaches the full one sided drive, the difference approaches commandedSpeed
     else 
-        diff = abs(commandedSpeed);
-        
-    int leftCommand=grabIntegerSign(commandedSpeed)*(abs(commandedSpeed)-diff);
-    sendMotorCommand(-leftCommand,commandedSpeed);
+        diff = 0;
+     
+    //Create a commanded speed that is not an average of distances, but an average of the errors
+    float newCommandedSpeed= ((abs(macroEncoderR-commandedDistance)+abs(macroEncoderL-commandedDistance))/4);
+    
+    if(abs(commandedSpeed)>=4)
+    {
+      newCommandedSpeed=abs(commandedSpeed);
+    }
+   
+    //Calculate the errors, to be used for direction of motor command
+    int errorRight  = commandedDistance-macroEncoderR;
+    int errorLeft   = commandedDistance-macroEncoderL;
+    
+    //Make new motor command values from the new speed and the direction calculated
+    int rightCommand= grabIntegerSign(errorRight) * (newCommandedSpeed);
+    int leftCommand = grabIntegerSign(errorLeft)  * (newCommandedSpeed*diff);
+    
+    Serial.print("NewCommandedSpeed: ");
+    Serial.print(newCommandedSpeed);
+    Serial.print(", difference: ");
+    Serial.println(diff);
+    
+    sendMotorCommand(leftCommand,rightCommand);
   }
   else
   {
-       //calculate the magnitude of the difference
-    int diff=abs(macroEncoderR)-abs(macroEncoderL);
-    //scale it to the incoming command magnitude
-    //as difference goes to infinity, the new diff goes to commandedspeed
-    
+    //calculate the magnitude of the difference
+    float diff=abs(macroEncoderR)-abs(macroEncoderL);
+     
+    //scale it for Left versus right speed command... difference is 0-1 for reduction of tread speed
     if(diff<distanceForOneTreadOperation)  //if the difference is less than distance offset that will drive the tread to one side full
-        diff = abs(commandedSpeed/(distanceForOneTreadOperation-diff));  //As the difference approaches the full one sided drive, the difference approaches commandedSpeed
+        diff = ((distanceForOneTreadOperation-diff) / distanceForOneTreadOperation);  //As the difference approaches the full one sided drive, the difference approaches commandedSpeed
     else 
-        diff = abs(commandedSpeed);
-        
-    int rightCommand=grabIntegerSign(commandedSpeed)*(abs(commandedSpeed)-diff);
-    sendMotorCommand(commandedSpeed,-rightCommand); 
+        diff = 0;
     
+    //Create a commanded speed that is not an average of distances, but an average of the errors
+    float newCommandedSpeed = ((abs(macroEncoderR-commandedDistance)+abs(macroEncoderL-commandedDistance))/4);  
+    
+    if(abs(commandedSpeed)>=4)
+    {
+      newCommandedSpeed=abs(commandedSpeed);
+    }
+    
+    //Calculate the errors, to be used for direction of motor command
+    int errorRight  = commandedDistance-macroEncoderR;
+    int errorLeft   = commandedDistance-macroEncoderL;
+    
+    //Make new motor command values from the new speed and the direction calculated
+    int rightCommand = grabIntegerSign(errorRight) * (newCommandedSpeed*diff);
+    int leftCommand  = grabIntegerSign(errorLeft)  * (newCommandedSpeed);
+    
+    Serial.print("NewCommandedSpeed: ");
+    Serial.print(newCommandedSpeed);
+    Serial.print(", difference: ");
+    Serial.println(diff);
+    
+    sendMotorCommand(leftCommand,rightCommand);     
   }
 }
 

@@ -158,7 +158,7 @@ inline void macroCommunicationsUpdate()
   if(LEDresend.timerDone())
   {
     sendLEDstate(MACRO);    
-    digitalWrite(13,!digitalRead(13));
+    //digitalWrite(13,!digitalRead(13));
   }
   if (Navigation.receiveData())
   {
@@ -166,7 +166,7 @@ inline void macroCommunicationsUpdate()
     {
       stored_macro_command = 0;
       macro_sub_command = 0;
-      macroSetDelay.timerDone();
+      macroSetDelay.resetTimer();
       return;
     }    
     pullDataFromPacket();
@@ -253,21 +253,21 @@ void pullDataFromPacket() {
       _16_to_32.endian.high=navigation_receive[ENCODER_L_H_PIC_RECEIVE];
       _16_to_32.endian.low=navigation_receive[ENCODER_L_L_PIC_RECEIVE];
       encoderL                =( _16_to_32.joined ) ;
-      
+      digitalWrite(13,!digitalRead(13));
       if(encoderR==0 && encoderL==0)
       {
           encoderPastL=0;
           encoderPastR=0;
       }      
       
-        Serial.print("Encoder L: ");
-        Serial.print(encoderL);
-        Serial.print(",  Encoder R: ");
-        Serial.print(encoderR);     
-        Serial.print(",  MEncoder L: ");
-        Serial.print(macroEncoderL);
-        Serial.print(",  MEncoder R: ");
-        Serial.println(macroEncoderR);
+//        Serial.print("Encoder L: ");
+//        Serial.print(encoderL);
+//        Serial.print(",  Encoder R: ");
+//        Serial.print(encoderR);     
+//        Serial.print(",  MEncoder L: ");
+//        Serial.print(macroEncoderL);
+//        Serial.print(",  MEncoder R: ");
+//        Serial.println(macroEncoderR);
       
       if(encoderL!=encoderPastL)
       {  
@@ -308,7 +308,7 @@ inline void packetWait()
     {
       //pullDataFromPacket();
       Navigation.receiveData();
-      digitalWrite(13,!digitalRead(13));
+      
     }
     delay(1);
   }
@@ -326,17 +326,17 @@ inline void terminateMacroSystem()
   Navigation.ToSend(LAST_BOARD_ADDRESS_RECEIVE, NAVIGATION_ADDRESS);
   Navigation.ToSend(MACRO_COMMAND_SEND, stored_macro_command);
   Navigation.sendData(CONTROL_ADDRESS);
-  delay(500);
+  macroSetDelay.resetTimer();
   
 }
 
 //MOTOR COMMAND HELPER COMMUNICATIONS METHODS
 void sendMotorCommand(int leftMotor, int rightMotor)
 {
-//  Serial.print("Sending motorL: ");
-//  Serial.print(leftMotor);
-//  Serial.print(",  motorR: ");
-//  Serial.println(rightMotor);
+  Serial.print("Sending motorL: ");
+  Serial.print(leftMotor);
+  Serial.print(",  motorR: ");
+  Serial.println(rightMotor);
   lM = leftMotor;
   rM = rightMotor;
   Navigation.ToSend(LAST_BOARD_ADDRESS_RECEIVE, NAVIGATION_ADDRESS);

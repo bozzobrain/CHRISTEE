@@ -50,7 +50,7 @@ void LeftSpeedCalculation(void) {
 }
 
 void updateEncoders() {
-    if (encoderTime > 100) {
+    if (encoderTime > 50) {
         //INDICATOR3^=1;
         encoderTime = 0;
 //        if (!EncoderRight) {
@@ -164,7 +164,7 @@ void sendEncoderValues() {
         INDICATOR2=0;
     }
     ToSend(LAST_BOARD_ADDRESS_RECEIVE,   PIC_ADDRESS);
-    _16_to_32.joined=navEncoderRight;
+    _16_to_32.joined=navEncoderRight/2;
     ToSend(ENCODER_R_L_NAVIGATION, _16_to_32.endian.low);
     ToSend(ENCODER_R_H_NAVIGATION, _16_to_32.endian.high);
     
@@ -176,16 +176,16 @@ void sendEncoderValues() {
     //ToSend(ENCODER_SPEED_R_NAVIGATION, SpeedRight);
     //ToSend(ENCODER_SPEED_L_NAVIGATION, SpeedLeft);
     sendData(NAVIGATION_ADDRESS);
-    
-    ToSend(LAST_BOARD_ADDRESS_RECEIVE,   PIC_ADDRESS);
-    _16_to_32.joined=navEncoderRight;
-    ToSend(ENCODER_R_L_CONTROL, _16_to_32.endian.low);
-    ToSend(ENCODER_R_H_CONTROL, _16_to_32.endian.high);
-    
-    _16_to_32.joined=navEncoderLeft;
-    ToSend(ENCODER_L_H_CONTROL, _16_to_32.endian.high);
-    ToSend(ENCODER_L_L_CONTROL, _16_to_32.endian.low);
-    //ToSend(ENCODER_SPEED_R_CONTROL, SpeedRight);
-    //ToSend(ENCODER_SPEED_L_CONTROL, SpeedLeft);
-    sendData(CONTROL_ADDRESS);
+//    
+//    ToSend(LAST_BOARD_ADDRESS_RECEIVE,   PIC_ADDRESS);
+//    _16_to_32.joined=navEncoderRight;
+//    ToSend(ENCODER_R_L_CONTROL, _16_to_32.endian.low);
+//    ToSend(ENCODER_R_H_CONTROL, _16_to_32.endian.high);
+//    
+//    _16_to_32.joined=navEncoderLeft;
+//    ToSend(ENCODER_L_H_CONTROL, _16_to_32.endian.high);
+//    ToSend(ENCODER_L_L_CONTROL, _16_to_32.endian.low);
+//    //ToSend(ENCODER_SPEED_R_CONTROL, SpeedRight);
+//    //ToSend(ENCODER_SPEED_L_CONTROL, SpeedLeft);
+//    sendData(CONTROL_ADDRESS);
 }

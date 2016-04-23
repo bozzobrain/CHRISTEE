@@ -15,6 +15,60 @@ void updateMacroEncoderValueL(signed long increment)
   macroEncoderL+=increment;
 }
 
+
+#define DEADZONE_ENCODER 15
+
+bool isInRange(signed long checkNum, signed long target, signed long range)
+{
+  return ((checkNum<(target+range)) && (checkNum>(target-range)));
+}
+
+void newEncoders(signed long cm)
+{
+  //Zero the encoder variables in the comms system
+  wipeEncoders();
+  
+  //Position PID loop to target the distance requested
+ // PID output(cm, encoderKp, encoderKi, encoderKd, 2);
+  //Timer queue up for running
+  PIDTimer.resetTimer();
+  Timers CommsDelayTiming(2);
+ while( !(isInRange(macroEncoderL,cm,DEADZONE_ENCODER) && isInRange(macroEncoderR,cm,DEADZONE_ENCODER)) && (stored_macro_command != 0))
+  { 
+  
+    //if(MPUTimer.timerDone()) updateMPU();
+    if(PIDTimer.timerDone())
+    {    
+        simpleMotorDistanceCommand(cm); 
+          Serial.print("CM: ");
+    Serial.print(cm);
+    Serial.print(", LE: ");
+    Serial.print(macroEncoderL);
+    Serial.print(", RE: ");
+    Serial.print(macroEncoderR);
+    Serial.print(",  inRL: ");
+    Serial.print(isInRange(macroEncoderL,cm,DEADZONE_ENCODER)==true);
+    
+    Serial.print(",  inRR: ");
+    Serial.println(isInRange(macroEncoderR,cm,DEADZONE_ENCODER)==true);
+    }
+     if(CommsDelayTiming.timerDone())
+     {
+        macroCommunicationsUpdate();   
+     }
+  }
+  allStop();
+  delay(15);
+  motor_unStick();
+  
+}
+
+
+
+
+
+
+
 void encoderRun1()
 { 
   while(stored_macro_command != 0)
@@ -243,60 +297,6 @@ void runEncoderDistanceEvenly(float cm)
   motor_unStick();
   wipeEncoders();
 }
-
-#define DEADZONE_ENCODER 50
-
-bool isInRange(signed long checkNum, signed long target, signed long range)
-{
-  return ((checkNum<(target+range)) && (checkNum>(target-range)));
-}
-
-void newEncoders(signed long cm)
-{
-  //SET INTERNAL GYRO ANGLE TO ZERO
-  gyroF1.zeroInternalAngle();
-  gyroF2.zeroInternalAngle();
-  //Internal macroAngle Keeper for this macro
-  macroAngle=0;
-  //Zero the encoder variables in the comms system
-  wipeEncoders();
-  
-  //Position PID loop to target the distance requested
- // PID output(cm, encoderKp, encoderKi, encoderKd, 2);
-  //Timer queue up for running
-  PIDTimer.resetTimer();
-  Timers CommsDelayTiming(5);
- while( !(isInRange(macroEncoderL,cm,DEADZONE_ENCODER) && isInRange(macroEncoderR,cm,DEADZONE_ENCODER)) && (stored_macro_command != 0))
-  { 
-//    Serial.print("CM: ");
-//    Serial.print(cm);
-//    Serial.print(", LE: ");
-//    Serial.print(macroEncoderL);
-//    Serial.print(", RE: ");
-//    Serial.print(macroEncoderR);
-//    Serial.print(",  inRL: ");
-//    Serial.print(isInRange(macroEncoderL,cm,DEADZONE_ENCODER)==true);
-//    
-//    Serial.print(",  inRR: ");
-//    Serial.println(isInRange(macroEncoderR,cm,DEADZONE_ENCODER)==true);
-    //if(MPUTimer.timerDone()) updateMPU();
-    if(PIDTimer.timerDone())
-    {    
-        simpleMotorDistanceCommand(cm); 
-    }
-     // output.verboseCalc();
-     if(CommsDelayTiming.timerDone()){
-        macroCommunicationsUpdate();   
-     }
-  }
-  
-  //allStop();
-  motor_unStick();
-  delay(15);
-  //wipeEncoders();
-}
-
-
 
 
 void runEncoderDistanceDiggingly(float cm)
