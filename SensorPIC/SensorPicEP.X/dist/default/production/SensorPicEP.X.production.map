@@ -188,11 +188,11 @@ section                    address   length (PC units)   length (bytes) (dec)
 -------                    -------   -----------------   --------------------
 .text                        0x200              0x1ff4          0x2fee  (12270)
 .const                      0x21f4                0xa4            0xf6  (246)
-.text                       0x2298              0x277c          0x3b3a  (15162)
-.dinit                      0x4a14               0x254           0x37e  (894)
-.text                       0x4c68               0x5f4           0x8ee  (2286)
+.text                       0x2298              0x279c          0x3b6a  (15210)
+.dinit                      0x4a34               0x254           0x37e  (894)
+.text                       0x4c88               0x5f4           0x8ee  (2286)
 
-                     Total program memory used (bytes):         0x788a  (30858) 5%
+                     Total program memory used (bytes):         0x78ba  (30906) 5%
 
 
 Auxflash Memory  [Origin = 0x7fc000, Length = 0x3ffa]
@@ -577,36 +577,36 @@ External Symbols in Program Memory (by address):
                   0x0048f8                  __IC1Interrupt
                   0x004950                  __IC2Interrupt
                   0x0049a8                  _sendEncoderValues
-                  0x004c68                  _UART_init
-                  0x004cba                  _UART_buff_init
-                  0x004cca                  _UART_buff_put
-                  0x004d38                  _UART_buff_get
-                  0x004d78                  _UART_buff_flush
-                  0x004da4                  _UART_buff_size
-                  0x004db2                  _UART_buff_modulo_inc
-                  0x004dd0                  _UART_buff_peek
-                  0x004de4                  _Receive_peek
-                  0x004df2                  _Receive_available
-                  0x004e00                  _Receive_get
-                  0x004e0e                  _Send_put
-                  0x004e36                  __U1RXInterrupt
-                  0x004e5c                  __U1TXInterrupt
-                  0x004e96                  _initialize
-                  0x004efc                  _oscillator
-                  0x004f52                  _timerOne
-                  0x004f74                  _timerTwo
-                  0x004fa0                  _initUART1
-                  0x004fc6                  _inputCapture
-                  0x00504c                  _initPWM1
-                  0x0050ac                  _initPWM2
-                  0x00510c                  _setAngle1
-                  0x00515e                  _setAngle2
-                  0x0051b0                  _presentAngle1
-                  0x0051ba                  _presentAngle2
-                  0x0051c4                  _indicatorsOFF
-                  0x0051d2                  _debugLEDs
-                  0x0051fe                  _main
-                  0x005234                  _constrain
+                  0x004c88                  _UART_init
+                  0x004cda                  _UART_buff_init
+                  0x004cea                  _UART_buff_put
+                  0x004d58                  _UART_buff_get
+                  0x004d98                  _UART_buff_flush
+                  0x004dc4                  _UART_buff_size
+                  0x004dd2                  _UART_buff_modulo_inc
+                  0x004df0                  _UART_buff_peek
+                  0x004e04                  _Receive_peek
+                  0x004e12                  _Receive_available
+                  0x004e20                  _Receive_get
+                  0x004e2e                  _Send_put
+                  0x004e56                  __U1RXInterrupt
+                  0x004e7c                  __U1TXInterrupt
+                  0x004eb6                  _initialize
+                  0x004f1c                  _oscillator
+                  0x004f72                  _timerOne
+                  0x004f94                  _timerTwo
+                  0x004fc0                  _initUART1
+                  0x004fe6                  _inputCapture
+                  0x00506c                  _initPWM1
+                  0x0050cc                  _initPWM2
+                  0x00512c                  _setAngle1
+                  0x00517e                  _setAngle2
+                  0x0051d0                  _presentAngle1
+                  0x0051da                  _presentAngle2
+                  0x0051e4                  _indicatorsOFF
+                  0x0051f2                  _debugLEDs
+                  0x00521e                  _main
+                  0x005254                  _constrain
 
 External Symbols in Program Memory (by name):
 
@@ -633,9 +633,9 @@ External Symbols in Program Memory (by name):
                   0x004718                  _ReceiveByteI2Ctwo
                   0x00431a                  _ReceiveI2Cone
                   0x0045ae                  _ReceiveI2Ctwo
-                  0x004df2                  _Receive_available
-                  0x004e00                  _Receive_get
-                  0x004de4                  _Receive_peek
+                  0x004e12                  _Receive_available
+                  0x004e20                  _Receive_get
+                  0x004e04                  _Receive_peek
                   0x0047c0                  _RightSpeedCalculation
                   0x004380                  _SendDataAddressI2Cone
                   0x004614                  _SendDataAddressI2Ctwo
@@ -651,7 +651,7 @@ External Symbols in Program Memory (by name):
                   0x004602                  _SendSlaveAddressI2Ctwo
                   0x004446                  _SendStartI2Cone
                   0x0046da                  _SendStartI2Ctwo
-                  0x004e0e                  _Send_put
+                  0x004e2e                  _Send_put
                   0x0044ec                  _StatusI2Cone
                   0x004780                  _StatusI2Ctwo
                   0x0044cc                  _StopFunctionI2Cone
@@ -659,14 +659,14 @@ External Symbols in Program Memory (by name):
                   0x0044e0                  _SuccessFunctionI2Cone
                   0x004774                  _SuccessFunctionI2Ctwo
                   0x003f3e                  _ToSend
-                  0x004d78                  _UART_buff_flush
-                  0x004d38                  _UART_buff_get
-                  0x004cba                  _UART_buff_init
-                  0x004db2                  _UART_buff_modulo_inc
-                  0x004dd0                  _UART_buff_peek
-                  0x004cca                  _UART_buff_put
-                  0x004da4                  _UART_buff_size
-                  0x004c68                  _UART_init
+                  0x004d98                  _UART_buff_flush
+                  0x004d58                  _UART_buff_get
+                  0x004cda                  _UART_buff_init
+                  0x004dd2                  _UART_buff_modulo_inc
+                  0x004df0                  _UART_buff_peek
+                  0x004cea                  _UART_buff_put
+                  0x004dc4                  _UART_buff_size
+                  0x004c88                  _UART_init
                   0x00037a                  __DefaultInterrupt
                   0x0048f8                  __IC1Interrupt
                   0x004950                  __IC2Interrupt
@@ -674,8 +674,8 @@ External Symbols in Program Memory (by name):
                   0x00478c                  __MI2C2Interrupt
                   0x00033a                  __T1Interrupt
                   0x000362                  __T2Interrupt
-                  0x004e36                  __U1RXInterrupt
-                  0x004e5c                  __U1TXInterrupt
+                  0x004e56                  __U1RXInterrupt
+                  0x004e7c                  __U1TXInterrupt
                   0x0019ba                  ___adddf3
                   0x00042c                  ___addsf3
                   0x001ac8                  ___divdf3
@@ -746,7 +746,7 @@ External Symbols in Program Memory (by name):
                   0x00267a                  _calculateCamera
                   0x003086                  _calculateXY
                   0x0037d4                  _cameraReady
-                  0x005234                  _constrain
+                  0x005254                  _constrain
                   0x0004ea                  _cosf
                   0x004184                  _crcBufS_get
                   0x0040d6                  _crcBufS_put
@@ -754,7 +754,7 @@ External Symbols in Program Memory (by name):
                   0x003046                  _customBeaconCentered
                   0x0040cc                  _dataAddressError
                   0x003550                  _debugBlobs
-                  0x0051d2                  _debugLEDs
+                  0x0051f2                  _debugLEDs
                   0x00361a                  _delay
                   0x002efa                  _doBeaconAcquisition
                   0x002f56                  _doContinuousAcquisition
@@ -767,21 +767,21 @@ External Symbols in Program Memory (by name):
                   0x001d06                  _frexp
                   0x001d06                  _frexpl
                   0x003018                  _horizontalBeaconCentered
-                  0x0051c4                  _indicatorsOFF
+                  0x0051e4                  _indicatorsOFF
                   0x003630                  _initCamera
-                  0x00504c                  _initPWM1
-                  0x0050ac                  _initPWM2
-                  0x004fa0                  _initUART1
-                  0x004e96                  _initialize
-                  0x004fc6                  _inputCapture
+                  0x00506c                  _initPWM1
+                  0x0050cc                  _initPWM2
+                  0x004fc0                  _initUART1
+                  0x004eb6                  _initialize
+                  0x004fe6                  _inputCapture
                   0x0035f2                  _isAbout
-                  0x0051fe                  _main
+                  0x00521e                  _main
                   0x000a6e                  _malloc
                   0x000c22                  _memcpy
                   0x000c34                  _memset
-                  0x004efc                  _oscillator
-                  0x0051b0                  _presentAngle1
-                  0x0051ba                  _presentAngle2
+                  0x004f1c                  _oscillator
+                  0x0051d0                  _presentAngle1
+                  0x0051da                  _presentAngle2
                   0x0037f8                  _read
                   0x0037a0                  _readCamera
                   0x000ba0                  _realloc
@@ -792,12 +792,12 @@ External Symbols in Program Memory (by name):
                   0x003bd2                  _sendData
                   0x0049a8                  _sendEncoderValues
                   0x002666                  _sendWiiData
-                  0x00510c                  _setAngle1
-                  0x00515e                  _setAngle2
+                  0x00512c                  _setAngle1
+                  0x00517e                  _setAngle2
                   0x0007dc                  _sinf
                   0x000a04                  _sqrtf
-                  0x004f52                  _timerOne
-                  0x004f74                  _timerTwo
+                  0x004f72                  _timerOne
+                  0x004f94                  _timerTwo
                   0x0048e4                  _updateEncoders
                   0x002fea                  _verticalBeaconCentered
                   0x002296                  _wiiUpdateFrequency
@@ -1218,8 +1218,8 @@ __FUID0
                   0x000024          0x4 LONG 0x37a DEFINED (__T3Interrupt)?ABSOLUTE (__T3Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x000026          0x4 LONG 0x37a DEFINED (__SPI1ErrInterrupt)?ABSOLUTE (__SPI1ErrInterrupt):ABSOLUTE (__DefaultInterrupt)
                   0x000028          0x4 LONG 0x37a DEFINED (__SPI1Interrupt)?ABSOLUTE (__SPI1Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x00002a          0x4 LONG 0x4e36 DEFINED (__U1RXInterrupt)?ABSOLUTE (__U1RXInterrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x00002c          0x4 LONG 0x4e5c DEFINED (__U1TXInterrupt)?ABSOLUTE (__U1TXInterrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x00002a          0x4 LONG 0x4e56 DEFINED (__U1RXInterrupt)?ABSOLUTE (__U1RXInterrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x00002c          0x4 LONG 0x4e7c DEFINED (__U1TXInterrupt)?ABSOLUTE (__U1TXInterrupt):ABSOLUTE (__DefaultInterrupt)
                   0x00002e          0x4 LONG 0x37a DEFINED (__AD1Interrupt)?ABSOLUTE (__AD1Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x000030          0x4 LONG 0x37a DEFINED (__DMA1Interrupt)?ABSOLUTE (__DMA1Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x000032          0x4 LONG 0x37a DEFINED (__NVMInterrupt)?ABSOLUTE (__NVMInterrupt):ABSOLUTE (__DefaultInterrupt)
@@ -4173,7 +4173,7 @@ __c30_signature
  .const             0xa296          0x2 build/default/production/main.o
                     0xa296                  _wiiUpdateFrequency
 
-.text             0x002298       0x277c
+.text             0x002298       0x279c
  .text            0x002298       0x1886 build/default/production/wiiCamera.o
                   0x002298                  _seekBeacon
                   0x002666                  _sendWiiData
@@ -4253,7 +4253,7 @@ __c30_signature
                   0x004774                  _SuccessFunctionI2Ctwo
                   0x004780                  _StatusI2Ctwo
                   0x00478c                  __MI2C2Interrupt
- .text            0x0047c0        0x254 build/default/production/encoderCalculator.o
+ .text            0x0047c0        0x274 build/default/production/encoderCalculator.o
                   0x0047c0                  _RightSpeedCalculation
                   0x004852                  _LeftSpeedCalculation
                   0x0048e4                  _updateEncoders
@@ -4261,41 +4261,41 @@ __c30_signature
                   0x004950                  __IC2Interrupt
                   0x0049a8                  _sendEncoderValues
 
-.dinit            0x004a14        0x254
- .dinit           0x004a14        0x254 data_init
+.dinit            0x004a34        0x254
+ .dinit           0x004a34        0x254 data_init
 
-.text             0x004c68        0x5f4
- .text            0x004c68        0x22e build/default/production/UART_handler.o
-                  0x004c68                  _UART_init
-                  0x004cba                  _UART_buff_init
-                  0x004cca                  _UART_buff_put
-                  0x004d38                  _UART_buff_get
-                  0x004d78                  _UART_buff_flush
-                  0x004da4                  _UART_buff_size
-                  0x004db2                  _UART_buff_modulo_inc
-                  0x004dd0                  _UART_buff_peek
-                  0x004de4                  _Receive_peek
-                  0x004df2                  _Receive_available
-                  0x004e00                  _Receive_get
-                  0x004e0e                  _Send_put
-                  0x004e36                  __U1RXInterrupt
-                  0x004e5c                  __U1TXInterrupt
- .text            0x004e96        0x1b6 build/default/production/initialize.o
-                  0x004e96                  _initialize
-                  0x004efc                  _oscillator
-                  0x004f52                  _timerOne
-                  0x004f74                  _timerTwo
-                  0x004fa0                  _initUART1
-                  0x004fc6                  _inputCapture
- .text            0x00504c        0x178 build/default/production/PWM.o
-                  0x00504c                  _initPWM1
-                  0x0050ac                  _initPWM2
-                  0x00510c                  _setAngle1
-                  0x00515e                  _setAngle2
-                  0x0051b0                  _presentAngle1
-                  0x0051ba                  _presentAngle2
- .text            0x0051c4         0x98 build/default/production/main.o
-                  0x0051c4                  _indicatorsOFF
-                  0x0051d2                  _debugLEDs
-                  0x0051fe                  _main
-                  0x005234                  _constrain
+.text             0x004c88        0x5f4
+ .text            0x004c88        0x22e build/default/production/UART_handler.o
+                  0x004c88                  _UART_init
+                  0x004cda                  _UART_buff_init
+                  0x004cea                  _UART_buff_put
+                  0x004d58                  _UART_buff_get
+                  0x004d98                  _UART_buff_flush
+                  0x004dc4                  _UART_buff_size
+                  0x004dd2                  _UART_buff_modulo_inc
+                  0x004df0                  _UART_buff_peek
+                  0x004e04                  _Receive_peek
+                  0x004e12                  _Receive_available
+                  0x004e20                  _Receive_get
+                  0x004e2e                  _Send_put
+                  0x004e56                  __U1RXInterrupt
+                  0x004e7c                  __U1TXInterrupt
+ .text            0x004eb6        0x1b6 build/default/production/initialize.o
+                  0x004eb6                  _initialize
+                  0x004f1c                  _oscillator
+                  0x004f72                  _timerOne
+                  0x004f94                  _timerTwo
+                  0x004fc0                  _initUART1
+                  0x004fe6                  _inputCapture
+ .text            0x00506c        0x178 build/default/production/PWM.o
+                  0x00506c                  _initPWM1
+                  0x0050cc                  _initPWM2
+                  0x00512c                  _setAngle1
+                  0x00517e                  _setAngle2
+                  0x0051d0                  _presentAngle1
+                  0x0051da                  _presentAngle2
+ .text            0x0051e4         0x98 build/default/production/main.o
+                  0x0051e4                  _indicatorsOFF
+                  0x0051f2                  _debugLEDs
+                  0x00521e                  _main
+                  0x005254                  _constrain

@@ -5,6 +5,12 @@
 #define encoderKd 0
 
 
+void wipeEncoders()
+{
+  macroEncoderL = 0;
+  macroEncoderR = 0;
+}
+
 void updateMacroEncoderValueR(signed long increment)
 {
   macroEncoderR+=increment;
@@ -67,7 +73,15 @@ void newEncoders(signed long cm)
 
 
 
+//OLD STUFFF!!!
 
+//OLD STUFFF!!!
+
+//OLD STUFFF!!!
+
+//OLD STUFFF!!!
+
+//OLD STUFFF!!!
 
 void encoderRun1()
 { 
@@ -347,9 +361,13 @@ void runEncoderDistanceDiggingly(float cm)
 }
 
 
-void wipeEncoders()
-{
-  macroEncoderL = 0;
-  macroEncoderR = 0;
-}
+//OLD STUFFF!!!
+
+//OLD STUFFF!!!
+
+//OLD STUFFF!!!
+
+//OLD STUFFF!!!
+
+//OLD STUFFF!!!
 

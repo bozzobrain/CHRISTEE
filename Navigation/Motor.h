@@ -141,6 +141,18 @@ void simpleMotorDistanceLRDiffCommand(signed long commandedSpeed, signed long co
 
 
 
+//OLD STUFFF!!!
+
+//OLD STUFFF!!!
+
+//OLD STUFFF!!!
+
+//OLD STUFFF!!!
+
+//OLD STUFFF!!!
+
+//OLD STUFFF!!!
+
 
 
 void motorOutputControlLeft(int speedRun)
@@ -403,4 +415,16 @@ void motorOutputControlCorrectDig(int speedRun, int eL, int eR, bool useGyro)
 
   }
 }
+
+//OLD STUFFF!!!
+
+//OLD STUFFF!!!
+
+//OLD STUFFF!!!
+
+//OLD STUFFF!!!
+
+//OLD STUFFF!!!
+
+//OLD STUFFF!!!
 
