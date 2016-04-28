@@ -11,9 +11,9 @@ int motorLowG         = 13;   //with sand 25  // WITHOUT SAND 13
 int motorHighG        = 16;   //with sand 35 // WITHOUT SAND 16
 
 #define BUCKET_DRIVE_ANGLE_SET   40
-#define BUCKET_DIG_ANGLE_SET     1
+#define BUCKET_DIG_ANGLE_SET     0
 #define BUCKET_DUMP_ANGLE_SET    90
-#define BUCKET_DIG_DRIVE_BEGIN_ANGLE 25
+#define BUCKET_DIG_DRIVE_BEGIN_ANGLE 15
 #define DIG_DRIVE_DISTANCE       75
 #define TRAVERSE_DRIVE_DISTANCE  400
 

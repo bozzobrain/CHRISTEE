@@ -160,7 +160,7 @@ inline void macroCommunicationsUpdate()
     sendLEDstate(MACRO);    
     //digitalWrite(13,!digitalRead(13));
   }
-  if (Navigation.receiveData())
+  while (Navigation.receiveData())
   {
     if ((stored_macro_command != navigation_receive[MACRO_COMMAND_RECEIVE]))
     {
@@ -175,11 +175,11 @@ inline void macroCommunicationsUpdate()
     Navigation.ToSend(MACRO_COMMAND_SEND, stored_macro_command);
     Navigation.sendData(CONTROL_ADDRESS);    
   }
-  else
-  {
-    
-    commSafety();
-  }
+//  else
+//  {
+//    
+//    commSafety();
+//  }
 }
 
 

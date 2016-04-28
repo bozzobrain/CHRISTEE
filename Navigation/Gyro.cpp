@@ -7,7 +7,8 @@ Gyro::Gyro(word address)
   gyroAddress = address;
 }
 
-void Gyro::initGyro() {
+void Gyro::initGyro() 
+{
   // Clear the 'sleep' bit to start the sensor.
   MPU6050_write_reg(MPU6050_PWR_MGMT_1, 0);
   Serial.println("Power Management");

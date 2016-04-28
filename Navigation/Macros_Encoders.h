@@ -31,6 +31,7 @@ bool isInRange(signed long checkNum, signed long target, signed long range)
 
 void newEncoders(signed long cm)
 {
+ macroCommunicationsUpdate();
   //Zero the encoder variables in the comms system
   wipeEncoders();
   
@@ -46,17 +47,17 @@ void newEncoders(signed long cm)
     if(PIDTimer.timerDone())
     {    
         simpleMotorDistanceCommand(cm); 
-          Serial.print("CM: ");
-    Serial.print(cm);
-    Serial.print(", LE: ");
-    Serial.print(macroEncoderL);
-    Serial.print(", RE: ");
-    Serial.print(macroEncoderR);
-    Serial.print(",  inRL: ");
-    Serial.print(isInRange(macroEncoderL,cm,DEADZONE_ENCODER)==true);
-    
-    Serial.print(",  inRR: ");
-    Serial.println(isInRange(macroEncoderR,cm,DEADZONE_ENCODER)==true);
+//          Serial.print("CM: ");
+//    Serial.print(cm);
+//    Serial.print(", LE: ");
+//    Serial.print(macroEncoderL);
+//    Serial.print(", RE: ");
+//    Serial.print(macroEncoderR);
+//    Serial.print(",  inRL: ");
+//    Serial.print(isInRange(macroEncoderL,cm,DEADZONE_ENCODER)==true);
+//    
+//    Serial.print(",  inRR: ");
+//    Serial.println(isInRange(macroEncoderR,cm,DEADZONE_ENCODER)==true);
     }
      if(CommsDelayTiming.timerDone())
      {

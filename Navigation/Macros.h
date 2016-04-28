@@ -50,9 +50,9 @@ inline void initMacroSystem()
                 flipflop=true;
             while(stored_macro_command!=0)
             {
-              static Timers redoTimer(2500);
+              static Timers redoTimer(2500),mildDelayTimer(250);
               static int counter=0;
-              if(redoTimer.timerDone())
+              if(redoTimer.timerDone()||((counter>0)&&mildDelayTimer.timerDone()))
               {
                 //FLIP FLOP SAYS DO FORWARD THEN BACKWARD
                 if(flipflop)
@@ -104,7 +104,75 @@ inline void initMacroSystem()
             }
             break;
           case 2:
-            encoderRun5();
+                 flipflop=true;
+            while(stored_macro_command!=0)
+            {
+              static Timers redoTimer(2500), mildDelayTimer(250);
+              static int counter=0;
+              if(redoTimer.timerDone()||((counter>0)&&mildDelayTimer.timerDone()))
+              {
+                //FLIP FLOP SAYS DO FORWARD THEN BACKWARD
+                if(flipflop)
+                {
+                  //GOING TO DO 5 ITERATIONS OF THIS PART (250 cm) 
+                  if(counter<6)
+                  {
+                    //Go forward 50 cm
+                    newEncoders((signed long)50);
+                    //CHECK GYRO FOR SHIFTED ANGLE
+                    if(abs(macroAngle)>4){
+                      //IF CORRECTION IS REQUIRED DO IT
+                      doTurn(-macroAngle);
+                    }
+                    counter++;
+                    mildDelayTimer.resetTimer();
+                  }
+                  else
+                  {
+                    sendActuatorPositionDig(0);
+                    delay(150);
+                    newEncoders((signed long) 50);
+                    delay(150);       
+                 
+                    newEncoders((signed long) -50);
+                    delay(150);                    
+                    sendActuatorPositionFeedback(BUCKET_DRIVE_ANGLE_SET);
+                    flipflop=false;
+                    counter=0;
+                  }
+                }
+                else
+                {        
+                  //GOING TO DO 5 ITERATIONS OF THIS PART (250 cm)    
+                  if(counter<6)
+                  {
+                    //Go backward 50 cm
+                    newEncoders((signed long)-50);
+                    //CHECK GYRO FOR SHIFTED ANGLE
+                    if(abs(macroAngle)>4){
+                      //IF CORRECTION IS REQUIRED DO IT
+                      doTurn(-macroAngle);
+                    }
+                    counter++;
+                    mildDelayTimer.resetTimer();
+                  }
+                  else
+                  {
+                    sendActuatorPositionFeedback(90);
+                    delay(1500);                    
+                    sendActuatorPositionFeedback(BUCKET_DRIVE_ANGLE_SET);
+                    delay(150);                    
+                    flipflop=true;
+                    counter=0;
+                  }
+                }
+                redoTimer.resetTimer();
+              }
+              else
+              {
+                macroCommunicationsUpdate();
+              }
+            }
             break;
           case 3:
             sendActuatorPosition(5);

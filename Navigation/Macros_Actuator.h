@@ -22,7 +22,7 @@ inline bool sendActuatorPositionFeedback(int angle)
   {
     sendActuatorCommand(angle);
     macroCommunicationsUpdate();
-    delay(50); 
+    delay(5); 
   }
   sendActuatorCommand(255);
 
@@ -30,17 +30,17 @@ inline bool sendActuatorPositionFeedback(int angle)
 }
 inline bool sendActuatorPositionDig(int angle)
 {  
+  wipeEncoders();
   int count=0;
-  while( (stored_macro_command!=0)&& ((encoderL<DIG_DRIVE_DISTANCE)||(encoderR<DIG_DRIVE_DISTANCE))  )
+  while( (stored_macro_command!=0) && (!isAbout(motor_bucket_angle,angle,2)  ))//&& ((encoderL<DIG_DRIVE_DISTANCE)&&(encoderR<DIG_DRIVE_DISTANCE))
   {
-    if(angle<BUCKET_DIG_DRIVE_BEGIN_ANGLE)
+    if(motor_bucket_angle<BUCKET_DIG_DRIVE_BEGIN_ANGLE)
     {
-    sendMotorCommand(15,15,angle);
+      sendMotorCommand(15,15,angle);
     }
     else sendActuatorCommand(angle);
     macroCommunicationsUpdate();
-    count++;
-    delay(50); 
+    delay(5); 
   }
   sendMotorCommand(0,0,255);
 

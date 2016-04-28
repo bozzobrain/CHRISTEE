@@ -30,7 +30,7 @@ void initializeCommunication()
 
 inline void updateComms()
 {
-  static Timers actuatorSendTimer(250);
+  static Timers actuatorSendTimer(50);
   if(actuatorSendTimer.timerDone())
   {
     communicationBoardIn.ToSend(LAST_BOARD_ADDRESS_RECEIVE, MOTOR_ADDRESS);
