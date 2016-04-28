@@ -11,8 +11,8 @@ float sideKpR = 1.35, sideKdR = 180000000,  sideKiR = 0; //0.078
 //----------MPU DATA----------------
 MPU MPU1(0x68);
 MPU MPU2(0x69);
-int sampleSet1[100];
-int sampleSet2[100];
+int sampleSet1[50];
+int sampleSet2[50];
 //-------------GYRO
 Filter gyroF1, gyroF2;
 int angle1, angle2;

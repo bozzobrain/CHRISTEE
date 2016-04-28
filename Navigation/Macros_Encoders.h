@@ -42,7 +42,7 @@ void newEncoders(signed long cm)
  while( !(isInRange(macroEncoderL,cm,DEADZONE_ENCODER) && isInRange(macroEncoderR,cm,DEADZONE_ENCODER)) && (stored_macro_command != 0))
   { 
   
-    //if(MPUTimer.timerDone()) updateMPU();
+    if(MPUTimer.timerDone()) updateMPU();
     if(PIDTimer.timerDone())
     {    
         simpleMotorDistanceCommand(cm); 

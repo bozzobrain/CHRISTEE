@@ -46,7 +46,7 @@ inline bool doTurn(int setAngle)
     
     macroCommunicationsUpdate();
     //update our internal angle
-    updateMPU();
+    if(MPUTimer.timerDone()) updateMPU();
     //update the PID system timer
     PIDTimer.updateTimer();
     if (PIDTimer.timerDone())  //Check if the timer is done

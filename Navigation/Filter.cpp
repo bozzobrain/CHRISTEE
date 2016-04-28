@@ -23,7 +23,7 @@ float Filter::filterRawAccel(int raw, float conversionFactor) {
 
   if(DEBUG_CALIBRATE)
   {      
-    Serial.print(raw-_offset);
+    Serial.println(raw-_offset);
   }    
 
   //If the point taken in is not outside of the deadzone
@@ -58,7 +58,7 @@ float Filter::filterRawGyro(int raw, float conversionFactor) {
   if(abs(raw)<5) raw=0;
   if(DEBUG_CALIBRATE)
   {      
-    Serial.print(raw);
+    Serial.println(raw);
   }
   //store time of this sample
   _lastTime = millis();
@@ -78,9 +78,9 @@ float Filter::filterRawGyro(int raw, float conversionFactor) {
   return _rot;
 }
 
-void Filter::calibrateFilter(int samples[100])
+void Filter::calibrateFilter(int samples[50])
 {
-  for (int i = 1; i < 100; i++)
+  for (int i = 1; i < 50; i++)
   { 
     //CHECK TO SEE IF THE DIFFERENCE BETWEEN THE CALIBRATION
     //SAMPLES IS LARGER THAN 1000... IF SOO.. STORE PREVIOUS
@@ -100,7 +100,7 @@ void Filter::calibrateFilter(int samples[100])
   }
 
   //Get the offset value by averaging the set of samples
-  _offset = averageSet(100, samples);
+  _offset = averageSet(50, samples);
 
   if(DEBUG_CALIBRATE)
   {

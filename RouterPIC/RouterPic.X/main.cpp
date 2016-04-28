@@ -62,8 +62,8 @@ int main(void)
     //PIN DIRECTION SETUP
     ERROR_1_TRIS    = OUTPUT;
     STATUS_1_TRIS   = OUTPUT;
-    STATUS_1_TRIS   = OUTPUT;
-    STATUS_1_TRIS   = OUTPUT;
+    STATUS_2_TRIS   = OUTPUT;
+    STATUS_3_TRIS   = OUTPUT;
     WATCHDOG_TRIS   = OUTPUT;
 
     //INIT PIN STATES
@@ -87,7 +87,7 @@ int main(void)
         receive_four.receiveData();
         if(receive_five.receiveData())
         {
-            WATCHDOG ^= 1;
+            //WATCHDOG ^= 1;
         }
         receive_six.receiveData();
 
@@ -100,7 +100,7 @@ int main(void)
         DMA_five.queue_send();
         DMA_six.queue_send();
 
-        STATUS_3 ^= 1;
+        //STATUS_3 ^= 1;
 
     }
 
@@ -112,20 +112,20 @@ int main(void)
 
 static enum feild
 {
-    EXCEP_IRQ = 0, // interrupt
-    EXCEP_AdEL = 4, // address error exception (load or ifetch)
-    EXCEP_AdES, // address error exception (store)
-    EXCEP_IBE, // bus error (ifetch)
-    EXCEP_DBE, // bus error (load/store)
-    EXCEP_Sys, // syscall
-    EXCEP_Bp, // breakpoint
-    EXCEP_RI, // reserved instruction
-    EXCEP_CpU, // coprocessor unusable
-    EXCEP_Overflow, // arithmetic overflow
-    EXCEP_Trap, // trap (possible divide by zero)
-    EXCEP_IS1 = 16, // implementation specfic 1
-    EXCEP_CEU, // CorExtend Unuseable
-    EXCEP_C2E // coprocessor 2
+    EXCEP_IRQ = 0,      // interrupt
+    EXCEP_AdEL = 4,     // address error exception (load or ifetch)
+    EXCEP_AdES,         // address error exception (store)
+    EXCEP_IBE,          // bus error (ifetch)
+    EXCEP_DBE,          // bus error (load/store)
+    EXCEP_Sys,          // syscall
+    EXCEP_Bp,           // breakpoint
+    EXCEP_RI,           // reserved instruction
+    EXCEP_CpU,          // coprocessor unusable
+    EXCEP_Overflow,     // arithmetic overflow
+    EXCEP_Trap,         // trap (possible divide by zero)
+    EXCEP_IS1 = 16,     // implementation specfic 1
+    EXCEP_CEU,          // CorExtend Unuseable
+    EXCEP_C2E           // coprocessor 2
 } _excep_code;
 static unsigned int _epc_code;
 static unsigned int _excep_addr;
@@ -136,14 +136,14 @@ void _general_exception_handler(void)
     asm volatile("mfc0 %0,$13" : "=r" (_excep_code));
     asm volatile("mfc0 %0,$14" : "=r" (_excep_addr));
     _excep_code = (feild) ((_excep_code & 0x0000007C) >> 2);
-    ERROR_1 = 0; // turn on error led
+    WATCHDOG = 1;
     switch (_excep_code)
     {
         case EXCEP_IRQ:  
-            
+            STATUS_1=STATUS_1_ON_STATE;
             break;
         case EXCEP_AdEL:  
-            
+            STATUS_2=STATUS_2_ON_STATE;
             break;
         case EXCEP_AdES:
             
@@ -168,9 +168,11 @@ void _general_exception_handler(void)
             break;
         case EXCEP_Overflow:  
             
+            STATUS_3=STATUS_3_ON_STATE;
             break;
         case EXCEP_Trap: 
             
+            ERROR_1 = ERROR_1_ON_STATE; // turn on error led
             break;
         case EXCEP_IS1:  
             

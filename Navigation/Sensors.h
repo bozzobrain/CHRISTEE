@@ -27,7 +27,7 @@ void initMPUFilters()
     //accelF1.wipeVelocity();
     //accelF2.wipeVelocity();
     macroAngle=0;
-  for (int k=0;k<100;k++)
+  for (int k=0;k<50;k++)
       {
         MPU1.readGyroY();
         sampleSet1[k]=MPU1._yGyro;

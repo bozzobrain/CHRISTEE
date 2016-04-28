@@ -7,7 +7,7 @@
 PID motorOutput(0, motorKp, motorKi, motorKd, 2);
 PID motorOutputL(0, motorKp, motorKi, motorKd, 2);
 PID motorOutputR(0, motorKp, motorKi, motorKd, 2);
-PID simpleMotorOutput(0, 0.18, 0, 0, 2);
+PID simpleMotorOutput(0, 0.75, 0, 0, 2);
 
 #define TEST_LIMIT_MOTOR_MAG 18
 void simpleMotorDistanceLRDiffCommand(signed long commandedSpeed, signed long commandedDistance);

@@ -7,6 +7,8 @@
 #define ENCODER_SNIPPIT 6
 #define ACTUATOR_SNIPPIT 7
 
+        bool flipflop=true;
+        
 inline void initMacroSystem()
 {
   continuable = true;
@@ -45,7 +47,61 @@ inline void initMacroSystem()
         switch (macro_sub_command)
         {
           case 1:
-            encoderRun1();
+                flipflop=true;
+            while(stored_macro_command!=0)
+            {
+              static Timers redoTimer(2500);
+              static int counter=0;
+              if(redoTimer.timerDone())
+              {
+                //FLIP FLOP SAYS DO FORWARD THEN BACKWARD
+                if(flipflop)
+                {
+                  //GOING TO DO 5 ITERATIONS OF THIS PART (250 cm) 
+                  if(counter<5)
+                  {
+                    //Go forward 50 cm
+                    newEncoders((signed long)50);
+                    //CHECK GYRO FOR SHIFTED ANGLE
+                    if(abs(macroAngle>4)){
+                      //IF CORRECTION IS REQUIRED DO IT
+                      doTurn(-macroAngle);
+                    }
+                    counter++;
+                  }
+                  else
+                  {
+                    flipflop=false;
+                    counter=0;
+                  }
+                }
+                else
+                {        
+                  //GOING TO DO 5 ITERATIONS OF THIS PART (250 cm)    
+                  if(counter<5)
+                  {
+                    //Go backward 50 cm
+                    newEncoders((signed long)-50);
+                    //CHECK GYRO FOR SHIFTED ANGLE
+                    if(abs(macroAngle>4)){
+                      //IF CORRECTION IS REQUIRED DO IT
+                      doTurn(-macroAngle);
+                    }
+                    counter++;
+                  }
+                  else
+                  {
+                    flipflop=true;
+                    counter=0;
+                  }
+                }
+                redoTimer.resetTimer();
+              }
+              else
+              {
+                macroCommunicationsUpdate();
+              }
+            }
             break;
           case 2:
             encoderRun5();
@@ -97,10 +153,29 @@ inline void initMacroSystem()
         initMPUFilters();
         break;
       case ENCODER_SNIPPIT:
+        flipflop=true;
         while(stored_macro_command!=0)
         {
-          newEncoders((signed long)macro_sub_command);
-          delay(2500);
+          static Timers redoTimer(2500);
+          
+          if(redoTimer.timerDone())
+          {
+            if(flipflop)
+            {
+            newEncoders((signed long)macro_sub_command);
+            flipflop=false;
+            }
+            else
+            {            
+            newEncoders((signed long)-macro_sub_command);
+            flipflop=true;
+            }
+            redoTimer.resetTimer();
+          }
+          else
+          {
+            macroCommunicationsUpdate();
+          }
         }
         break;
       case 7:
