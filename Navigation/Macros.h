@@ -9,6 +9,24 @@
 
         bool flipflop=true;
         
+#define TRAVERSE_FORWARD      0
+#define DROPPING_BUCKET       1
+#define DIGGING_FORWARD       2
+#define DIGGING_REVERSE       3
+#define TRAVERSE_BACKWARD     4
+#define DUMPING_BUCKET        5
+#define BUCKET_TO_DRIVE	      6
+
+#define DRIVE_INCREMENT       50
+#define DRIVE_INC_NUM_FORWARD 6
+#define DRIVE_INC_NUM_REVERSE 5
+#define DRIVE_DIG_FORWARD     50
+#define DRIVE_DIG_REVERSE     50
+#define ACTUATOR_DUMP_ANGLE   90
+#define GYRO_CORRECTION_ANGLE 4
+
+int AUTO_STATE=6;
+
 inline void initMacroSystem()
 {
   continuable = true;
@@ -174,8 +192,98 @@ inline void initMacroSystem()
               }
             }
             break;
-          case 3:
-            sendActuatorPosition(5);
+          case 3:            
+              AUTO_STATE=6;
+              sendActuatorPositionFeedback(BUCKET_DRIVE_ANGLE_SET);
+              while(stored_macro_command!=0)
+              {	
+              	static Timers subDelayTimer(200), dumpTimer(2000);
+                static int counter=0;
+              	switch(AUTO_STATE)
+              	{	
+              		case TRAVERSE_FORWARD:
+              			counter=0;
+              			while((counter<DRIVE_INC_NUM_FORWARD)  && (stored_macro_command!=0))
+              			{
+              				newEncoders((signed long) DRIVE_INCREMENT);
+              				//RESET TIMER
+              				subDelayTimer.resetTimer();
+              				//WAIT UNTIL ITS FINISHED WHILE CHECKING COMMS
+              				while(!subDelayTimer.timerDone() && (stored_macro_command!=0)) 
+              				{
+              					macroCommunicationsUpdate();
+              					delay(5);
+              				}
+              			    
+              				//CHECK GYRO FOR SHIFTED ANGLE
+              				if(abs(macroAngle)>GYRO_CORRECTION_ANGLE){
+              				  //IF CORRECTION IS REQUIRED DO IT
+              				  doTurn(-macroAngle);
+              				}
+              				counter++;
+              			}
+              			AUTO_STATE++;
+              			break;
+              		case DROPPING_BUCKET:
+              			//Lower bucket, moving forward when bucket gets low
+              			sendActuatorPositionDig(0);			
+              			AUTO_STATE++;
+              			break;
+              		case DIGGING_FORWARD:
+              			//Drive forward with bucket in the dirt
+              			newEncoders((signed long) DRIVE_DIG_FORWARD);			
+              			AUTO_STATE++;
+              			break;
+              		case DIGGING_REVERSE:
+              			//Free bucket by backing up
+              			newEncoders((signed long) -DRIVE_DIG_REVERSE);	
+              			//Lift the bucket
+              			sendActuatorPositionFeedback(BUCKET_DRIVE_ANGLE_SET);		
+              			AUTO_STATE++;
+              			break;
+              		case TRAVERSE_BACKWARD:
+              			counter=0;
+              			while((counter<DRIVE_INC_NUM_REVERSE) && (stored_macro_command!=0))
+              			{
+              				newEncoders((signed long) -DRIVE_INCREMENT);
+              				//RESET TIMER
+              				subDelayTimer.resetTimer();
+              				//WAIT UNTIL ITS FINISHED WHILE CHECKING COMMS
+              				while(!subDelayTimer.timerDone()&&(stored_macro_command!=0)) 
+              				{
+              					macroCommunicationsUpdate();
+              					delay(5);
+              				}
+              			    
+              				//CHECK GYRO FOR SHIFTED ANGLE
+              				if(abs(macroAngle)>GYRO_CORRECTION_ANGLE){
+              				  //IF CORRECTION IS REQUIRED DO IT
+              				  doTurn(-macroAngle);
+              				}
+              				counter++;
+              			}
+              			AUTO_STATE++;
+              			break;
+              		case DUMPING_BUCKET:
+              			
+                          sendActuatorPositionFeedback(ACTUATOR_DUMP_ANGLE);
+              			dumpTimer.resetTimer();
+              			while(!dumpTimer.timerDone() && (stored_macro_command!=0))
+              			{
+              				macroCommunicationsUpdate();
+              				delay(5);			
+              			}
+              			AUTO_STATE++;
+              			break;
+              		case BUCKET_TO_DRIVE:
+              			sendActuatorPositionFeedback(BUCKET_DRIVE_ANGLE_SET);			
+              			AUTO_STATE=TRAVERSE_FORWARD;
+              			break;
+              	
+              	}
+              	
+              	macroCommunicationsUpdate();
+              }
             break;
           case 4:
             orientWithWii();

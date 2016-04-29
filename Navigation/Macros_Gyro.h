@@ -6,7 +6,7 @@ int gyroHigh = 40;
 int gyroCorrectL = 55, sideDeadL = 4;    //1000000000
 int gyroCorrectR = 55, sideDeadR = 4;
 //PID GYRO TURN
-float gyroKp = 0.4, gyroKi = 0, gyroKd = 1000; //0.5,0,55
+float gyroKp = 0.5, gyroKi = 0, gyroKd = 1000; //0.5,0,55
 
 
 //void updateGyros() {

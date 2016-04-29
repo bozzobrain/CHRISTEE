@@ -64,7 +64,7 @@ float Filter::filterRawGyro(int raw, float conversionFactor) {
   _lastTime = millis();
 
   //If the point taken in is not outside of the deadzone
-  if (((raw > -(_deadzone / 1.75)) && (raw < (_deadzone/ 1.75))))// || abs(zRaw - compare) > 1000)
+  if (((raw > -(_deadzone / 2)) && (raw < (_deadzone/ 2))))// || abs(zRaw - compare) > 1000)
     //make it a pretty zero
     _filtered = 0;
   else
