@@ -54,7 +54,7 @@ int grabIntegerSign(signed long i)
 }
 
 
-#define distanceForOneTreadOperation 20
+#define distanceForOneTreadOperation 7
 //Meters a speed input into a variable turning capable differential, allows for equal distance as we go on both treads
 //    WILL act as the development for diff driving with new encoders.
 void simpleMotorDistanceLRDiffCommand(signed long commandedSpeed, signed long commandedDistance)

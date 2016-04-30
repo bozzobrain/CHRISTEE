@@ -18,11 +18,11 @@
 #define BUCKET_TO_DRIVE	      6
 
 #define DRIVE_INCREMENT       50
-#define DRIVE_INC_NUM_FORWARD 6
-#define DRIVE_INC_NUM_REVERSE 5
+#define DRIVE_INC_NUM_FORWARD 12
+#define DRIVE_INC_NUM_REVERSE 11
 #define DRIVE_DIG_FORWARD     50
 #define DRIVE_DIG_REVERSE     50
-#define ACTUATOR_DUMP_ANGLE   90
+#define ACTUATOR_DUMP_ANGLE   91
 #define GYRO_CORRECTION_ANGLE 4
 
 int AUTO_STATE=6;
@@ -192,12 +192,17 @@ inline void initMacroSystem()
               }
             }
             break;
-          case 3:            
+          case 3:      
+    
+              macroAngle=0;    
+            
+  gyroF1.zeroInternalAngle();
+  gyroF2.zeroInternalAngle();  
               AUTO_STATE=6;
               sendActuatorPositionFeedback(BUCKET_DRIVE_ANGLE_SET);
               while(stored_macro_command!=0)
               {	
-              	static Timers subDelayTimer(200), dumpTimer(2000);
+              	static Timers subDelayTimer(50), dumpTimer(6000);
                 static int counter=0;
               	switch(AUTO_STATE)
               	{	
@@ -218,7 +223,8 @@ inline void initMacroSystem()
               				//CHECK GYRO FOR SHIFTED ANGLE
               				if(abs(macroAngle)>GYRO_CORRECTION_ANGLE){
               				  //IF CORRECTION IS REQUIRED DO IT
-              				  doTurn(-macroAngle);
+              				  
+              				  doTurn(-grabIntegerSign(macroAngle)*(abs(macroAngle+1)));
               				}
               				counter++;
               			}
@@ -257,8 +263,9 @@ inline void initMacroSystem()
               			    
               				//CHECK GYRO FOR SHIFTED ANGLE
               				if(abs(macroAngle)>GYRO_CORRECTION_ANGLE){
+                              
               				  //IF CORRECTION IS REQUIRED DO IT
-              				  doTurn(-macroAngle);
+              				  doTurn(-grabIntegerSign(macroAngle)*(abs(macroAngle+1)));
               				}
               				counter++;
               			}
