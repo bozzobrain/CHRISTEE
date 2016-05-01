@@ -41,7 +41,7 @@ inline bool doTurn(int setAngle)
   //while the robot is not0 facing the angle requested
 
   //for (int i = 0; i < 2; i++) {
-  while (!(macroAngle < angleSet + 1 && macroAngle > angleSet - 1) &&  (stored_macro_command != 0))
+  while (!((macroAngle < (angleSet + 1)) && (macroAngle > (angleSet - 1))) &&  (stored_macro_command != 0))
   {
     
     macroCommunicationsUpdate();

@@ -6,13 +6,6 @@
 #define DOWNOVERRIDE 251
 #define lowerLIMIT 1 //6
 #define upperLIMIT 91  //90
-#define ACTUATOR_DEADBAND 3
-#define ACTUATOR_SPEED_LOWER_LIMIT 35
-#define ACTUATOR_SPEED_UPPER_LIMIT 90
-#define SLOW_LIMIT_ANGLE_LOW 35
-#define SLOW_LIMIT_ANGLE_HIGH 75
-#define ACTUATOR_SPEED_LOWER_LIMIT_SLOW 5
-#define ACTUATOR_SPEED_UPPER_LIMIT_SLOW 15
 #define VIBRATING_MOTOR_ON_HIGH 80
 #define VIBRATING_MOTOR_ON_LOW 10
 //// attage names to servos
@@ -129,6 +122,16 @@ inline void updateServos()
   updateSpeeds();
   setAct(actuatorValue);
 }
+
+
+#define ACTUATOR_DEADBAND 3
+#define ACTUATOR_SPEED_LOWER_LIMIT 35
+#define ACTUATOR_SPEED_UPPER_LIMIT 90
+#define SLOW_LIMIT_ANGLE_LOW 35
+#define SLOW_LIMIT_ANGLE_HIGH 75
+#define ACTUATOR_SPEED_LOWER_LIMIT_SLOW 20
+#define ACTUATOR_SPEED_UPPER_LIMIT_SLOW 25
+
 static Timers t1(20);
 float error, prev_error, deriv, integ;
 float kp=0.01 , kd=1000 , ki=0.1 , dt=0.02 , output=0;
@@ -149,7 +152,7 @@ inline int setAct(int act)
           output=error*(kp)+deriv*kd+integ*ki;
           if(bucketAngle>SLOW_LIMIT_ANGLE_HIGH)
           {
-            actuatorSpeed= constrain(output,ACTUATOR_SPEED_LOWER_LIMIT_SLOW+10,ACTUATOR_SPEED_UPPER_LIMIT_SLOW+10); 
+            actuatorSpeed= constrain(output,ACTUATOR_SPEED_LOWER_LIMIT_SLOW,ACTUATOR_SPEED_UPPER_LIMIT_SLOW); 
           }
           else
             actuatorSpeed= constrain(output,ACTUATOR_SPEED_LOWER_LIMIT,ACTUATOR_SPEED_UPPER_LIMIT);  
