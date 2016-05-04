@@ -169,8 +169,7 @@ inline void macroCommunicationsUpdate()
       macroSetDelay.resetTimer();
       return;
     }    
-    
-      pullDataFromPacket();
+    pullDataFromPacket();
     if(navigation_receive[LAST_BOARD_ADDRESS_RECEIVE] == CONTROL_ADDRESS)
     {
       prepAutoData();
@@ -332,10 +331,10 @@ inline void terminateMacroSystem()
 //MOTOR COMMAND HELPER COMMUNICATIONS METHODS
 void sendMotorCommand(int leftMotor, int rightMotor)
 {
-  Serial.print("Sending motorL: ");
-  Serial.print(leftMotor);
-  Serial.print(",  motorR: ");
-  Serial.println(rightMotor);
+//  Serial.print("Sending motorL: ");
+//  Serial.print(leftMotor);
+//  Serial.print(",  motorR: ");
+//  Serial.println(rightMotor);
   lM = leftMotor;
   rM = rightMotor;
   Navigation.ToSend(LAST_BOARD_ADDRESS_RECEIVE, NAVIGATION_ADDRESS);

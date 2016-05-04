@@ -65,6 +65,7 @@ inline void initMacroSystem()
         switch (macro_sub_command)
         {
           case 1:
+              wipeGyro();   
                 flipflop=true;
             while(stored_macro_command!=0)
             {
@@ -122,6 +123,7 @@ inline void initMacroSystem()
             }
             break;
           case 2:
+              wipeGyro();   
                  flipflop=true;
             while(stored_macro_command!=0)
             {
@@ -192,10 +194,8 @@ inline void initMacroSystem()
               }
             }
             break;
-          case 3:      
-    
-              macroAngle=0;    
-            
+          case 3:          
+              wipeGyro();   
               AUTO_STATE=6;
               sendActuatorPositionFeedback(BUCKET_DRIVE_ANGLE_SET);
               while(stored_macro_command!=0)

@@ -32,9 +32,10 @@ inline bool doTurn(int setAngle)
 
   angleSet = setAngle;
 
+  macroAngle=0;    
   //zero macro angle
-  gyroF1.zeroInternalAngle();
-  gyroF2.zeroInternalAngle();
+  //gyroF1.zeroInternalAngle();
+  //gyroF2.zeroInternalAngle();
   PID output(setAngle, gyroKp, gyroKi, gyroKd, 2);
   output.clearSystem();
   PIDTimer.resetTimer();
@@ -49,7 +50,6 @@ inline bool doTurn(int setAngle)
     //update our internal angle
     if(MPUTimer.timerDone()) updateMPU();
     //update the PID system timer
-    PIDTimer.updateTimer();
     if (PIDTimer.timerDone())  //Check if the timer is done
     {
       //update decision making and sending
@@ -57,17 +57,15 @@ inline bool doTurn(int setAngle)
       PIDTimer.resetTimer();
     }
   }
-  //    allStop();
-  //    motor_unStick();
-  // delay(50);
-  //}
+
   //freeze motors after complete
   allStop();
+  delay(15);
   motor_unStick();
 
   //zero macro angle
-  gyroF1.zeroInternalAngle();
-  gyroF2.zeroInternalAngle();
+  //gyroF1.zeroInternalAngle();
+  //gyroF2.zeroInternalAngle();
   macroAngle=0;
 
   //END TURNING
