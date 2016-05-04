@@ -47,14 +47,18 @@ void newEncoders(signed long cm)
     if(PIDTimer.timerDone())
     {    
       //CHECK GYRO FOR SHIFTED ANGLE
-				if(abs(macroAngle)>4){
-
-				  //IF CORRECTION IS REQUIRED DO IT
-				  doTurn(-grabIntegerSign(macroAngle)*(abs(macroAngle+1)));
-                                  macroEncoderL=(macroEncoderL+macroEncoderR)/2;
-                                  macroEncoderR=macroEncoderL;
-				}
+      if(abs(macroAngle)>4)
+      {
+	//IF CORRECTION IS REQUIRED DO IT
+	doTurn((int)(-grabFloatSign(macroAngle)*(abs(macroAngle)+1)));
+        macroEncoderL=(macroEncoderL+macroEncoderR)/2;
+        macroEncoderR=macroEncoderL;
+        
+      }
+      else
+      {
         simpleMotorDistanceCommand(cm); 
+      }
 //          Serial.print("CM: ");
 //    Serial.print(cm);
 //    Serial.print(", LE: ");

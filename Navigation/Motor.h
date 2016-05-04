@@ -53,6 +53,16 @@ int grabIntegerSign(signed long i)
   return -1; 
 }
 
+float grabFloatSign(float i)
+{
+ if(i>=0)
+  return 1;
+ else
+  return -1; 
+  
+  
+}
+
 
 #define distanceForOneTreadOperation 10
 //Meters a speed input into a variable turning capable differential, allows for equal distance as we go on both treads
