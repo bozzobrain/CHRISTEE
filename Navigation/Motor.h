@@ -7,9 +7,9 @@
 PID motorOutput(0, motorKp, motorKi, motorKd, 2);
 PID motorOutputL(0, motorKp, motorKi, motorKd, 2);
 PID motorOutputR(0, motorKp, motorKi, motorKd, 2);
-PID simpleMotorOutput(0, 0.75, 0, 0, 2);
+PID simpleMotorOutput(0, 0.85, 0, 0, 2);
 
-#define TEST_LIMIT_MOTOR_MAG 18
+#define TEST_LIMIT_MOTOR_MAG 20
 void simpleMotorDistanceLRDiffCommand(signed long commandedSpeed, signed long commandedDistance);
 
 //Pass it a value in cm (commandedDistance
@@ -54,7 +54,7 @@ int grabIntegerSign(signed long i)
 }
 
 
-#define distanceForOneTreadOperation 7
+#define distanceForOneTreadOperation 10
 //Meters a speed input into a variable turning capable differential, allows for equal distance as we go on both treads
 //    WILL act as the development for diff driving with new encoders.
 void simpleMotorDistanceLRDiffCommand(signed long commandedSpeed, signed long commandedDistance)
@@ -81,9 +81,9 @@ void simpleMotorDistanceLRDiffCommand(signed long commandedSpeed, signed long co
         diff = 0;
      
     //Create a commanded speed that is not an average of distances, but an average of the errors
-    float newCommandedSpeed= ((abs(macroEncoderR-commandedDistance)+abs(macroEncoderL-commandedDistance))/4);
+    float newCommandedSpeed= ((abs(macroEncoderR-commandedDistance)+abs(macroEncoderL-commandedDistance))/3.75);
     
-    if(abs(commandedSpeed)>=4)
+    if(abs(commandedSpeed)>=5)
     {
       newCommandedSpeed=abs(commandedSpeed);
     }
@@ -115,9 +115,9 @@ void simpleMotorDistanceLRDiffCommand(signed long commandedSpeed, signed long co
         diff = 0;
     
     //Create a commanded speed that is not an average of distances, but an average of the errors
-    float newCommandedSpeed = ((abs(macroEncoderR-commandedDistance)+abs(macroEncoderL-commandedDistance))/4);  
+    float newCommandedSpeed = ((abs(macroEncoderR-commandedDistance)+abs(macroEncoderL-commandedDistance))/3.75);  
     
-    if(abs(commandedSpeed)>=4)
+    if(abs(commandedSpeed)>=5)
     {
       newCommandedSpeed=abs(commandedSpeed);
     }

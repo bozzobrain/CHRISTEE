@@ -9,14 +9,14 @@ float sideKpR = 1.35, sideKdR = 180000000,  sideKiR = 0; //0.078
 
 /*********************AUTO SENSOR DATA*************************/
 //----------MPU DATA----------------
-MPU MPU1(0x68);
-MPU MPU2(0x69);
+//MPU MPU1(0x68);
+//MPU MPU2(0x69);
 int sampleSet1[50];
 int sampleSet2[50];
 //-------------GYRO
 Filter gyroF1, gyroF2;
 int angle1, angle2;
-int macroAngle;
+float macroAngle;
 //gyroscope set angle (used for turning)
 int angleSet;
 //Accelerometer
@@ -51,7 +51,7 @@ Timers decisionTimer(50);
 Timers linkTimer(50);
 Timers safetyTimer(2000);
 Timers sendTimer(50);
-Timers MPUTimer(5);
+Timers MPUTimer(10);
 
 /***************Communications variables*******************/
 bool readyToSend = false;

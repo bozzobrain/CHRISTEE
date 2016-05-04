@@ -3,11 +3,12 @@
 int angleSetIn;
 inline bool sendActuatorPosition(int angle)
 {  
+  Timers CommsDelayTiming(2);
   int count=0;
   while((stored_macro_command!=0)&&(count<85))
   {
     sendActuatorCommand(angle);
-    macroCommunicationsUpdate();
+     if(CommsDelayTiming.timerDone()) macroCommunicationsUpdate();
     count++;
     delay(50); 
   }
@@ -18,10 +19,13 @@ inline bool sendActuatorPosition(int angle)
 inline bool sendActuatorPositionFeedback(int angle)
 {  
   
+  Timers CommsDelayTiming(2);
   while((stored_macro_command!=0)&&(!isAbout(motor_bucket_angle,angle,2)))
   {
+    
+    if(MPUTimer.timerDone()) updateMPU();
     sendActuatorCommand(angle);
-    macroCommunicationsUpdate();
+     if(CommsDelayTiming.timerDone()) macroCommunicationsUpdate();
     delay(5); 
   }
   sendActuatorCommand(255);
@@ -32,6 +36,8 @@ inline bool sendActuatorPositionDig(int angle)
 {  
   wipeEncoders();
   int count=0;
+  
+  Timers CommsDelayTiming(2);
   while( (stored_macro_command!=0) && (!isAbout(motor_bucket_angle,angle,2)  ))//&& ((encoderL<DIG_DRIVE_DISTANCE)&&(encoderR<DIG_DRIVE_DISTANCE))
   {
     if(motor_bucket_angle<BUCKET_DIG_DRIVE_BEGIN_ANGLE)
@@ -39,7 +45,9 @@ inline bool sendActuatorPositionDig(int angle)
       sendMotorCommand(15,15,angle);
     }
     else sendActuatorCommand(angle);
-    macroCommunicationsUpdate();
+    
+    if(MPUTimer.timerDone()) updateMPU();
+     if(CommsDelayTiming.timerDone())macroCommunicationsUpdate();
     delay(5); 
   }
   sendMotorCommand(0,0,255);

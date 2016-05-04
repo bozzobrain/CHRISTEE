@@ -46,6 +46,14 @@ void newEncoders(signed long cm)
     if(MPUTimer.timerDone()) updateMPU();
     if(PIDTimer.timerDone())
     {    
+      //CHECK GYRO FOR SHIFTED ANGLE
+				if(abs(macroAngle)>4){
+
+				  //IF CORRECTION IS REQUIRED DO IT
+				  doTurn(-grabIntegerSign(macroAngle)*(abs(macroAngle+1)));
+                                  macroEncoderL=(macroEncoderL+macroEncoderR)/2;
+                                  macroEncoderR=macroEncoderL;
+				}
         simpleMotorDistanceCommand(cm); 
 //          Serial.print("CM: ");
 //    Serial.print(cm);

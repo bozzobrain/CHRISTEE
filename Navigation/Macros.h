@@ -17,11 +17,11 @@
 #define DUMPING_BUCKET        5
 #define BUCKET_TO_DRIVE	      6
 
-#define DRIVE_INCREMENT       50
-#define DRIVE_INC_NUM_FORWARD 12
-#define DRIVE_INC_NUM_REVERSE 11
+#define DRIVE_INCREMENT       500
+#define DRIVE_INC_NUM_FORWARD 1  //600
+#define DRIVE_INC_NUM_REVERSE 1  //550
 #define DRIVE_DIG_FORWARD     50
-#define DRIVE_DIG_REVERSE     50
+#define DRIVE_DIG_REVERSE     75
 #define ACTUATOR_DUMP_ANGLE   91
 #define GYRO_CORRECTION_ANGLE 4
 
@@ -196,13 +196,11 @@ inline void initMacroSystem()
     
               macroAngle=0;    
             
-  gyroF1.zeroInternalAngle();
-  gyroF2.zeroInternalAngle();  
               AUTO_STATE=6;
               sendActuatorPositionFeedback(BUCKET_DRIVE_ANGLE_SET);
               while(stored_macro_command!=0)
               {	
-              	static Timers subDelayTimer(50), dumpTimer(6000);
+              	static Timers subDelayTimer(75), dumpTimer(6000);
                 static int counter=0;
               	switch(AUTO_STATE)
               	{	
@@ -210,7 +208,7 @@ inline void initMacroSystem()
               			counter=0;
               			while((counter<DRIVE_INC_NUM_FORWARD)  && (stored_macro_command!=0))
               			{
-              				newEncoders((signed long) DRIVE_INCREMENT);
+              				newEncoders((signed long) 500);
               				//RESET TIMER
               				subDelayTimer.resetTimer();
               				//WAIT UNTIL ITS FINISHED WHILE CHECKING COMMS
@@ -221,11 +219,11 @@ inline void initMacroSystem()
               				}
               			    
               				//CHECK GYRO FOR SHIFTED ANGLE
-              				if(abs(macroAngle)>GYRO_CORRECTION_ANGLE){
-              				  //IF CORRECTION IS REQUIRED DO IT
-              				  
-              				  doTurn(-grabIntegerSign(macroAngle)*(abs(macroAngle+1)));
-              				}
+//              				if(abs(macroAngle)>GYRO_CORRECTION_ANGLE){
+//              				  //IF CORRECTION IS REQUIRED DO IT
+//              				  
+//              				  doTurn(-grabIntegerSign(macroAngle)*(abs(macroAngle+1)));
+//              				}
               				counter++;
               			}
               			AUTO_STATE++;
@@ -251,7 +249,7 @@ inline void initMacroSystem()
               			counter=0;
               			while((counter<DRIVE_INC_NUM_REVERSE) && (stored_macro_command!=0))
               			{
-              				newEncoders((signed long) -DRIVE_INCREMENT);
+              				newEncoders((signed long) -475);
               				//RESET TIMER
               				subDelayTimer.resetTimer();
               				//WAIT UNTIL ITS FINISHED WHILE CHECKING COMMS
@@ -261,12 +259,7 @@ inline void initMacroSystem()
               					delay(5);
               				}
               			    
-              				//CHECK GYRO FOR SHIFTED ANGLE
-              				if(abs(macroAngle)>GYRO_CORRECTION_ANGLE){
-                              
-              				  //IF CORRECTION IS REQUIRED DO IT
-              				  doTurn(-grabIntegerSign(macroAngle)*(abs(macroAngle+1)));
-              				}
+              				
               				counter++;
               			}
               			AUTO_STATE++;

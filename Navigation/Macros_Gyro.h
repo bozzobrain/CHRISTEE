@@ -40,11 +40,12 @@ inline bool doTurn(int setAngle)
   PIDTimer.resetTimer();
   //while the robot is not0 facing the angle requested
 
+  Timers CommsDelayTiming(2);
   //for (int i = 0; i < 2; i++) {
   while (!((macroAngle < (angleSet + 1)) && (macroAngle > (angleSet - 1))) &&  (stored_macro_command != 0))
   {
     
-    macroCommunicationsUpdate();
+    if(CommsDelayTiming.timerDone()) macroCommunicationsUpdate();
     //update our internal angle
     if(MPUTimer.timerDone()) updateMPU();
     //update the PID system timer

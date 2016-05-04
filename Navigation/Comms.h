@@ -169,17 +169,16 @@ inline void macroCommunicationsUpdate()
       macroSetDelay.resetTimer();
       return;
     }    
-    pullDataFromPacket();
-    prepAutoData();
-    Navigation.ToSend(LAST_BOARD_ADDRESS_RECEIVE, NAVIGATION_ADDRESS);
-    Navigation.ToSend(MACRO_COMMAND_SEND, stored_macro_command);
-    Navigation.sendData(CONTROL_ADDRESS);    
+    
+      pullDataFromPacket();
+    if(navigation_receive[LAST_BOARD_ADDRESS_RECEIVE] == CONTROL_ADDRESS)
+    {
+      prepAutoData();
+      Navigation.ToSend(LAST_BOARD_ADDRESS_RECEIVE, NAVIGATION_ADDRESS);
+      Navigation.ToSend(MACRO_COMMAND_SEND, stored_macro_command);
+      Navigation.sendData(CONTROL_ADDRESS);    
+    }
   }
-//  else
-//  {
-//    
-//    commSafety();
-//  }
 }
 
 
