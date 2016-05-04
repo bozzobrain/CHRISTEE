@@ -41,7 +41,7 @@ inline bool doTurn(int setAngle)
   PIDTimer.resetTimer();
   //while the robot is not0 facing the angle requested
 
-  Timers CommsDelayTiming(2);
+  Timers CommsDelayTiming(5);
   //for (int i = 0; i < 2; i++) {
   while (!((macroAngle < (angleSet + 1)) && (macroAngle > (angleSet - 1))) &&  (stored_macro_command != 0))
   {
@@ -60,7 +60,7 @@ inline bool doTurn(int setAngle)
 
   //freeze motors after complete
   allStop();
-  delay(15);
+  delay(5);
   motor_unStick();
 
   //zero macro angle

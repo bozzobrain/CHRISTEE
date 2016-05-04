@@ -215,7 +215,7 @@ inline void initMacroSystem()
               				while(!subDelayTimer.timerDone() && (stored_macro_command!=0)) 
               				{
               					macroCommunicationsUpdate();
-              					delay(5);
+              					delay(2);
               				}
               			    
               				//CHECK GYRO FOR SHIFTED ANGLE
@@ -256,7 +256,7 @@ inline void initMacroSystem()
               				while(!subDelayTimer.timerDone()&&(stored_macro_command!=0)) 
               				{
               					macroCommunicationsUpdate();
-              					delay(5);
+              					delay(2);
               				}
               			    
               				

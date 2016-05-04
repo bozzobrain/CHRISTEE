@@ -19,8 +19,8 @@ void updateMPU()
   //Serial.print("x"); Serial.println(angle_x); 
 //  Serial.print("y"); Serial.println(angle_y);
 //  Serial.print("z"); Serial.println(angle_z);
-  macroAngle+=angle_x-lastGyroAngle;
-  lastGyroAngle=angle_x;
+  macroAngle+=lastGyroAngle-angle_y;
+  lastGyroAngle=angle_y;
   //Serial.print("LastGAngle: "); Serial.println(lastGyroAngle); 
   //Serial.print("macroAngle: "); Serial.println(macroAngle); Serial.println();
  

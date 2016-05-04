@@ -39,7 +39,7 @@ void newEncoders(signed long cm)
  // PID output(cm, encoderKp, encoderKi, encoderKd, 2);
   //Timer queue up for running
   PIDTimer.resetTimer();
-  Timers CommsDelayTiming(2);
+  Timers CommsDelayTiming(5);
  while( !(isInRange(macroEncoderL,cm,DEADZONE_ENCODER) && isInRange(macroEncoderR,cm,DEADZONE_ENCODER)) && (stored_macro_command != 0))
   { 
   
@@ -77,7 +77,7 @@ void newEncoders(signed long cm)
      }
   }
   allStop();
-  delay(15);
+  delay(5);
   motor_unStick();
   
 }

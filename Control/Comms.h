@@ -102,7 +102,7 @@ inline void updateCommunication()
 {
   static Timers minimumResponseTimer(25);
   //So if you have heard from the comm after sending -or- if the resend timer timed out and you havent already sent before a safety timeout condition
-  if ((heardBack && minimumResponseTimer.timerDone()) || (resendTimer.timerDone() && notSent))
+  if ((heardBack && minimumResponseTimer.timerDone()) || (resendTimer.timerDone() && notSent ))
   {
     sendDataNavigation(internalMacroKeeper);
     if (internalMacroKeeper == 0)
