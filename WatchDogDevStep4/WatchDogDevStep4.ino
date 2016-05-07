@@ -35,72 +35,74 @@ bool oldValueRouter=0;
 bool oldValueLed=0;
 bool oldValuePowerb=0;
 
-void checkHanging(Timers *timer, bool *oldValue, int inPin, int outPin);
-void setup() {        
+void checkHanging(Timers *timer, bool *oldValue, const int inPin, const int outPin);
+
+void setup() {
   pinMode(sensor,INPUT);
   pinMode(navi,INPUT);
   pinMode(motorb,INPUT);
   pinMode(router,INPUT);
   pinMode(led,INPUT);
   pinMode(powerb,INPUT);
+  
   if(enable_sensor){
     oldValueSensor = digitalRead(sensor);
   }
-  if(enable_navi){ 
+  if(enable_navi){
     oldValueNavi = digitalRead(navi);
   }
-  if(enable_motorb){ 
+  if(enable_motorb){
     oldValueMotorb = digitalRead(motorb);
   }
-  if(enable_router){ 
+  if(enable_router){
     oldValueRouter = digitalRead(router);
   }
-  if(enable_led){ 
+  if(enable_led){
     oldValueLed = digitalRead(led);
   }
-  if(enable_powerb){ 
+  if(enable_powerb){
     oldValuePowerb = digitalRead(powerb);
   }
 }
 
+
 void loop() {    
   if(enable_sensor){
-    checkHanging(&sensorTimer, &oldValueSensor, sensor , sensorOut);
+    checkHanging(&sensorTimer, &oldValueSensor, sensor, sensorOut);
   }
   if(enable_navi){
-    checkHanging(&naviTimer, &oldValueNavi, navi , naviOut);
+    checkHanging(&naviTimer, &oldValueNavi, navi, naviOut);
   }
   if(enable_motorb){
-    checkHanging(&motorbTimer, &oldValueMotorb, motorb , motorbOut);
+    checkHanging(&motorbTimer, &oldValueMotorb, motorb, motorbOut);
   }
   if(enable_router){
-    checkHanging(&routerTimer, &oldValueRouter, router , routerOut);
+    checkHanging(&routerTimer, &oldValueRouter, router, routerOut);
   }
   if(enable_led){
-    checkHanging(&ledTimer, &oldValueLed, led , ledOut);
+    checkHanging(&ledTimer, &oldValueLed, led, ledOut);
   }
   if(enable_powerb){
-    checkHanging(&powerbTimer, &oldValuePowerb, powerb , powerbOut);
+    checkHanging(&powerbTimer, &oldValuePowerb, powerb, powerbOut);
   }
-
-
-
 }
-// need to add a hanging timer to turn board back on
-void checkHanging(Timers *timer, bool *oldValue, int inPin, int outPin){
 
+
+// need to add a hanging timer to turn board back on
+void checkHanging(Timers *timer, bool *oldValue, const int inPin, const int outPin) {
   if(digitalRead(inPin) == *oldValue)
   {
     if(timer->timerDone())
     {
-      digitalWrite(outPin,!digitalRead(outPin));
+      digitalWrite(outPin, !digitalRead(outPin));
     }
   }
-  else{
+  else
+  {
     timer->resetTimer();
-    digitalWrite(outPin,HIGH);
+    digitalWrite(outPin, HIGH);
   } 
-  *oldValue =digitalRead(inPin);
+  *oldValue = digitalRead(inPin);
 
   return;
 }
