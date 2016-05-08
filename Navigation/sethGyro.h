@@ -124,8 +124,26 @@ void initGyroSeth(void)
 
  // myGyro._initialize();
 }
-
-
+float avgx, avgy, avgz, highx, highy, highz;
+void logData(){
+   if(ax>highx)
+       highx=ax;
+   if(ay>highy)
+      highy=ay;
+   if(az>highz)
+      highz=az;
+   
+   avgx=avgx*0.85+ax*0.15;
+   avgy=avgy*0.85+ay*0.15;
+   avgz=avgz*0.85+az*0.15;
+   
+    Serial.print("ax_high: "); Serial.println(highx);
+    Serial.print("ay_high: "); Serial.println(highy);
+    Serial.print("az_high: "); Serial.println(highz);
+    Serial.print("ax_avg:  "); Serial.println(avgx);
+    Serial.print("ay_avg:  "); Serial.println(avgy);
+    Serial.print("az_avg:  "); Serial.println(avgz); Serial.println();
+}
 void GyroAngle(){
 
   
@@ -196,6 +214,7 @@ void get_Movement_6(){
           //front_Vec = ax;
           //side_Vec = ay;
           //up_Vec = az;
+          
           break;
       case 1:
          accelgyro.getMotion6(&ax, &az, &ay, &gx, &gz, &gy);
