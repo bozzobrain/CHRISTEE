@@ -1,28 +1,28 @@
 /******************************************************************
-*  Timers library for use on CHRISTEE
-*	The basic necessities for time keeping
+*  Timers library for use on STACEE and CHRISTEE
+*	The basic necessities for time keeping		
 *
 *		Brought to you by:
-*              Zac Kilburn and Todd Locker
+*              Zac Kilburn
 ******************************************************************/
-#ifndef WatchDogTimers_h
-#define WatchDogTimers_h
+#ifndef Timers_h
+#define Timers_h
 #include "Arduino.h"
 
 
 class Timers
-{
+{	
 public:
 	Timers();
-	Timers(long l);
+	Timers(int l);
 	void resetTimer();
-	void setInterval(long l);
+	void setInterval(int l);
 	void updateTimer();
 	bool timerDone();
 
 private:
-	long currentTime;
-	long startTime;
-	long length;
+	int currentTime;
+	int startTime;
+	int length;
 };
 #endif
