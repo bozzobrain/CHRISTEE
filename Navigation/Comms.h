@@ -212,6 +212,16 @@ union jointhem{
     }endian;
 }_16_to_32;
 
+#define LEFT_CAMERA_ONLY    1
+#define RIGHT_CAMERA_ONLY   2
+#define BOTH_CAMERAS        3
+
+bool robotSeen;
+int left_right_camera;
+int x_coordinate, y_coordinate;
+int camera_angle;
+
+
 void pullDataFromPacket() {
   static float keeper1, keeper2;
   static signed long encoderPastR=0, encoderPastL=0;
@@ -219,6 +229,26 @@ void pullDataFromPacket() {
     
   
   switch ( navigation_receive[LAST_BOARD_ADDRESS_RECEIVE]) {
+    case POWER_ADDRESS:
+      if(robotSeen)
+      {
+        switch(left_right_camera)
+        {
+         case LEFT_CAMERA_ONLY:
+           camera_angle=1;
+          break;
+         case RIGHT_CAMERA_ONLY:
+           camera_angle=1;
+          break;
+         case BOTH_CAMERAS:
+           x_coordinate=1;
+           y_coordinate=1;
+          break; 
+        }
+        
+        
+      }
+      break;
     case CONTROL_ADDRESS:
         //time stamp activity from communications board and okay a response to comm
       readyToSend = true;

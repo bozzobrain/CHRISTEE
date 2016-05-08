@@ -76,7 +76,11 @@ void loop() {
   static Timers LEDTimer(1000);
   updateComms();
  
-  if(MPUTimer.timerDone()) updateMPU();
+  if(MPUTimer.timerDone()) {
+    
+  logData();
+    updateMPU();
+  }
   //USBdebug();
   //if(LEDTimer.timerDone()) digitalWrite(13,!digitalRead(13));
 }

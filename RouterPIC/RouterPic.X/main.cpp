@@ -99,8 +99,12 @@ int main(void)
         DMA_four.queue_send();
         DMA_five.queue_send();
         DMA_six.queue_send();
-
-        //STATUS_3 ^= 1;
+        
+        if(DMA_one.fullError()||DMA_two.fullError()||DMA_three.fullError()||DMA_four.fullError()||DMA_five.fullError()||DMA_six.fullError()){
+            STATUS_2=STATUS_2_ON_STATE;
+        }
+        
+        STATUS_3 ^= 1;
 
     }
 

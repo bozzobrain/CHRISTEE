@@ -16,18 +16,18 @@ void updateMPU()
 	
      GyroAngle(); 
     
-  //Serial.print("x"); Serial.println(angle_x); 
+//  Serial.print("x"); Serial.println(angle_x); 
 //  Serial.print("y"); Serial.println(angle_y);
 //  Serial.print("z"); Serial.println(angle_z);
-  macroAngle+=lastGyroAngle-angle_y;
-  lastGyroAngle=angle_y;
+    macroAngle+=lastGyroAngle-angle_y;
+    lastGyroAngle=angle_y;
   //Serial.print("LastGAngle: "); Serial.println(lastGyroAngle); 
   //Serial.print("macroAngle: "); Serial.println(macroAngle); Serial.println();
  
-//  Serial.print("a");Serial.println(accelerationX);
-//  
-//  Serial.print("b");Serial.println(accelerationY);
-//  Serial.print("c");Serial.println(accelerationZ); 
+//    Serial.print("a");Serial.println(accelerationX);
+//    Serial.print("b");Serial.println(accelerationY);
+//    Serial.print("c");Serial.println(accelerationZ); 
+
   //static float testAngle=0;
   //testAngle+=angle_y;
   //Serial.print("test angle: "); Serial.println(testAngle); Serial.println();
