@@ -1,29 +1,34 @@
-#include <Timers.h>
+#include <WatchDogTimers.h>
 
 //Library constructor
 Timers::Timers()
-{	
+{
   length=50;
   currentTime=millis();
 }
-Timers::Timers(int l)
-{	
+
+Timers::Timers(long l)
+{
   length=l;
 }
+
 //External method
 void Timers::resetTimer()
 {
 	startTime=millis();
 	currentTime=startTime;
 }
-void Timers::setInterval(int l)
+
+void Timers::setInterval(long l)
 {
-	length=l;	
+	length=l;
 }
+
 void Timers::updateTimer()
 {
 	currentTime=millis();
 }
+
 bool Timers::timerDone()
 {
 	updateTimer();
