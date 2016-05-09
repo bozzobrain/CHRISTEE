@@ -2,12 +2,12 @@
 // 5/8/16
 #include <WatchDogTimers.h>
 
-#define navi 6
-#define sensor 3
-#define router 7
-#define led 4
-#define motorb 5
-#define powerb 2
+#define navi 5  //5 works best but only if boot time is OVER 5000, testing with 6500 it works OK DONT CHANGE
+#define sensor 7 //verified DONT CHANGE
+#define router 6 // SHOULD BE 5 but isnt?
+#define led 4 
+#define motorb 2
+#define powerb 3
 
 /*
 * sensorOut  A1
@@ -24,7 +24,7 @@
 #define ledOut A2
 #define powerbOut A3
 
-#define WAIT_TIME 1000
+#define WAIT_TIME 2000
 Timers sensorTimer(WAIT_TIME);
 Timers naviTimer(WAIT_TIME);
 Timers motorbTimer(WAIT_TIME);
@@ -32,22 +32,23 @@ Timers routerTimer(WAIT_TIME);
 Timers ledTimer(WAIT_TIME);
 Timers powerbTimer(WAIT_TIME);
 
+bool firstStartup;
 int state;
 #define BOOTING 0
 #define RUNNING 1
 #define HANGING 2
 
-int oldValueSensor;
-int oldValueNavi;
-int oldValueMotorb;
-int oldValueRouter;
-int oldValueLed;
-int oldValuePowerb;
+bool oldValueSensor;
+bool oldValueNavi;
+bool oldValueMotorb;
+bool oldValueRouter;
+bool oldValueLed;
+bool oldValuePowerb;
 
 int pinToReboot;
 #define COMPLETE_BOOT_TIME 45000 // Time given to boot up entire robot
-#define NAVI_BOOT_TIME 10000 // Time given to boot up the navi
-#define OTHER_BOOT_TIME 5000 // Time given to boot up a pin other than router or navi
+#define NAVI_BOOT_TIME 6500 // Time given to boot up the navi
+#define OTHER_BOOT_TIME 2000 // Time given to boot up a pin other than router or navi
 
 
 void setup()
@@ -66,6 +67,7 @@ void setup()
   pinMode(ledOut, OUTPUT);
   pinMode(powerbOut, OUTPUT);
   
+  firstStartup = true;
   state = BOOTING;
 }
 
@@ -86,13 +88,13 @@ void loop()
     }/*
     if(state != HANGING) {
       checkHanging(&motorbTimer, motorb, motorbOut, &oldValueMotorb);
-    }*/
+    }
     if(state != HANGING) {
       checkHanging(&routerTimer, router, routerOut, &oldValueRouter);
     }
     if(state != HANGING) {
       checkHanging(&ledTimer, led, ledOut, &oldValueLed);
-    }/*
+    }
     if(state != HANGING) {
       checkHanging(&powerbTimer, powerb, powerbOut, &oldValuePowerb);
     }*/
@@ -104,7 +106,7 @@ void loop()
 }
 
 
-void checkHanging(Timers *timer, int inPin, int outPin, int *oldValue)
+void checkHanging(Timers *timer, int inPin, int outPin, bool *oldValue)
 {
   // If the current state of the inPin equals the previous state of the inPin
   if(digitalRead(inPin) == *oldValue) {
@@ -116,7 +118,7 @@ void checkHanging(Timers *timer, int inPin, int outPin, int *oldValue)
   else {
     // The state of the inPin has changed so reset the timer
     timer->resetTimer();
-    digitalWrite(outPin, HIGH);
+    //digitalWrite(outPin, HIGH);
     *oldValue = digitalRead(inPin);
   }
   return;
@@ -130,6 +132,7 @@ void rebootPin(int pin)
   // Otherwise reboot the pin for the given time depending on what pin
   if(pin == routerOut) {
     state = BOOTING;
+    firstStartup = true;
     return;
   }
   else if(pin == naviOut) {
@@ -142,12 +145,12 @@ void rebootPin(int pin)
   digitalWrite(pin, LOW);
   Timers lowTimer(5000);
   lowTimer.resetTimer();
-  while(!lowTimer.timerDone());
+  while(!lowTimer.timerDone()) {}
   
   digitalWrite(pin, HIGH);
   Timers rebootTimer(rebootTime);
   rebootTimer.resetTimer();
-  while(!rebootTimer.timerDone());
+  while(!rebootTimer.timerDone()) {}
   
   // Reset all the timers because they would have expired while rebooting current pin
   sensorTimer.resetTimer();
@@ -174,9 +177,12 @@ void rebootRobot()
   digitalWrite(routerOut, LOW);
   digitalWrite(ledOut, LOW);
   digitalWrite(powerbOut, LOW);
-  Timers lowTimer(100);
-  lowTimer.resetTimer();
-  while(!lowTimer.timerDone()) {}
+  if(firstStartup == false)
+  {
+    Timers lowTimer(200);
+    lowTimer.resetTimer();
+    while(!lowTimer.timerDone()) {}
+  }
   
   digitalWrite(sensorOut, HIGH);
   digitalWrite(naviOut, HIGH);
@@ -202,6 +208,8 @@ void rebootRobot()
   routerTimer.resetTimer();
   ledTimer.resetTimer();
   powerbTimer.resetTimer();
+  
+  firstStartup = false;
   state = RUNNING;
   return;
 }
