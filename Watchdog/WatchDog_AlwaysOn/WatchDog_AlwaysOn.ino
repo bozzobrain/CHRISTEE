@@ -2,7 +2,7 @@
 // This code is the base for the WatchDog.
 // It simply will turn everything on and do nothing else.
 // 5/7/16
-#include <Timers.h>
+#include <WatchDogTimers.h>
 
 #define sensor 1
 #define navi 2

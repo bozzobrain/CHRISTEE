@@ -158,7 +158,7 @@ inline void macroCommunicationsUpdate()
   if(LEDresend.timerDone())
   {
     sendLEDstate(MACRO);    
-    //digitalWrite(13,!digitalRead(13));
+    digitalWrite(13,!digitalRead(13));
   }
   while (Navigation.receiveData())
   {
@@ -188,6 +188,7 @@ void updateFromControlBoard()
   //Data received from the Communications Board
   if (Navigation.receiveData())
   {
+     digitalWrite(13,!digitalRead(13));
      pullDataFromPacket(); 
     //If sent a macro command -- do it
     if ((stored_macro_command != 0) &&  macroSetDelay.timerDone())
