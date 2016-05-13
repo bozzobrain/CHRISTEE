@@ -6,7 +6,7 @@ int gyroHigh = 40;
 int gyroCorrectL = 55, sideDeadL = 4;    //1000000000
 int gyroCorrectR = 55, sideDeadR = 4;
 //PID GYRO TURN
-float gyroKp = 2.85   , gyroKi = 0, gyroKd = 1000; //0.5,0,55
+float gyroKp = 2.5   , gyroKi = 0, gyroKd = 1000; //2.85
 
 
 //void updateGyros() {
@@ -23,6 +23,8 @@ inline void turnHelp(int mag) {
 
   sendMotorCommand(-mag,mag);
 }
+
+#define DEADZONE_ANGLE 0.3
 //******************GYROSCOPE TURNING MACRO******************
 inline bool doTurn(int setAngle)
 {
@@ -43,7 +45,7 @@ inline bool doTurn(int setAngle)
 
   Timers CommsDelayTiming(5);
   //for (int i = 0; i < 2; i++) {
-  while (!((macroAngle < (angleSet + 1)) && (macroAngle > (angleSet - 1))) &&  (stored_macro_command != 0))
+  while (!((macroAngle < (angleSet + DEADZONE_ANGLE )) && (macroAngle > (angleSet - DEADZONE_ANGLE))) &&  (stored_macro_command != 0))
   {
     
     if(CommsDelayTiming.timerDone()) macroCommunicationsUpdate();
@@ -66,7 +68,7 @@ inline bool doTurn(int setAngle)
   //zero macro angle
   //gyroF1.zeroInternalAngle();
   //gyroF2.zeroInternalAngle();
-  macroAngle=0;
+  macroAngle=macroAngle-angleSet;
 
   //END TURNING
   return (stored_macro_command != 0);

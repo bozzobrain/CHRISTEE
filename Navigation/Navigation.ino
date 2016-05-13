@@ -78,7 +78,7 @@ void loop() {
  
   if(MPUTimer.timerDone()) {
     
-  logData();
+  //logData();
     updateMPU();
   }
   //USBdebug();

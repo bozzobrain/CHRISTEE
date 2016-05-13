@@ -87,7 +87,7 @@ int main(void)
         receive_four.receiveData();
         if(receive_five.receiveData())
         {
-            //WATCHDOG ^= 1;
+            WATCHDOG ^= 1;
         }
         receive_six.receiveData();
 

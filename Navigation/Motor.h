@@ -106,10 +106,10 @@ void simpleMotorDistanceLRDiffCommand(signed long commandedSpeed, signed long co
     int rightCommand= grabIntegerSign(errorRight) * (newCommandedSpeed);
     int leftCommand = grabIntegerSign(errorLeft)  * (newCommandedSpeed*diff);
     
-    Serial.print("NewCommandedSpeed: ");
-    Serial.print(newCommandedSpeed);
-    Serial.print(", difference: ");
-    Serial.println(diff);
+//    Serial.print("NewCommandedSpeed: ");
+//    Serial.print(newCommandedSpeed);
+//    Serial.print(", difference: ");
+//    Serial.println(diff);
     
     sendMotorCommand(leftCommand,rightCommand);
   }
@@ -140,10 +140,10 @@ void simpleMotorDistanceLRDiffCommand(signed long commandedSpeed, signed long co
     int rightCommand = grabIntegerSign(errorRight) * (newCommandedSpeed*diff);
     int leftCommand  = grabIntegerSign(errorLeft)  * (newCommandedSpeed);
     
-    Serial.print("NewCommandedSpeed: ");
-    Serial.print(newCommandedSpeed);
-    Serial.print(", difference: ");
-    Serial.println(diff);
+//    Serial.print("NewCommandedSpeed: ");
+//    Serial.print(newCommandedSpeed);
+//    Serial.print(", difference: ");
+//    Serial.println(diff);
     
     sendMotorCommand(leftCommand,rightCommand);     
   }

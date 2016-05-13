@@ -208,7 +208,7 @@ inline void initMacroSystem()
               			counter=0;
               			while((counter<DRIVE_INC_NUM_FORWARD)  && (stored_macro_command!=0))
               			{
-              				newEncoders((signed long) 500);
+              				newEncoders((signed long) 525);
               				//RESET TIMER
               				subDelayTimer.resetTimer();
               				//WAIT UNTIL ITS FINISHED WHILE CHECKING COMMS

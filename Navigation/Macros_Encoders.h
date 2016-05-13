@@ -47,12 +47,14 @@ void newEncoders(signed long cm)
     if(PIDTimer.timerDone())
     {    
       //CHECK GYRO FOR SHIFTED ANGLE
-      if(abs(macroAngle)>4)
+      if(abs(macroAngle)>3)
       {
+        
 	//IF CORRECTION IS REQUIRED DO IT
-	doTurn((int)(-grabFloatSign(macroAngle)*(abs(macroAngle)+1)));
-        macroEncoderL=(macroEncoderL+macroEncoderR)/2;
-        macroEncoderR=macroEncoderL;
+	doTurn((int)(-grabFloatSign(macroAngle)*(abs(macroAngle))));
+        int tempDist=(macroEncoderL+macroEncoderR)/2;
+        macroEncoderL=tempDist;
+        macroEncoderR=tempDist;
         
       }
       else
