@@ -21,8 +21,8 @@
 
 #define WATCHDOG              LATDbits.LATD6
 #define WATCHDOG_TRIS         TRISDbits.TRISD6
-#define WATCHDOG_ON_STATE     0
-#define WATCHDOG_OFF_STATE    1
+#define WATCHDOG_ON_STATE     1
+#define WATCHDOG_OFF_STATE    0
 
 #define ERROR_1              LATEbits.LATE4
 #define ERROR_1_TRIS         TRISEbits.TRISE4

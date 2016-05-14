@@ -77,7 +77,8 @@ int main(void)
     //    check2 = dma_one_array;
     //    volatile unsigned int *doublecheck = check;
     //    *doublecheck |= _DCH1CON_CHEN_MASK;
-
+    WATCHDOG=WATCHDOG_OFF_STATE;
+    //while(1);
     while (1)
     {
         // checks the incoming buffers and parses data
@@ -85,9 +86,19 @@ int main(void)
         receive_two.receiveData();
         receive_three.receiveData();
         receive_four.receiveData();
+        static int delayCounter=0;
         if(receive_five.receiveData())
         {
-            WATCHDOG ^= 1;
+            if(delayCounter>5)
+            {
+                WATCHDOG ^= 1;
+                delayCounter=0;
+            }
+            else
+            {
+              delayCounter++;  
+            }
+            
         }
         receive_six.receiveData();
 
@@ -104,7 +115,7 @@ int main(void)
             STATUS_2=STATUS_2_ON_STATE;
         }
         
-        STATUS_3 ^= 1;
+        //STATUS_3 ^= 1;
 
     }
 
@@ -141,19 +152,24 @@ void _general_exception_handler(void)
     asm volatile("mfc0 %0,$14" : "=r" (_excep_addr));
     _excep_code = (feild) ((_excep_code & 0x0000007C) >> 2);
     WATCHDOG = 1;
+    
+    ERROR_1         = ERROR_1_OFF_STATE;
+    STATUS_1        = STATUS_1_OFF_STATE;
+    STATUS_2        = STATUS_2_OFF_STATE;
+    STATUS_3        = STATUS_3_OFF_STATE;
     switch (_excep_code)
     {
         case EXCEP_IRQ:  
-            STATUS_1=STATUS_1_ON_STATE;
+            //
             break;
         case EXCEP_AdEL:  
-            STATUS_2=STATUS_2_ON_STATE;
+            //
             break;
         case EXCEP_AdES:
-            
+            STATUS_1=STATUS_1_ON_STATE;
             break;
         case EXCEP_IBE:  
-            
+            STATUS_2=STATUS_2_ON_STATE;
             break;
         case EXCEP_DBE:  
             
@@ -172,20 +188,19 @@ void _general_exception_handler(void)
             break;
         case EXCEP_Overflow:  
             
-            STATUS_3=STATUS_3_ON_STATE;
+            //
             break;
         case EXCEP_Trap: 
-            
-            ERROR_1 = ERROR_1_ON_STATE; // turn on error led
+            //
             break;
         case EXCEP_IS1:  
             
             break;
         case EXCEP_CEU:  
-            
+            STATUS_3=STATUS_3_ON_STATE;
             break;
-        case EXCEP_C2E: 
-            
+        case EXCEP_C2E:             
+            ERROR_1 = ERROR_1_ON_STATE; // turn on error led
             break;
             //....
         
