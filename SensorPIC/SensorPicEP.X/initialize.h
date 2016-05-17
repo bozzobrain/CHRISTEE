@@ -7,7 +7,7 @@
 
 #ifndef INITIALIZE_H
 #define	INITIALIZE_H
-
+#include "main.h"
 extern void delay(int ms);
 extern int receiveArray[20];
 void initialize(void);
@@ -17,6 +17,7 @@ void initUART1(void);
 extern void UART_init(void);
 
 void timerTwo(void);
+void timerFour(void);
 void inputCapture(void);
 extern unsigned char Receive_peek(void);
 extern int Receive_available(void);

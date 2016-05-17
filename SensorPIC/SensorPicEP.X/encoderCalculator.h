@@ -31,12 +31,16 @@ extern "C" {
 #define ENCODER_SPEED_R_NAVIGATION  7
 #define ENCODER_SPEED_L_NAVIGATION  8
 
-#define ENCODER_SPEED_R_CONTROL  11
-#define ENCODER_SPEED_L_CONTROL  12
-#define ENCODER_R_H_CONTROL     	 13
-#define ENCODER_L_H_CONTROL        14
-#define ENCODER_R_L_CONTROL     	 15
-#define ENCODER_L_L_CONTROL        16
+#define ENCODER_SPEED_R_CONTROL     11
+#define ENCODER_SPEED_L_CONTROL     12
+#define ENCODER_R_H_CONTROL     	13
+#define ENCODER_L_H_CONTROL         14
+#define ENCODER_R_L_CONTROL     	15
+#define ENCODER_L_L_CONTROL         16
+#define GYRO_X_ANGLE                25
+#define GYRO_Y_ANGLE                26
+#define GYRO_Z_ANGLE                27
+#define GYRO_IMPACT                 28
 
 
     extern void delay(int ms);

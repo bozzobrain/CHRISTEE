@@ -7,7 +7,7 @@
 
 #ifndef INTERRUPT_HANDLER_H
 #define	INTERRUPT_HANDLER_H
-
+#include "main.h"
 extern const int wiiUpdateFrequency;
 extern volatile unsigned int wiiTime;
 extern volatile unsigned int time;

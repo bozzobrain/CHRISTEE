@@ -8,7 +8,7 @@
 #ifndef MAIN_H
 #define	MAIN_H
 
-const int wiiUpdateFrequency=200;
+
 
 #define ON         0
 #define OFF        1
@@ -67,10 +67,10 @@ const int wiiUpdateFrequency=200;
 typedef enum WII_state{
     TRIG=0, LEFT_BEACON_ANGLES=1, RIGHT_BEACON_ANGLES=2, CAMERA_OVERRIDE_BEACON_ANGLES=3, CONTINUOUS_AQUISITION=4,  SERVO_OVERRIDE_ANGLE=5, MAXENUMS=6
 }states;
-int rightAngleOverride, leftAngleOverride;
-volatile unsigned int wiiTime = 0;
-int receiveArray[20];
-int constrain(int value, int lowBound, int highBound);
+//int rightAngleOverride, leftAngleOverride;
+//volatile unsigned int wiiTime = 0;
+//int receiveArray[20];
+//int constrain(int value, int lowBound, int highBound);
 //exetern from initialize c file
 extern void initialize(void);
 //Extern from the Wii camera c file
@@ -96,5 +96,13 @@ extern bool receiveData();
 
 //extern from the encoderCalculator c file
 extern void updateEncoders();
+
+//GYRO_ACCEL
+//bool GYRO_DEBUG = false;
+//int cycleCounter = 0;
+//bool RUN_DATAFUNCTION = false;
+extern bool getGYRO_DEBUG(void);
+extern void setRUN_DATAFUNCTION(bool);
+extern void setCycleCounter(void);
 #endif	/* MAIN_H */
 

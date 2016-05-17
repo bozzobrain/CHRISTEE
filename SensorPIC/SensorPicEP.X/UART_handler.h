@@ -7,8 +7,12 @@
 
 #ifndef UART_HANDLER_H
 #define	UART_HANDLER_H
-
+#include "main.h"
 #define UART_BUFFER_SIZE 200
+#define GYRO_BUFFER_SIZE 50
+#define SPACE               32
+#define CARRIAGE_RETURN     13
+#define NEGATION            45
 #define BAUD_RATE (((60000000/115200)/16)-1)
 
 void *memset(void *s, int c, size_t n);
@@ -19,11 +23,17 @@ struct UART_ring_buff {
     int tail;
     int count;
 };
+struct DEBUG_ring_buff {
+    unsigned char buf[GYRO_BUFFER_SIZE];
+    int head;
+    int tail;
+    int count;
+};
 
-struct UART_ring_buff input_buffer;
-struct UART_ring_buff output_buffer;
-
-bool Transmit_stall = true;
+//struct UART_ring_buff input_buffer;
+//struct UART_ring_buff output_buffer;
+//
+//bool Transmit_stall = true;
 
 void UART_init(void);
 void UART_buff_init(struct UART_ring_buff* _this);
@@ -39,6 +49,17 @@ unsigned char Receive_peek(void);
 int Receive_available(void);
 unsigned char Receive_get(void);
 void Send_put(unsigned char _data);
+
+
+//FUNCTIONS FOR GYRO DEBUG MODE
+void UartInit(void);
+void MessageParsser(int,int,int);
+int absol(int); 
+void maxedHead();
+void isNegative(int *);
+void loadHundreds(int *);
+void loadTens(int *);
+void loadUnits(int *);
 
 #endif	/* UART_HANDLER_H */
 
