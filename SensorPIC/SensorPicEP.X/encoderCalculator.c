@@ -169,8 +169,8 @@ void sendEncoderValues() {
     ToSend(ENCODER_L_H_NAVIGATION, _16_to_32.endian.high);
     ToSend(ENCODER_L_L_NAVIGATION, _16_to_32.endian.low);
     
-    ToSend(GYRO_Z_ANGLE, angleZ[0]);
-    ToSend(GYRO_IMPACT, getImpactStatus());
+    //ToSend(GYRO_Z_ANGLE, angleZ[0]);
+    //ToSend(GYRO_IMPACT, getImpactStatus());
     //navEncoderLeft=0;
     //navEncoderRight=0;
     //ToSend(ENCODER_SPEED_R_NAVIGATION, SpeedRight);
@@ -183,9 +183,9 @@ void sendEncoderValues() {
 //    ToSend(ENCODER_R_H_CONTROL, _16_to_32.endian.high);
 //    
 //    _16_to_32.joined=navEncoderLeft*DISTANCE_PER_PULSE;
-//    ToSend(ENCODER_L_H_CONTROL, _16_to_32.endian.high);
-//    ToSend(ENCODER_L_L_CONTROL, _16_to_32.endian.low);
-//    //ToSend(ENCODER_SPEED_R_CONTROL, SpeedRight);
-//    //ToSend(ENCODER_SPEED_L_CONTROL, SpeedLeft);
+      ToSend(ENCODER_L_H_CONTROL, angleX[0]);//_16_to_32.endian.high);
+      ToSend(ENCODER_L_L_CONTROL, angleY[0]);//_16_to_32.endian.low);
+      ToSend(ENCODER_SPEED_R_CONTROL,angleZ[0]);// SpeedRight);
+      ToSend(ENCODER_SPEED_L_CONTROL,getImpactStatus());// SpeedLeft);
 //    sendData(CONTROL_ADDRESS);
 }

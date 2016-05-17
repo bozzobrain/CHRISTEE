@@ -76,6 +76,11 @@ int navigation_receive[50];
 #define ENCODER_R_H_PIC_RECEIVE      23
 #define ENCODER_L_H_PIC_RECEIVE      24
 
+#define GYRO_X_ANGLE_PIC                25
+#define GYRO_Y_ANGLE_PIC                26
+#define GYRO_Z_ANGLE_PIC                27
+#define GYRO_IMPACT_PIC                 28
+
 #define LEFT_CAMERA 0
 #define RIGHT_CAMERA 1
 #define HORIZONTAL_SEND         2
@@ -288,6 +293,8 @@ void pullDataFromPacket() {
           encoderPastL=0;
           encoderPastR=0;
       }      
+      
+      
       
 //        Serial.print("Encoder L: ");
 //        Serial.print(encoderL);
