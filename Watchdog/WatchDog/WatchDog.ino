@@ -24,13 +24,22 @@
 #define ledOut A2
 #define powerbOut A3
 
-#define WAIT_TIME 5000
+int pinToReboot;
+#define COMPLETE_BOOT_TIME 45000 // Time given to boot up entire robot
+#define NAVI_BOOT_TIME 6500 // Time given to boot up the navi
+#define OTHER_BOOT_TIME 4000 // Time given to boot up a pin other than router or navi
+
+#define LOW_TIME 2000  // time to hold pins low while resetting
+#define WAIT_TIME 5000 // time to wait until it is determined a processor is hanging
 Timers sensorTimer(WAIT_TIME);
 Timers naviTimer(WAIT_TIME);
 //Timers motorbTimer(WAIT_TIME);
 Timers routerTimer(WAIT_TIME);
 Timers ledTimer(WAIT_TIME);
 //Timers powerbTimer(WAIT_TIME);
+Timers rebootTimer(COMPLETE_BOOT_TIME);
+Timers pinBootTimer();
+Timers lowTimer(LOW_TIME);
 
 int state;
 #define BOOTING 0
@@ -43,11 +52,8 @@ bool oldValueNavi;
 bool oldValueRouter;
 bool oldValueLed;
 //bool oldValuePowerb;
+bool bootWaiting;
 
-int pinToReboot;
-#define COMPLETE_BOOT_TIME 45000 // Time given to boot up entire robot
-#define NAVI_BOOT_TIME 6500 // Time given to boot up the navi
-#define OTHER_BOOT_TIME 4000 // Time given to boot up a pin other than router or navi
 
 void setup()
 {
@@ -71,9 +77,7 @@ void setup()
   digitalWrite(routerOut, HIGH);
   digitalWrite(ledOut, HIGH);
   digitalWrite(powerbOut, HIGH);
-  Timers rebootTimer(COMPLETE_BOOT_TIME);
-  rebootTimer.resetTimer();
-  while(!rebootTimer.timerDone()) {}
+  
   
   oldValueSensor = digitalRead(sensor);
   oldValueNavi = digitalRead(navi);
@@ -89,6 +93,8 @@ void setup()
   routerTimer.resetTimer();
   ledTimer.resetTimer();
   //powerbTimer.resetTimer();
+  rebootTimer.resetTimer();
+  bootWaiting = true;
   
   state = RUNNING;
 }
@@ -96,11 +102,11 @@ void setup()
 
 void loop()
 {
-  if(state == BOOTING)
+  if(state == BOOTING && !bootWaiting)
   {
     rebootRobot();
   }
-  else if(state == RUNNING)
+  else if(state == RUNNING && !bootWaiting)
   {
     if(state != HANGING) {
       checkHanging(&sensorTimer, sensor, sensorOut, &oldValueSensor);
@@ -121,11 +127,35 @@ void loop()
       //checkHanging(&powerbTimer, powerb, powerbOut, &oldValuePowerb);
     }*/
   }
-  else if(state == HANGING)
+  else if(state == HANGING && !bootWaiting)
   {
     rebootPin(pinToReboot);
   }
+  
+  
+  if(rebootTimer.timerDone())
+  {
+    bootWaiting = false;
+    // resets boot time to the complete time as it could have been changed in the rebootPin() function
+    rebootTimer.setInterval(COMPLETE_BOOT_TIME);
+    
+    oldValueSensor = digitalRead(sensor);
+    oldValueNavi = digitalRead(navi);
+    //oldValueMotorb = digitalRead(motorb);
+    oldValueRouter = digitalRead(router);
+    oldValueLed = digitalRead(led);
+    //oldValuePowerb = digitalRead(powerb);
+    
+    // Reset all the timers because they would have expired while rebooting the robot
+    sensorTimer.resetTimer();
+    naviTimer.resetTimer();
+    //motorbTimer.resetTimer();
+    routerTimer.resetTimer();
+    ledTimer.resetTimer();
+    //powerbTimer.resetTimer();
+  }
 }
+
 
 
 void checkHanging(Timers *timer, int inPin, int outPin, bool *oldValue)
@@ -146,14 +176,18 @@ void checkHanging(Timers *timer, int inPin, int outPin, bool *oldValue)
 }
 
 
+
 void rebootPin(int pin)
 {
   int rebootTime;
-  // If the router hangs, reboot entire robot
+  // If the led hangs, reboot entire robot
   // Otherwise reboot the pin for the given time depending on what pin
   if(pin == ledOut) {
     state = BOOTING;
     return;
+  }
+  else if(pin == routerOut) {
+    rebootTime = COMPLETE_BOOT_TIME;
   }
   else if(pin == naviOut) {
     rebootTime = NAVI_BOOT_TIME;
@@ -163,14 +197,13 @@ void rebootPin(int pin)
   }
   
   digitalWrite(pin, LOW);
-  Timers lowTimer(3000);
   lowTimer.resetTimer();
   while(!lowTimer.timerDone()) {}
   
   digitalWrite(pin, HIGH);
-  Timers rebootTimer(rebootTime);
+  rebootTimer.setInterval(rebootTime);
   rebootTimer.resetTimer();
-  while(!rebootTimer.timerDone()) {}
+  bootWaiting = true;
   
   oldValueSensor = digitalRead(sensor);
   oldValueNavi = digitalRead(navi);
@@ -192,6 +225,7 @@ void rebootPin(int pin)
 }
 
 
+
 // This function starts the robot initially and completely reboots it when needed.
 // Sets the output pins to LOW and holds for given timer amount of time.
 // Then the output pins are brought back to HIGH.
@@ -204,7 +238,6 @@ void rebootRobot()
   digitalWrite(routerOut, LOW);
   digitalWrite(ledOut, LOW);
   digitalWrite(powerbOut, LOW);
-  Timers lowTimer(500);
   lowTimer.resetTimer();
   while(!lowTimer.timerDone()) {}
   
@@ -214,9 +247,8 @@ void rebootRobot()
   digitalWrite(routerOut, HIGH);
   digitalWrite(ledOut, HIGH);
   digitalWrite(powerbOut, HIGH);
-  Timers rebootTimer(COMPLETE_BOOT_TIME);
   rebootTimer.resetTimer();
-  while(!rebootTimer.timerDone()) {}
+  bootWaiting = true;
   
   oldValueSensor = digitalRead(sensor);
   oldValueNavi = digitalRead(navi);
