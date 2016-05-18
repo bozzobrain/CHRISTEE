@@ -235,7 +235,7 @@ bool receiveData()
 }
 
 
-// populates what info needs sent and to what data address
+// populates to what data address and what info needs to be sent
 
 void ToSend(unsigned char where, unsigned int what)
 {

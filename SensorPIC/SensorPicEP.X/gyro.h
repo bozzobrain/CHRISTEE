@@ -1,7 +1,7 @@
 
 /* 
  * File:   
- * Author: 
+ * Author: Seth Carpenter 
  * Comments:
  * Revision history: 
  */
@@ -19,6 +19,7 @@
 
 //AXIS FOR THE GYRO AND ACCl
 #define MPU6050_RA_ACCEL_XOUT_H    0x3B   // R  
+#define MPU6050_ACCEL_XOUT_L       0x3C   // R
 #define MPU6050_ACCEL_YOUT_H       0x3D   // R  
 #define MPU6050_ACCEL_ZOUT_H       0x3F   // R 
 #define MPU6050_GYRO_XOUT_H        0x43   // R  
@@ -40,21 +41,31 @@
 #define MPU6050_RA_ZG_OFFS_USRL     0x18
 
 //Full Scale Range Addressing
-#define MPU6050_GYRO_FS_250         0x00
-#define MPU6050_GYRO_FS_500         0x01
-#define MPU6050_GYRO_FS_1000        0x02
-#define MPU6050_GYRO_FS_2000        0x03
+#define MPU6050_GYRO_FS_250         0b00000000
+#define MPU6050_GYRO_FS_500         0b00001000
+#define MPU6050_GYRO_FS_1000        0b00010000
+#define MPU6050_GYRO_FS_2000        0b00011000
 
-#define MPU6050_ACCEL_FS_2          0x00
-#define MPU6050_ACCEL_FS_4          0x01
-#define MPU6050_ACCEL_FS_8          0x02
-#define MPU6050_ACCEL_FS_16         0x03
-
-#define MPU6050_GCONFIG_FS_SEL_BIT      4
-#define MPU6050_GCONFIG_FS_SEL_LENGTH   2
+#define MPU6050_ACCEL_FS_2          0b00000000
+#define MPU6050_ACCEL_FS_4          0b00001000
+#define MPU6050_ACCEL_FS_8          0b00010000
+#define MPU6050_ACCEL_FS_16         0b00011000
 
 #define MPU6050_RA_GYRO_CONFIG      0x1B
 #define MPU6050_RA_ACCEL_CONFIG     0x1C
+
+#define MPU6050_PWR1_SLEEP_BIT         6
+#define MPU6050_RA_PWR_MGMT_1       0x6B
+
+#define MPU6050_CLOCK_PLL_XGYRO         0x01
+#define MPU6050_PWR1_CLKSEL_BIT         2
+#define MPU6050_PWR1_CLKSEL_LENGTH      3
+
+#define IMPACT_DEADZONE_H  3000
+#define IMPACT_DEADZONE_L  3000
+
+#define IMPACT_RING_BUFF_SIZE 200
+
 
   /*forwardAxis Value Number scheme(ACCELEROMETER ORIENTATION)
   0 = X is Front, Y is Sides, and Z is Up
@@ -64,19 +75,18 @@
   4 = Z is Front, Y is Sides, and X is Up
   5 = Z is Front, X is Sides, and Y is Up
 */ 
-short forwardAxis = 0;
-int rawAX,rawAY, rawAZ, rawGX, rawGY, rawGZ;       //stores the raw data values from the gyro/accel
-int ax_average = 0, ay_average = 0, az_average = 0, gx_average = 0,	gy_average = 0, gz_average = 0;
-const double RAD_TO_DEGREE = 57.295779513082320876798154814105;
-int angleX[2], angleY[2], angleZ[2];
-float accelerationX, accelerationY, accelerationZ;
-float frontGrav = 0;
-float sideGrav = 0;
-float upGrav = 0;
+
+extern short forwardAxis;
+extern int rawAX, rawAY, rawAZ, rawGX, rawGY, rawGZ;       //stores the raw data values from the gyro/accel
+extern int mocAX, mocAY, mocAZ, mocGX, mocGY, mocGZ; 
+extern long ax_average , ay_average, az_average, gx_average,	gy_average, gz_average;
+extern float angleX[2], angleY[2], angleZ[2];
+extern long base_x_gyro, base_y_gyro, base_z_gyro;
+
 
 //initialize: Must by called before calling any other function 
 //this will calibrate and verify that there is a connection to the mpu
-bool initialize(int address);
+bool GYRO_initialize(int address);
 //averages 1024 values from the mpu throwing out an additional first 100
 void meanAcclGyro();
 //Calibrates the gyro and accel (non-specific)
@@ -84,33 +94,40 @@ void calibrate();
 void getData6();            //Retrieving the data from the I2C device
 void getAngles();           //Will calculate the the angles form the gyro
 void getAcceleration();     //Will calculate the the acceleration vectors
+char getImpactStatus();
 void get_Movement_6();
+void get_BaseMotion();
+
 //will send a byte through i2c to the mpu's DMP to set the offsets
+
 void setAcclOffset(int, int, int);
 void setGyroOffset(int, int, int);
 void setFullScaleAccelRange(int);
 void setFullScaleGyroRange(int);
-
-
+void SetSleepEnabled(bool);
+void setClockSource(char source);
+unsigned char* offsetRegisterSet(int);
+void setSampleRate(char);
 
 int abs(int);
 
 
-union gyro_union
-{
-    struct
-    {
-        unsigned char gyro_L;
-        unsigned char gyro_H;
-    }
-    reg;
-    struct
-    {
-        int gyroInData;
-    }
-    value;
-};
-union gyro_union myData;
+
+//union gyro_union
+//{
+//    struct
+//    {
+//        unsigned char gyro_L;
+//        unsigned char gyro_H;
+//    }
+//    reg;
+//    struct
+//    {
+//        int gyroInData;
+//    }
+//    value;
+//};
+//extern union gyro_union myData;
 
 #endif	/* XC_HEADER_TEMPLATE_H */
 
