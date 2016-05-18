@@ -151,7 +151,7 @@ void rebootPin(int pin)
   int rebootTime;
   // If the router hangs, reboot entire robot
   // Otherwise reboot the pin for the given time depending on what pin
-  if(pin == routerOut) {
+  if(pin == ledOut) {
     state = BOOTING;
     return;
   }
@@ -159,7 +159,7 @@ void rebootPin(int pin)
     rebootTime = NAVI_BOOT_TIME;
   }
   else {
-    rebootTime = OTHER_BOOT_TIME; 
+    rebootTime = OTHER_BOOT_TIME;
   }
   
   digitalWrite(pin, LOW);
