@@ -81,7 +81,6 @@ void setup() {
   digitalWrite(ledOut, HIGH);
   digitalWrite(powerbOut, HIGH);
   
-  
   oldValueSensor = digitalRead(sensor);
   oldValueNavi = digitalRead(navi);
   //oldValueMotorb = digitalRead(motorb);
@@ -103,6 +102,7 @@ void setup() {
   allPinsLow = false;
   allPinsHigh = false;
 }
+
 
 void loop() {
   if(!mustRebootPin && !lowWaiting && !bootWaiting) {
@@ -190,6 +190,10 @@ void pinDown(int pin)
 {
   // If the led hangs, reboot entire robot
   // Otherwise reboot the pin for the given time depending on what pin
+  if(pin == ledOut) {
+    allPinsLow = true;
+    return;
+  }
   
   digitalWrite(pin, LOW);
   lowTimer.resetTimer();
@@ -204,11 +208,8 @@ void pinUp(int pin)
 {
   int rebootTime;
   
-  if(pin == ledOut) {
-    allPinsLow = true;
-    return;
-  }
-  else if(pin == routerOut) {
+  // determine how long to wait for reboot before watchdog begins checking again
+  if(pin == routerOut) {
     rebootTime = COMPLETE_BOOT_TIME;
   }
   else if(pin == naviOut) {
