@@ -29,7 +29,7 @@ inline void updateLed(){
 }
 
  inline void updateOffset(){  
-   static Timers timerVibrate(100);
+   static Timers timerVibrate(75);
    if((bucketAngle >= VIBRATING_MOTOR_ON_HIGH)||(bucketAngle<=VIBRATING_MOTOR_ON_LOW)){
      if(timerVibrate.timerDone())
        digitalWrite(A4,!digitalRead(A4)); 
