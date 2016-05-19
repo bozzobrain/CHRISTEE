@@ -34,8 +34,8 @@ inline void updateComms()
   if(actuatorSendTimer.timerDone())
   {
     communicationBoardIn.ToSend(LAST_BOARD_ADDRESS_RECEIVE, MOTOR_ADDRESS);
-     communicationBoardIn.ToSend(ACTUATOR_ANGLE_NAVIGATION,  bucketAngle);
-     communicationBoardIn.sendData(NAVIGATION_ADDRESS);
+    communicationBoardIn.ToSend(ACTUATOR_ANGLE_NAVIGATION,  bucketAngle);
+    communicationBoardIn.sendData(NAVIGATION_ADDRESS);
    //  communicationBoardIn.ToSend(LAST_BOARD_ADDRESS_RECEIVE, MOTOR_ADDRESS);
    //  communicationBoardIn.ToSend(ACTUATOR_ANGLE_CONTROL,  bucketAngle);
    //  communicationBoardIn.sendData(CONTROL_ADDRESS);
