@@ -6,6 +6,7 @@ int actuatorDrivingAngle = 40;
 float sideKpL = 1.35, sideKdL = 180000000, sideKiL = 0; // Kp  0.025 40000000 0.06
 float sideKpR = 1.35, sideKdR = 180000000,  sideKiR = 0; //0.078
 
+float angle_y;
 
 /*********************AUTO SENSOR DATA*************************/
 //----------MPU DATA----------------

@@ -61,6 +61,8 @@ int navigation_receive[50];
 #define ENCODER_L_L_PIC_RECEIVE        6
 #define ENCODER_SPEED_R_PIC_RECEIVE  7
 #define ENCODER_SPEED_L_PIC_RECEIVE  8
+
+
 #define WII_BEACON_SEEN_LEFT         9      //Boolean says whether camera is hunting or searching
 #define WII_BEACON_SEEN_RIGHT        10
 #define WII_NUMBER_SWEEPS_LEFT       11     //Will count up :)
@@ -99,6 +101,9 @@ bool beaconSeen[2];
 bool beaconCentered[2];
 int beaconWidth;
 
+
+
+int bumpPresent;
 //    -------------DEPRECIATED WII CAMERA STUFFFINGS-------------------
 //    distanceFromCenter = wii_camera_receive[DISTANCE_FROM_CENTER];
 //    beaconAngle = wii_camera_receive[BEACON_ANGLE];
@@ -111,7 +116,7 @@ int beaconWidth;
 inline void initializeCommunications()
 {
   // I2C Init for Gyroscope
-  Wire.begin();
+  //
   // USB Serial
   Serial.begin(115200);
 //...........................
@@ -132,6 +137,8 @@ void prepManualData()
 {
   Navigation.ToSend(MACRO_COMMAND_SEND, 0);
   Navigation.ToSend(MACRO_SUB_COMMAND_SEND, 0);
+  //Navigation.ToSend(LEFT_MOTOR    , bumpPresent);
+  //Navigation.ToSend(GYRO          , macroAngle);
 }
 void prepAutoData()
 {
@@ -183,6 +190,7 @@ inline void macroCommunicationsUpdate()
       Navigation.sendData(CONTROL_ADDRESS);    
     }
   }
+    //commSafety();
 }
 
 
@@ -193,13 +201,12 @@ void updateFromControlBoard()
   //Data received from the Communications Board
   if (Navigation.receiveData())
   {
-     digitalWrite(13,!digitalRead(13));
+     //digitalWrite(13,!digitalRead(13));
      pullDataFromPacket(); 
     //If sent a macro command -- do it
     if ((stored_macro_command != 0) &&  macroSetDelay.timerDone())
     {
-       //navigation_receive[MACRO_COMMAND_RECEIVE]=stored_macro_command;
-       
+       //navigation_receive[MACRO_COMMAND_RECEIVE]=stored_macro_command;       
        initMacroSystem();
     }  
   }
@@ -222,12 +229,37 @@ union jointhem{
 #define RIGHT_CAMERA_ONLY   2
 #define BOTH_CAMERAS        3
 
-bool robotSeen;
-int left_right_camera;
+int robotSeen;
 int x_coordinate, y_coordinate;
-int camera_angle;
+int leftAngle,rightAngle;
+int distLeft, distRight;
 
 
+
+
+
+
+
+
+
+//FAST TRANSFER DATA PACKET ADDRESS DEFINED
+#define ROBOT_SEEN_VALUE 9
+#define WII_ANGLE_LEFT   10
+#define WII_ANGLE_RIGHT  11
+#define WII_X            12
+#define WII_Y            13
+#define WII_DIST_LEFT    14
+#define WII_DIST_RIGHT   15
+
+//BEACON SEEN VARIABLE DEFINES
+#define CANT_SEE_CAMERAS    0
+#define LEFT_CAMERA_ONLY_1  1
+#define RIGHT_CAMERA_ONLY_1 2
+#define LEFT_CAMERA_ONLY    3
+#define RIGHT_CAMERA_ONLY   4 
+#define BOTH_CAMERAS_1      5
+#define BOTH_CAMERAS        6
+#define XY_FOUND            7  
 void pullDataFromPacket() {
   static float keeper1, keeper2;
   static signed long encoderPastR=0, encoderPastL=0;
@@ -236,23 +268,89 @@ void pullDataFromPacket() {
   
   switch ( navigation_receive[LAST_BOARD_ADDRESS_RECEIVE]) {
     case POWER_ADDRESS:
-      if(robotSeen)
+       //Serial.println("HEARD FROM NOWHERE MAN");
+       
+      robotSeen   =  navigation_receive[ROBOT_SEEN_VALUE];
+      x_coordinate=  navigation_receive[WII_X];
+      y_coordinate=  navigation_receive[WII_Y];
+      leftAngle   =  navigation_receive[WII_ANGLE_LEFT];
+      rightAngle  =  navigation_receive[WII_ANGLE_RIGHT];
+      distLeft    =  navigation_receive[WII_DIST_LEFT];
+      distRight   =  navigation_receive[WII_DIST_RIGHT];
+      
+      
+      //DEBUG FOR COMMS AND DATA FROM THE WII CAMERAS
+      switch(robotSeen)
       {
-        switch(left_right_camera)
-        {
-         case LEFT_CAMERA_ONLY:
-           camera_angle=1;
-          break;
-         case RIGHT_CAMERA_ONLY:
-           camera_angle=1;
-          break;
-         case BOTH_CAMERAS:
-           x_coordinate=1;
-           y_coordinate=1;
-          break; 
-        }
+        case CANT_SEE_CAMERAS:
         
-        
+          Serial.print("CANT SEE CAMERA L_angle: ");  
+          Serial.print(leftAngle);       
+          Serial.print(" ,R_angle: ");  
+          Serial.println(rightAngle);
+          break;
+        case LEFT_CAMERA_ONLY_1:
+          Serial.print("LEFT_CAMERA_ONLY_1 angle: ");     
+          Serial.print(leftAngle);  
+          Serial.print(" ,dist: ");
+          Serial.println(distLeft);       
+          break;
+        case RIGHT_CAMERA_ONLY_1:
+          Serial.print("RIGHT_CAMERA_ONLY_1 angle: ");     
+          Serial.print(rightAngle);  
+          Serial.print(" ,dist: ");
+          Serial.println(distRight);
+          break;
+        case RIGHT_CAMERA_ONLY:
+          Serial.print("RIGHT_CAMERA_ONLY angle: ");     
+          Serial.print(rightAngle);  
+          Serial.print(" ,dist: ");
+          Serial.println(distRight);     
+          break;
+       case LEFT_CAMERA_ONLY:
+          Serial.print("LEFT_CAMERA_ONLY angle: ");     
+          Serial.print(leftAngle);  
+          Serial.print(" ,dist: ");
+          Serial.println(distLeft);
+          break;
+       case BOTH_CAMERAS:
+          Serial.print("BOTH_CAMERAS L_angle: ");  
+          Serial.print(leftAngle);       
+          Serial.print(" ,R_angle: ");  
+          Serial.println(rightAngle);
+          Serial.print("distLeft: ");
+          Serial.print(distLeft);
+          Serial.print(" ,distRight: ");
+          Serial.println(distRight);
+          break;
+       case BOTH_CAMERAS_1:
+          Serial.print("BROKEN_TRIANGLE L_angle: ");  
+          Serial.print(leftAngle);       
+          Serial.print(" ,R_angle: ");  
+          Serial.println(rightAngle);
+          Serial.print("distLeft: ");
+          Serial.print(distLeft);
+          Serial.print(" ,distRight: ");
+          Serial.println(distRight);
+          Serial.print("X: ");
+          Serial.print(x_coordinate);
+          Serial.print(" ,Y: ");
+          Serial.println(y_coordinate);
+          break;
+       case XY_FOUND:
+          Serial.print("XY_FOUND L_angle: ");  
+          Serial.print(leftAngle);       
+          Serial.print(" ,R_angle: ");  
+          Serial.println(rightAngle);
+          Serial.print("distLeft: ");
+          Serial.print(distLeft);
+          Serial.print(" ,distRight: ");
+          Serial.println(distRight);
+          Serial.print("X: ");
+          Serial.print(x_coordinate);
+          Serial.print(" ,Y: ");
+          Serial.println(y_coordinate);             
+          break;       
       }
       break;
     case CONTROL_ADDRESS:
@@ -271,6 +369,7 @@ void pullDataFromPacket() {
             sendLEDstate(MANUAL);
          }
       }
+      digitalWrite(13,!digitalRead(13));
       break;
      
     case MOTOR_ADDRESS:
@@ -287,15 +386,15 @@ void pullDataFromPacket() {
       _16_to_32.endian.high=navigation_receive[ENCODER_L_H_PIC_RECEIVE];
       _16_to_32.endian.low=navigation_receive[ENCODER_L_L_PIC_RECEIVE];
       encoderL                =( _16_to_32.joined ) ;
-      digitalWrite(13,!digitalRead(13));
+      
       if(encoderR==0 && encoderL==0)
       {
           encoderPastL=0;
           encoderPastR=0;
       }      
       
-      
-      
+      angle_y=navigation_receive[GYRO_Z_ANGLE_PIC];
+      bumpPresent=navigation_receive[GYRO_IMPACT_PIC];
 //        Serial.print("Encoder L: ");
 //        Serial.print(encoderL);
 //        Serial.print(",  Encoder R: ");
@@ -336,17 +435,24 @@ inline void commSafety()
 //DELAY TIMEOUT OCCURRED METHOD
 inline void packetWait()
 {
-  static Timers sendDataTimer(25);
+  //navigation_receive[LAST_BOARD_ADDRESS_RECEIVE]=0;
+ // static Timers sendDataTimer(25);
   //sendMotorCommand(0, 0, 255);
   while (navigation_receive[LAST_BOARD_ADDRESS_RECEIVE]!=CONTROL_ADDRESS)
   {
-    if(sendDataTimer.timerDone())
-    {
+    //if(sendDataTimer.timerDone())
+   // {
       //pullDataFromPacket();
       Navigation.receiveData();
-      
-    }
-    delay(1);
+//      if(navigation_receive[LAST_BOARD_ADDRESS_RECEIVE]==CONTROL_ADDRESS)
+//      {
+//          safetyTimer.resetTimer(); //safety system reset  
+//          latency.resetTimer();  //delay till send after not received        
+//          readyToSend = true;      //make not we got a good one
+//          //return;
+//      }
+    //}
+    delay(5);
   }
   readyToSend = true;      //make not we got a good one
   latency.resetTimer();  //delay till send after not received

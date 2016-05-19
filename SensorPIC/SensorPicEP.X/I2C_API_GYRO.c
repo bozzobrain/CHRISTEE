@@ -272,7 +272,7 @@ void __attribute__((interrupt, no_auto_psv)) _MI2C1Interrupt(void)
     else
     {
         FunctionI2Cone();
-        LATEbits.LATE7 ^= 1;
+        //LATEbits.LATE7 ^= 1;
     }
     IFS1bits.MI2C1IF = 0; // clear interrupt flag
 }

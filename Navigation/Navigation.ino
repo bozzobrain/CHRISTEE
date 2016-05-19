@@ -19,10 +19,14 @@ int motorHighG        = 16;   //with sand 35 // WITHOUT SAND 16
 
 #define DELAY_BUCKET_EMPTY 2500
 
+#define LEFT_PERPENDICULAR true
+#define RIGHT_PERPENDICULAR false
+
+
 #include <FastTransfer.h>
 #include <EasyTransfer.h>
 #include <EasyTransferCRC.h>
-#include <Wire.h>
+//#include <Wire.h>
 #include <digitalWriteFast.h>
 //#include <Average.h>
 #include <PID.h>
@@ -33,11 +37,6 @@ int motorHighG        = 16;   //with sand 35 // WITHOUT SAND 16
 #include "Structs.h"
 #include "Methods.h"
 #include "Variables.h"
-// I2Cdev and MPU6050 must be installed as libraries, or else the .cpp/.h files
-// for both classes must be in the include path of your project
-#include "I2Cdev.h"
-#include "MPU6050.h"
-#include "sethGyro.h"
 #include "Comms.h"
 #include "Motor.h"
 #include "Sensors.h"
@@ -54,11 +53,11 @@ int motorHighG        = 16;   //with sand 35 // WITHOUT SAND 16
 void setup() {
   pinMode(13,OUTPUT);
   initializeCommunications();
-  delay(1000);
+  //delay(1000);
 //  MPU1.MPUinit();
 //  MPU2.MPUinit();
 //  initMPUFilters();
-  initGyroSeth();
+  //initGyroSeth();
  digitalWrite(13,HIGH);
  delay(100);
  digitalWrite(13,LOW);
@@ -76,10 +75,12 @@ void loop() {
   static Timers LEDTimer(1000);
   updateComms();
  
-  if(MPUTimer.timerDone()) {
+  if(MPUTimer.timerDone()) 
+  {
     
   //logData();
     updateMPU();
+    
   }
   //USBdebug();
   //if(LEDTimer.timerDone()) digitalWrite(13,!digitalRead(13));

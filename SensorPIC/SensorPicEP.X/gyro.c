@@ -224,11 +224,11 @@ void getAngles()
 	angleZ[1] = angleZ[0];
     if(angleZ[0] > 0)
     {
-        LATEbits.LATE6 = 0;
+        //LATEbits.LATE6 = 0;
     }
     if(angleZ[0] < 0)
     {
-        LATEbits.LATE6 = 1;
+        //LATEbits.LATE6 = 1;
     }
 }
 void getAcceleration()

@@ -6,7 +6,10 @@
         <group>
             <file>file:/C:/Users/Zac/Desktop/CHRISTEE%20REPO/christee/SensorPIC/SensorPicEP.X/main.c</file>
             <file>file:/C:/Users/Zac/Desktop/CHRISTEE%20REPO/christee/SensorPIC/SensorPicEP.X/encoderCalculator.c</file>
-            <file>file:/C:/Users/Zac/Desktop/CHRISTEE%20REPO/christee/SensorPIC/SensorPicEP.X/encoderCalculator.h</file>
+            <file>file:/C:/Users/Zac/Desktop/CHRISTEE%20REPO/christee/SensorPIC/SensorPicEP.X/gyro.c</file>
+            <file>file:/C:/Users/Zac/Desktop/CHRISTEE%20REPO/christee/SensorPIC/SensorPicEP.X/initialize.c</file>
+            <file>file:/C:/Users/Zac/Desktop/CHRISTEE%20REPO/christee/SensorPIC/SensorPicEP.X/UART_handler.c</file>
+            <file>file:/C:/Users/Zac/Desktop/CHRISTEE%20REPO/christee/SensorPIC/SensorPicEP.X/interrupt_handler.c</file>
         </group>
     </open-files>
 </project-private>

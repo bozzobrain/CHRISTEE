@@ -240,13 +240,13 @@ section                    address   length (PC units)   length (bytes) (dec)
 -------                    -------   -----------------   --------------------
 .text                        0x200              0x1cba          0x2b17  (11031)
 .const                      0x1eba                0xa6            0xf9  (249)
-.text                       0x1f60              0x37dc          0x53ca  (21450)
-.dinit                      0x573c               0x184           0x246  (582)
-.text                       0x58c0               0x24a           0x36f  (879)
-.init.delay32               0x5b0a                0x1c            0x2a  (42)
-.shared.dinit               0x5b26                 0x2             0x3  (3)
+.text                       0x1f60              0x37b2          0x538b  (21387)
+.dinit                      0x5712               0x184           0x246  (582)
+.text                       0x5896               0x248           0x36c  (876)
+.init.delay32               0x5ade                0x1c            0x2a  (42)
+.shared.dinit               0x5afa                 0x2             0x3  (3)
 
-                 Total program memory used (bytes):         0x85bc  (34236) 6%
+                 Total program memory used (bytes):         0x857a  (34170) 6%
 
 
 Ivt Memory  [Origin = 0x4, Length = 0x1fc]
@@ -699,188 +699,188 @@ External Symbols in Program Memory (by address):
                   0x00364a                  _meanGyroAccel
                   0x003756                  _calibrate
                   0x0039b6                  _getAngles
-                  0x003b48                  _getAcceleration
-                  0x003c26                  _getImpactStatus
-                  0x003dc6                  _get_BaseMotion
-                  0x003e4c                  _get_Movement_6
-                  0x004168                  _offsetRegisterSet
-                  0x004184                  _setAcclOffset
-                  0x004202                  _setGyroOffset
-                  0x004280                  _setFullScaleAccelRange
-                  0x004296                  _setFullScaleGyroRange
-                  0x0042ac                  _SetSleepEnabled
-                  0x0042c0                  _setClockSource
-                  0x0042d6                  _setSampleRate
-                  0x0042ec                  _abs
-                  0x004300                  _begin
-                  0x004346                  _CRC8
-                  0x0043aa                  _sendData
-                  0x00440c                  _receiveData
-                  0x004656                  _ToSend
-                  0x004668                  _FastTransfer_buffer_put
-                  0x0046f2                  _FastTransfer_buffer_get
-                  0x00472c                  _FastTransfer_buffer_flush
-                  0x004756                  _FastTransfer_buffer_modulo_inc
-                  0x004772                  _AKNAK
-                  0x0047aa                  _alignError
-                  0x0047b2                  _CRCError
-                  0x0047ba                  _addressError
-                  0x0047c2                  _dataAddressError
-                  0x0047ca                  _crcBufS_put
-                  0x004828                  _crcBufS_status_put
-                  0x004878                  _crcBufS_get
-                  0x0048d6                  _CRCcheck
-                  0x004978                  _InitI2Cone
-                  0x004992                  _SendI2Cone
-                  0x0049ea                  _ReceiveI2Cone
-                  0x004a42                  _SendSlaveAddressI2Cone
-                  0x004a66                  _SendDataAddressI2Cone
-                  0x004aca                  _SendDataI2Cone
-                  0x004b12                  _SendRestartI2Cone
-                  0x004b1e                  _SendStartI2Cone
-                  0x004b2a                  _SendReadRequestI2Cone
-                  0x004b3e                  _FirstReceiveI2Cone
-                  0x004b5c                  _ReceiveByteI2Cone
-                  0x004b9c                  _EnableReceiveI2Cone
-                  0x004ba8                  _NACKFollowUpI2Cone
-                  0x004bb4                  _StopFunctionI2Cone
-                  0x004bbc                  _FailFunctionI2Cone
-                  0x004bc8                  _SuccessFunctionI2Cone
-                  0x004bd4                  _StatusI2Cone
-                  0x004bde                  __MI2C1Interrupt
-                  0x004c2c                  _InitI2Ctwo
-                  0x004c46                  _SendI2Ctwo
-                  0x004c9e                  _ReceiveI2Ctwo
-                  0x004cf6                  _SendSlaveAddressI2Ctwo
-                  0x004d08                  _SendDataAddressI2Ctwo
-                  0x004d52                  _SendDataI2Ctwo
-                  0x004d9a                  _SendRestartI2Ctwo
-                  0x004da6                  _SendStartI2Ctwo
-                  0x004db2                  _SendReadRequestI2Ctwo
-                  0x004dc6                  _FirstReceiveI2Ctwo
-                  0x004de4                  _ReceiveByteI2Ctwo
-                  0x004e24                  _EnableReceiveI2Ctwo
-                  0x004e30                  _NACKFollowUpI2Ctwo
-                  0x004e3c                  _StopFunctionI2Ctwo
-                  0x004e44                  _FailFunctionI2Ctwo
-                  0x004e50                  _SuccessFunctionI2Ctwo
-                  0x004e5c                  _StatusI2Ctwo
-                  0x004e66                  __MI2C2Interrupt
-                  0x004e9a                  _writeBits
-                  0x004f0e                  _writeBit
-                  0x004f4e                  _UART_init
-                  0x004fd6                  _UART_buff_init
-                  0x004fe6                  _UART_buff_put
-                  0x005048                  _UART_buff_get
-                  0x005082                  _UART_buff_flush
-                  0x0050ac                  _UART_buff_size
-                  0x0050b8                  _UART_buff_modulo_inc
-                  0x0050d4                  _UART_buff_peek
-                  0x0050e6                  _Receive_peek
-                  0x0050f0                  _Receive_available
-                  0x0050fa                  _Receive_get
-                  0x005104                  _Send_put
-                  0x005122                  __U1RXInterrupt
-                  0x005148                  __U1TXInterrupt
-                  0x0051b2                  _absol
-                  0x0051c6                  _MessageParsser
-                  0x00521a                  _isNegative
-                  0x00524a                  _loadHundreds
-                  0x005282                  _loadTens
-                  0x0052b6                  _loadUnits
-                  0x0052f6                  _maxedHead
-                  0x005314                  _RightSpeedCalculation
-                  0x005396                  _LeftSpeedCalculation
-                  0x005418                  _updateEncoders
-                  0x00542a                  __IC1Interrupt
-                  0x005480                  __IC2Interrupt
-                  0x0054d6                  _sendEncoderValues
-                  0x005562                  _initialize
-                  0x0055cc                  _oscillator
-                  0x005622                  _timerOne
-                  0x005644                  _timerTwo
-                  0x00566e                  _timerFour
-                  0x005688                  _initUART1
-                  0x0056b6                  _inputCapture
-                  0x0058c0                  _initPWM1
-                  0x005912                  _initPWM2
-                  0x005964                  _setAngle1
-                  0x0059a8                  _setAngle2
-                  0x0059ec                  _presentAngle1
-                  0x0059f4                  _presentAngle2
-                  0x0059fc                  _indicatorsOFF
-                  0x005a0a                  _debugLEDs
-                  0x005a36                  _main
-                  0x005ac2                  _setRUN_DATAFUNCTION
-                  0x005ad0                  _setCycleCounter
-                  0x005adc                  _getGYRO_DEBUG
-                  0x005ae4                  _constrain
-                  0x005b0a                  ___delay32
+                  0x003b2c                  _getAcceleration
+                  0x003c0a                  _getImpactStatus
+                  0x003daa                  _get_BaseMotion
+                  0x003e30                  _get_Movement_6
+                  0x00414c                  _offsetRegisterSet
+                  0x004168                  _setAcclOffset
+                  0x0041e6                  _setGyroOffset
+                  0x004264                  _setFullScaleAccelRange
+                  0x00427a                  _setFullScaleGyroRange
+                  0x004290                  _SetSleepEnabled
+                  0x0042a4                  _setClockSource
+                  0x0042ba                  _setSampleRate
+                  0x0042d0                  _abs
+                  0x0042e4                  _begin
+                  0x00432a                  _CRC8
+                  0x00438e                  _sendData
+                  0x0043f0                  _receiveData
+                  0x00463a                  _ToSend
+                  0x00464c                  _FastTransfer_buffer_put
+                  0x0046d6                  _FastTransfer_buffer_get
+                  0x004710                  _FastTransfer_buffer_flush
+                  0x00473a                  _FastTransfer_buffer_modulo_inc
+                  0x004756                  _AKNAK
+                  0x00478e                  _alignError
+                  0x004796                  _CRCError
+                  0x00479e                  _addressError
+                  0x0047a6                  _dataAddressError
+                  0x0047ae                  _crcBufS_put
+                  0x00480c                  _crcBufS_status_put
+                  0x00485c                  _crcBufS_get
+                  0x0048ba                  _CRCcheck
+                  0x00495c                  _InitI2Cone
+                  0x004976                  _SendI2Cone
+                  0x0049ce                  _ReceiveI2Cone
+                  0x004a26                  _SendSlaveAddressI2Cone
+                  0x004a4a                  _SendDataAddressI2Cone
+                  0x004aae                  _SendDataI2Cone
+                  0x004af6                  _SendRestartI2Cone
+                  0x004b02                  _SendStartI2Cone
+                  0x004b0e                  _SendReadRequestI2Cone
+                  0x004b22                  _FirstReceiveI2Cone
+                  0x004b40                  _ReceiveByteI2Cone
+                  0x004b80                  _EnableReceiveI2Cone
+                  0x004b8c                  _NACKFollowUpI2Cone
+                  0x004b98                  _StopFunctionI2Cone
+                  0x004ba0                  _FailFunctionI2Cone
+                  0x004bac                  _SuccessFunctionI2Cone
+                  0x004bb8                  _StatusI2Cone
+                  0x004bc2                  __MI2C1Interrupt
+                  0x004bf6                  _InitI2Ctwo
+                  0x004c10                  _SendI2Ctwo
+                  0x004c68                  _ReceiveI2Ctwo
+                  0x004cc0                  _SendSlaveAddressI2Ctwo
+                  0x004cd2                  _SendDataAddressI2Ctwo
+                  0x004d1c                  _SendDataI2Ctwo
+                  0x004d64                  _SendRestartI2Ctwo
+                  0x004d70                  _SendStartI2Ctwo
+                  0x004d7c                  _SendReadRequestI2Ctwo
+                  0x004d90                  _FirstReceiveI2Ctwo
+                  0x004dae                  _ReceiveByteI2Ctwo
+                  0x004dee                  _EnableReceiveI2Ctwo
+                  0x004dfa                  _NACKFollowUpI2Ctwo
+                  0x004e06                  _StopFunctionI2Ctwo
+                  0x004e0e                  _FailFunctionI2Ctwo
+                  0x004e1a                  _SuccessFunctionI2Ctwo
+                  0x004e26                  _StatusI2Ctwo
+                  0x004e30                  __MI2C2Interrupt
+                  0x004e64                  _writeBits
+                  0x004ed8                  _writeBit
+                  0x004f18                  _UART_init
+                  0x004fa0                  _UART_buff_init
+                  0x004fb0                  _UART_buff_put
+                  0x005012                  _UART_buff_get
+                  0x00504c                  _UART_buff_flush
+                  0x005076                  _UART_buff_size
+                  0x005082                  _UART_buff_modulo_inc
+                  0x00509e                  _UART_buff_peek
+                  0x0050b0                  _Receive_peek
+                  0x0050ba                  _Receive_available
+                  0x0050c4                  _Receive_get
+                  0x0050ce                  _Send_put
+                  0x0050ec                  __U1RXInterrupt
+                  0x005112                  __U1TXInterrupt
+                  0x00517c                  _absol
+                  0x005190                  _MessageParsser
+                  0x0051e4                  _isNegative
+                  0x005214                  _loadHundreds
+                  0x00524c                  _loadTens
+                  0x005280                  _loadUnits
+                  0x0052c0                  _maxedHead
+                  0x0052de                  _RightSpeedCalculation
+                  0x005360                  _LeftSpeedCalculation
+                  0x0053e2                  _updateEncoders
+                  0x0053f4                  __IC1Interrupt
+                  0x00544a                  __IC2Interrupt
+                  0x0054a0                  _sendEncoderValues
+                  0x00553c                  _initialize
+                  0x0055a2                  _oscillator
+                  0x0055f8                  _timerOne
+                  0x00561a                  _timerTwo
+                  0x005644                  _timerFour
+                  0x00565e                  _initUART1
+                  0x00568c                  _inputCapture
+                  0x005896                  _initPWM1
+                  0x0058e8                  _initPWM2
+                  0x00593a                  _setAngle1
+                  0x00597e                  _setAngle2
+                  0x0059c2                  _presentAngle1
+                  0x0059ca                  _presentAngle2
+                  0x0059d2                  _indicatorsOFF
+                  0x0059e0                  _debugLEDs
+                  0x005a0c                  _main
+                  0x005a96                  _setRUN_DATAFUNCTION
+                  0x005aa4                  _setCycleCounter
+                  0x005ab0                  _getGYRO_DEBUG
+                  0x005ab8                  _constrain
+                  0x005ade                  ___delay32
                   0xf80004                  __FGS.sec
 
 External Symbols in Program Memory (by name):
 
-                  0x004772                  _AKNAK
-                  0x004346                  _CRC8
-                  0x0047b2                  _CRCError
-                  0x0048d6                  _CRCcheck
-                  0x004b9c                  _EnableReceiveI2Cone
-                  0x004e24                  _EnableReceiveI2Ctwo
-                  0x004bbc                  _FailFunctionI2Cone
-                  0x004e44                  _FailFunctionI2Ctwo
-                  0x00472c                  _FastTransfer_buffer_flush
-                  0x0046f2                  _FastTransfer_buffer_get
-                  0x004756                  _FastTransfer_buffer_modulo_inc
-                  0x004668                  _FastTransfer_buffer_put
-                  0x004b3e                  _FirstReceiveI2Cone
-                  0x004dc6                  _FirstReceiveI2Ctwo
+                  0x004756                  _AKNAK
+                  0x00432a                  _CRC8
+                  0x004796                  _CRCError
+                  0x0048ba                  _CRCcheck
+                  0x004b80                  _EnableReceiveI2Cone
+                  0x004dee                  _EnableReceiveI2Ctwo
+                  0x004ba0                  _FailFunctionI2Cone
+                  0x004e0e                  _FailFunctionI2Ctwo
+                  0x004710                  _FastTransfer_buffer_flush
+                  0x0046d6                  _FastTransfer_buffer_get
+                  0x00473a                  _FastTransfer_buffer_modulo_inc
+                  0x00464c                  _FastTransfer_buffer_put
+                  0x004b22                  _FirstReceiveI2Cone
+                  0x004d90                  _FirstReceiveI2Ctwo
                   0x0035ee                  _GYRO_initialize
-                  0x004978                  _InitI2Cone
-                  0x004c2c                  _InitI2Ctwo
-                  0x005396                  _LeftSpeedCalculation
-                  0x0051c6                  _MessageParsser
-                  0x004ba8                  _NACKFollowUpI2Cone
-                  0x004e30                  _NACKFollowUpI2Ctwo
+                  0x00495c                  _InitI2Cone
+                  0x004bf6                  _InitI2Ctwo
+                  0x005360                  _LeftSpeedCalculation
+                  0x005190                  _MessageParsser
+                  0x004b8c                  _NACKFollowUpI2Cone
+                  0x004dfa                  _NACKFollowUpI2Ctwo
                   0x001f5c                  _RAD_TO_DEGREE
-                  0x004b5c                  _ReceiveByteI2Cone
-                  0x004de4                  _ReceiveByteI2Ctwo
-                  0x0049ea                  _ReceiveI2Cone
-                  0x004c9e                  _ReceiveI2Ctwo
-                  0x0050f0                  _Receive_available
-                  0x0050fa                  _Receive_get
-                  0x0050e6                  _Receive_peek
-                  0x005314                  _RightSpeedCalculation
-                  0x004a66                  _SendDataAddressI2Cone
-                  0x004d08                  _SendDataAddressI2Ctwo
-                  0x004aca                  _SendDataI2Cone
-                  0x004d52                  _SendDataI2Ctwo
-                  0x004992                  _SendI2Cone
-                  0x004c46                  _SendI2Ctwo
-                  0x004b2a                  _SendReadRequestI2Cone
-                  0x004db2                  _SendReadRequestI2Ctwo
-                  0x004b12                  _SendRestartI2Cone
-                  0x004d9a                  _SendRestartI2Ctwo
-                  0x004a42                  _SendSlaveAddressI2Cone
-                  0x004cf6                  _SendSlaveAddressI2Ctwo
-                  0x004b1e                  _SendStartI2Cone
-                  0x004da6                  _SendStartI2Ctwo
-                  0x005104                  _Send_put
-                  0x0042ac                  _SetSleepEnabled
-                  0x004bd4                  _StatusI2Cone
-                  0x004e5c                  _StatusI2Ctwo
-                  0x004bb4                  _StopFunctionI2Cone
-                  0x004e3c                  _StopFunctionI2Ctwo
-                  0x004bc8                  _SuccessFunctionI2Cone
-                  0x004e50                  _SuccessFunctionI2Ctwo
-                  0x004656                  _ToSend
-                  0x005082                  _UART_buff_flush
-                  0x005048                  _UART_buff_get
-                  0x004fd6                  _UART_buff_init
-                  0x0050b8                  _UART_buff_modulo_inc
-                  0x0050d4                  _UART_buff_peek
-                  0x004fe6                  _UART_buff_put
-                  0x0050ac                  _UART_buff_size
-                  0x004f4e                  _UART_init
+                  0x004b40                  _ReceiveByteI2Cone
+                  0x004dae                  _ReceiveByteI2Ctwo
+                  0x0049ce                  _ReceiveI2Cone
+                  0x004c68                  _ReceiveI2Ctwo
+                  0x0050ba                  _Receive_available
+                  0x0050c4                  _Receive_get
+                  0x0050b0                  _Receive_peek
+                  0x0052de                  _RightSpeedCalculation
+                  0x004a4a                  _SendDataAddressI2Cone
+                  0x004cd2                  _SendDataAddressI2Ctwo
+                  0x004aae                  _SendDataI2Cone
+                  0x004d1c                  _SendDataI2Ctwo
+                  0x004976                  _SendI2Cone
+                  0x004c10                  _SendI2Ctwo
+                  0x004b0e                  _SendReadRequestI2Cone
+                  0x004d7c                  _SendReadRequestI2Ctwo
+                  0x004af6                  _SendRestartI2Cone
+                  0x004d64                  _SendRestartI2Ctwo
+                  0x004a26                  _SendSlaveAddressI2Cone
+                  0x004cc0                  _SendSlaveAddressI2Ctwo
+                  0x004b02                  _SendStartI2Cone
+                  0x004d70                  _SendStartI2Ctwo
+                  0x0050ce                  _Send_put
+                  0x004290                  _SetSleepEnabled
+                  0x004bb8                  _StatusI2Cone
+                  0x004e26                  _StatusI2Ctwo
+                  0x004b98                  _StopFunctionI2Cone
+                  0x004e06                  _StopFunctionI2Ctwo
+                  0x004bac                  _SuccessFunctionI2Cone
+                  0x004e1a                  _SuccessFunctionI2Ctwo
+                  0x00463a                  _ToSend
+                  0x00504c                  _UART_buff_flush
+                  0x005012                  _UART_buff_get
+                  0x004fa0                  _UART_buff_init
+                  0x005082                  _UART_buff_modulo_inc
+                  0x00509e                  _UART_buff_peek
+                  0x004fb0                  _UART_buff_put
+                  0x005076                  _UART_buff_size
+                  0x004f18                  _UART_init
                   0x0018c4                  __Atexit
                   0x00178a                  __Closreg
                   0x00184e                  __DNKfflush
@@ -889,17 +889,17 @@ External Symbols in Program Memory (by name):
                   0xf80004                  __FGS.sec
                   0x001528                  __Fwprep
                   0x000d54                  __Getmem
-                  0x00542a                  __IC1Interrupt
-                  0x005480                  __IC2Interrupt
+                  0x0053f4                  __IC1Interrupt
+                  0x00544a                  __IC2Interrupt
                   0x0015b6                  __LDunscale
-                  0x004bde                  __MI2C1Interrupt
-                  0x004e66                  __MI2C2Interrupt
+                  0x004bc2                  __MI2C1Interrupt
+                  0x004e30                  __MI2C2Interrupt
                   0x00160a                  __Puttxt
                   0x00035c                  __T1Interrupt
                   0x000382                  __T2Interrupt
                   0x00039a                  __T4Interrupt
-                  0x005122                  __U1RXInterrupt
-                  0x005148                  __U1TXInterrupt
+                  0x0050ec                  __U1RXInterrupt
+                  0x005112                  __U1TXInterrupt
                   0x001782                  __Vacopy
                   0x0011f2                  ___Genld_fF
                   0x000fa2                  ___Ldtob_fF
@@ -907,7 +907,7 @@ External Symbols in Program Memory (by name):
                   0x000ef8                  ___Putfld_fF
                   0x001c6a                  ___adddf3
                   0x0004a4                  ___addsf3
-                  0x005b0a                  ___delay32
+                  0x005ade                  ___delay32
                   0x001996                  ___divdf3
                   0x00066a                  ___divsf3
                   0x0006ee                  ___divsi3
@@ -963,27 +963,27 @@ External Symbols in Program Memory (by name):
                   0x00022c                  __psv_init
                   0x000200                  __resetPRI
                   0x0008a4                  __sincosf
-                  0x0042ec                  _abs
-                  0x0051b2                  _absol
-                  0x0047ba                  _addressError
-                  0x0047aa                  _alignError
+                  0x0042d0                  _abs
+                  0x00517c                  _absol
+                  0x00479e                  _addressError
+                  0x00478e                  _alignError
                   0x00055e                  _asinf
                   0x000562                  _atan2f
                   0x00059c                  _atanf
-                  0x004300                  _begin
+                  0x0042e4                  _begin
                   0x00232a                  _calculateCamera
                   0x002cb2                  _calculateXY
                   0x003756                  _calibrate
                   0x0032ac                  _cameraReady
-                  0x005ae4                  _constrain
+                  0x005ab8                  _constrain
                   0x000666                  _cosf
-                  0x004878                  _crcBufS_get
-                  0x0047ca                  _crcBufS_put
-                  0x004828                  _crcBufS_status_put
+                  0x00485c                  _crcBufS_get
+                  0x0047ae                  _crcBufS_put
+                  0x00480c                  _crcBufS_status_put
                   0x002c74                  _customBeaconCentered
-                  0x0047c2                  _dataAddressError
+                  0x0047a6                  _dataAddressError
                   0x003080                  _debugBlobs
-                  0x005a0a                  _debugLEDs
+                  0x0059e0                  _debugLEDs
                   0x003148                  _delay
                   0x001406                  _div
                   0x002b54                  _doBeaconAcquisition
@@ -996,66 +996,66 @@ External Symbols in Program Memory (by name):
                   0x000b1c                  _fmodf
                   0x000c28                  _free
                   0x00141c                  _fwrite
-                  0x003b48                  _getAcceleration
+                  0x003b2c                  _getAcceleration
                   0x0039b6                  _getAngles
-                  0x005adc                  _getGYRO_DEBUG
-                  0x003c26                  _getImpactStatus
-                  0x003dc6                  _get_BaseMotion
-                  0x003e4c                  _get_Movement_6
+                  0x005ab0                  _getGYRO_DEBUG
+                  0x003c0a                  _getImpactStatus
+                  0x003daa                  _get_BaseMotion
+                  0x003e30                  _get_Movement_6
                   0x002c48                  _horizontalBeaconCentered
-                  0x0059fc                  _indicatorsOFF
+                  0x0059d2                  _indicatorsOFF
                   0x00315c                  _initCamera
-                  0x0058c0                  _initPWM1
-                  0x005912                  _initPWM2
-                  0x005688                  _initUART1
-                  0x005562                  _initialize
-                  0x0056b6                  _inputCapture
+                  0x005896                  _initPWM1
+                  0x0058e8                  _initPWM2
+                  0x00565e                  _initUART1
+                  0x00553c                  _initialize
+                  0x00568c                  _inputCapture
                   0x003122                  _isAbout
-                  0x00521a                  _isNegative
+                  0x0051e4                  _isNegative
                   0x0014c4                  _ldiv
-                  0x00524a                  _loadHundreds
-                  0x005282                  _loadTens
-                  0x0052b6                  _loadUnits
-                  0x005a36                  _main
+                  0x005214                  _loadHundreds
+                  0x00524c                  _loadTens
+                  0x005280                  _loadUnits
+                  0x005a0c                  _main
                   0x000cf2                  _malloc
-                  0x0052f6                  _maxedHead
+                  0x0052c0                  _maxedHead
                   0x00364a                  _meanGyroAccel
                   0x0014ee                  _memchr
                   0x001502                  _memcpy
                   0x000d46                  _memset
-                  0x004168                  _offsetRegisterSet
-                  0x0055cc                  _oscillator
-                  0x0059ec                  _presentAngle1
-                  0x0059f4                  _presentAngle2
+                  0x00414c                  _offsetRegisterSet
+                  0x0055a2                  _oscillator
+                  0x0059c2                  _presentAngle1
+                  0x0059ca                  _presentAngle2
                   0x0032ca                  _read
                   0x003284                  _readCamera
-                  0x00440c                  _receiveData
+                  0x0043f0                  _receiveData
                   0x002b02                  _resetWiiBeaconStates
                   0x001f60                  _seekBeacon
                   0x002320                  _sendAngles
-                  0x0043aa                  _sendData
-                  0x0054d6                  _sendEncoderValues
+                  0x00438e                  _sendData
+                  0x0054a0                  _sendEncoderValues
                   0x002316                  _sendWiiData
-                  0x004184                  _setAcclOffset
-                  0x005964                  _setAngle1
-                  0x0059a8                  _setAngle2
-                  0x0042c0                  _setClockSource
-                  0x005ad0                  _setCycleCounter
-                  0x004280                  _setFullScaleAccelRange
-                  0x004296                  _setFullScaleGyroRange
-                  0x004202                  _setGyroOffset
-                  0x005ac2                  _setRUN_DATAFUNCTION
-                  0x0042d6                  _setSampleRate
+                  0x004168                  _setAcclOffset
+                  0x00593a                  _setAngle1
+                  0x00597e                  _setAngle2
+                  0x0042a4                  _setClockSource
+                  0x005aa4                  _setCycleCounter
+                  0x004264                  _setFullScaleAccelRange
+                  0x00427a                  _setFullScaleGyroRange
+                  0x0041e6                  _setGyroOffset
+                  0x005a96                  _setRUN_DATAFUNCTION
+                  0x0042ba                  _setSampleRate
                   0x000976                  _sinf
                   0x000bbe                  _sqrtf
                   0x001510                  _strchr
-                  0x00566e                  _timerFour
-                  0x005622                  _timerOne
-                  0x005644                  _timerTwo
-                  0x005418                  _updateEncoders
+                  0x005644                  _timerFour
+                  0x0055f8                  _timerOne
+                  0x00561a                  _timerTwo
+                  0x0053e2                  _updateEncoders
                   0x002c20                  _verticalBeaconCentered
-                  0x004f0e                  _writeBit
-                  0x004e9a                  _writeBits
+                  0x004ed8                  _writeBit
+                  0x004e64                  _writeBits
                   0x00182c                  fclose.EPelo:_closeall
                   0x000d68                  printf_fF.EPeo:_prout
 
@@ -1377,21 +1377,21 @@ __FUID0
  *(.comment)
  .comment         0x000000         0x5e c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(xfiles.EPeo)
 
-.debug_info       0x000000       0x9cbe
+.debug_info       0x000000       0x99cd
  *(.debug_info)
- .debug_info      0x000000        0x980 build/default/production/PWM.o
- .debug_info      0x000980       0x2bef build/default/production/initialize.o
- .debug_info      0x00356f        0x582 build/default/production/interrupt_handler.o
- .debug_info      0x003af1        0x666 build/default/production/main.o
- .debug_info      0x004157        0xc45 build/default/production/wiiCamera.o
- .debug_info      0x004d9c        0xb70 build/default/production/FastTransfer.o
- .debug_info      0x00590c       0x1197 build/default/production/UART_handler.o
- .debug_info      0x006aa3        0x962 build/default/production/encoderCalculator.o
- .debug_info      0x007405        0xe1b build/default/production/gyro.o
- .debug_info      0x008220       0x1a9e build/default/production/I2C_API_GYRO.o
+ .debug_info      0x000000        0x98b build/default/production/PWM.o
+ .debug_info      0x00098b       0x2a6b build/default/production/initialize.o
+ .debug_info      0x0033f6        0x58d build/default/production/interrupt_handler.o
+ .debug_info      0x003983        0x671 build/default/production/main.o
+ .debug_info      0x003ff4        0xc50 build/default/production/wiiCamera.o
+ .debug_info      0x004c44        0xb7b build/default/production/FastTransfer.o
+ .debug_info      0x0057bf       0x11a2 build/default/production/UART_handler.o
+ .debug_info      0x006961        0x96d build/default/production/encoderCalculator.o
+ .debug_info      0x0072ce        0xd3e build/default/production/gyro.o
+ .debug_info      0x00800c       0x19c1 build/default/production/I2C_API_GYRO.o
  *(.gnu.linkonce.wi.*)
 
-.debug_abbrev     0x000000        0xe64
+.debug_abbrev     0x000000        0xe1b
  *(.debug_abbrev)
  .debug_abbrev    0x000000         0xef build/default/production/PWM.o
  .debug_abbrev    0x0000ef         0xf0 build/default/production/initialize.o
@@ -1402,22 +1402,22 @@ __FUID0
  .debug_abbrev    0x0007b2        0x1d6 build/default/production/UART_handler.o
  .debug_abbrev    0x000988          0x1 build/default/production/Configuration_Bits.o
  .debug_abbrev    0x000989        0x153 build/default/production/encoderCalculator.o
- .debug_abbrev    0x000adc        0x1ae build/default/production/gyro.o
- .debug_abbrev    0x000c8a        0x1da build/default/production/I2C_API_GYRO.o
+ .debug_abbrev    0x000adc        0x165 build/default/production/gyro.o
+ .debug_abbrev    0x000c41        0x1da build/default/production/I2C_API_GYRO.o
 
-.debug_line       0x000000        0xe43
+.debug_line       0x000000        0xdd9
  *(.debug_line)
  .debug_line      0x000000         0xbe build/default/production/PWM.o
- .debug_line      0x0000be        0x118 build/default/production/initialize.o
- .debug_line      0x0001d6         0xc9 build/default/production/interrupt_handler.o
- .debug_line      0x00029f         0xef build/default/production/main.o
- .debug_line      0x00038e        0x2dd build/default/production/wiiCamera.o
- .debug_line      0x00066b        0x14b build/default/production/FastTransfer.o
- .debug_line      0x0007b6        0x155 build/default/production/UART_handler.o
- .debug_line      0x00090b         0x1a build/default/production/Configuration_Bits.o
- .debug_line      0x000925        0x114 build/default/production/encoderCalculator.o
- .debug_line      0x000a39        0x25f build/default/production/gyro.o
- .debug_line      0x000c98        0x1ab build/default/production/I2C_API_GYRO.o
+ .debug_line      0x0000be        0x116 build/default/production/initialize.o
+ .debug_line      0x0001d4         0xc9 build/default/production/interrupt_handler.o
+ .debug_line      0x00029d         0xec build/default/production/main.o
+ .debug_line      0x000389        0x2dd build/default/production/wiiCamera.o
+ .debug_line      0x000666        0x14b build/default/production/FastTransfer.o
+ .debug_line      0x0007b1        0x155 build/default/production/UART_handler.o
+ .debug_line      0x000906         0x1a build/default/production/Configuration_Bits.o
+ .debug_line      0x000920        0x115 build/default/production/encoderCalculator.o
+ .debug_line      0x000a35        0x1fb build/default/production/gyro.o
+ .debug_line      0x000c30        0x1a9 build/default/production/I2C_API_GYRO.o
 
 .debug_frame      0x000000       0x125a
  *(.debug_frame)
@@ -1432,18 +1432,18 @@ __FUID0
  .debug_frame     0x000bd4        0x202 build/default/production/gyro.o
  .debug_frame     0x000dd6        0x484 build/default/production/I2C_API_GYRO.o
 
-.debug_str        0x000000        0x861
+.debug_str        0x000000        0x843
  *(.debug_str)
  .debug_str       0x000000         0x4a build/default/production/PWM.o
- .debug_str       0x00004a        0x158 build/default/production/initialize.o
- .debug_str       0x0001a2         0x42 build/default/production/interrupt_handler.o
- .debug_str       0x0001e4         0x90 build/default/production/main.o
- .debug_str       0x000274         0xca build/default/production/wiiCamera.o
- .debug_str       0x00033e        0x132 build/default/production/FastTransfer.o
- .debug_str       0x000470         0x95 build/default/production/UART_handler.o
- .debug_str       0x000505        0x12e build/default/production/encoderCalculator.o
- .debug_str       0x000633        0x178 build/default/production/gyro.o
- .debug_str       0x0007ab         0xb6 build/default/production/I2C_API_GYRO.o
+ .debug_str       0x00004a        0x14c build/default/production/initialize.o
+ .debug_str       0x000196         0x42 build/default/production/interrupt_handler.o
+ .debug_str       0x0001d8         0x90 build/default/production/main.o
+ .debug_str       0x000268         0xca build/default/production/wiiCamera.o
+ .debug_str       0x000332        0x132 build/default/production/FastTransfer.o
+ .debug_str       0x000464         0x95 build/default/production/UART_handler.o
+ .debug_str       0x0004f9        0x12e build/default/production/encoderCalculator.o
+ .debug_str       0x000627        0x16f build/default/production/gyro.o
+ .debug_str       0x000796         0xad build/default/production/I2C_API_GYRO.o
 
 .debug_loc
  *(.debug_loc)
@@ -3967,212 +3967,212 @@ LOAD data_init
 LOAD shared_data_init
 
 .debug_pubtypes
-                  0x0000f0        0x930
+                  0x0000f0        0x8d3
  .debug_pubtypes
                   0x0000f0         0x94 build/default/production/PWM.o
  .debug_pubtypes
-                  0x000184        0x3e1 build/default/production/initialize.o
+                  0x000184        0x3be build/default/production/initialize.o
  .debug_pubtypes
-                  0x000565         0x69 build/default/production/interrupt_handler.o
+                  0x000542         0x69 build/default/production/interrupt_handler.o
  .debug_pubtypes
-                  0x0005ce         0x5a build/default/production/main.o
+                  0x0005ab         0x5a build/default/production/main.o
  .debug_pubtypes
-                  0x000628         0x87 build/default/production/wiiCamera.o
+                  0x000605         0x87 build/default/production/wiiCamera.o
  .debug_pubtypes
-                  0x0006af         0x35 build/default/production/FastTransfer.o
+                  0x00068c         0x35 build/default/production/FastTransfer.o
  .debug_pubtypes
-                  0x0006e4         0xf5 build/default/production/UART_handler.o
+                  0x0006c1         0xf5 build/default/production/UART_handler.o
  .debug_pubtypes
-                  0x0007d9         0x78 build/default/production/encoderCalculator.o
+                  0x0007b6         0x78 build/default/production/encoderCalculator.o
  .debug_pubtypes
-                  0x000851         0x2f build/default/production/gyro.o
+                  0x00082e         0x12 build/default/production/gyro.o
  .debug_pubtypes
-                  0x000880        0x1a0 build/default/production/I2C_API_GYRO.o
+                  0x000840        0x183 build/default/production/I2C_API_GYRO.o
 
 __c30_signature
-                  0x000a20        0x222
+                  0x0009c3        0x222
  __c30_signature
-                  0x000a20          0x6 build/default/production/PWM.o
+                  0x0009c3          0x6 build/default/production/PWM.o
  __c30_signature
-                  0x000a26          0x6 build/default/production/initialize.o
+                  0x0009c9          0x6 build/default/production/initialize.o
  __c30_signature
-                  0x000a2c          0x6 build/default/production/interrupt_handler.o
+                  0x0009cf          0x6 build/default/production/interrupt_handler.o
  __c30_signature
-                  0x000a32          0x6 build/default/production/main.o
+                  0x0009d5          0x6 build/default/production/main.o
  __c30_signature
-                  0x000a38          0x6 build/default/production/wiiCamera.o
+                  0x0009db          0x6 build/default/production/wiiCamera.o
  __c30_signature
-                  0x000a3e          0x6 build/default/production/FastTransfer.o
+                  0x0009e1          0x6 build/default/production/FastTransfer.o
  __c30_signature
-                  0x000a44          0x6 build/default/production/UART_handler.o
+                  0x0009e7          0x6 build/default/production/UART_handler.o
  __c30_signature
-                  0x000a4a          0x6 build/default/production/Configuration_Bits.o
+                  0x0009ed          0x6 build/default/production/Configuration_Bits.o
  __c30_signature
-                  0x000a50          0x6 build/default/production/encoderCalculator.o
+                  0x0009f3          0x6 build/default/production/encoderCalculator.o
  __c30_signature
-                  0x000a56          0x6 build/default/production/gyro.o
+                  0x0009f9          0x6 build/default/production/gyro.o
  __c30_signature
-                  0x000a5c          0x6 build/default/production/I2C_API_GYRO.o
+                  0x0009ff          0x6 build/default/production/I2C_API_GYRO.o
  __c30_signature
-                  0x000a62          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-pic30-elf.a(crt0_extendedep.o)
+                  0x000a05          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-pic30-elf.a(crt0_extendedep.o)
  __c30_signature
-                  0x000a68          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-pic30-elf.a(data_init_extendedep.o)
+                  0x000a0b          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-pic30-elf.a(data_init_extendedep.o)
  __c30_signature
-                  0x000a6e          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-pic30-elf.a(delay32ep.Leo)
+                  0x000a11          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-pic30-elf.a(delay32ep.Leo)
  __c30_signature
-                  0x000a74          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(addsf3.epeo)
+                  0x000a17          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(addsf3.epeo)
  __c30_signature
-                  0x000a7a          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(asinf.epeo)
+                  0x000a1d          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(asinf.epeo)
  __c30_signature
-                  0x000a80          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(atan2f.epeo)
+                  0x000a23          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(atan2f.epeo)
  __c30_signature
-                  0x000a86          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(atanf.epeo)
+                  0x000a29          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(atanf.epeo)
  __c30_signature
-                  0x000a8c          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(cosf.epeo)
+                  0x000a2f          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(cosf.epeo)
  __c30_signature
-                  0x000a92          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(divsf3.epeo)
+                  0x000a35          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(divsf3.epeo)
  __c30_signature
-                  0x000a98          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(divsi3.epeo)
+                  0x000a3b          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(divsi3.epeo)
  __c30_signature
-                  0x000a9e          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(errno.epeo)
+                  0x000a41          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(errno.epeo)
  __c30_signature
-                  0x000aa4          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(feqltle.epeo)
+                  0x000a47          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(feqltle.epeo)
  __c30_signature
-                  0x000aaa          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(fgtge.epeo)
+                  0x000a4d          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(fgtge.epeo)
  __c30_signature
-                  0x000ab0          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(fixsfsi.epeo)
+                  0x000a53          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(fixsfsi.epeo)
  __c30_signature
-                  0x000ab6          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(fixunssfsi.epeo)
+                  0x000a59          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(fixunssfsi.epeo)
  __c30_signature
-                  0x000abc          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(floatsisf.epeo)
+                  0x000a5f          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(floatsisf.epeo)
  __c30_signature
-                  0x000ac2          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(floatunsisf.epeo)
+                  0x000a65          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(floatunsisf.epeo)
  __c30_signature
-                  0x000ac8          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(fpack.epeo)
+                  0x000a6b          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(fpack.epeo)
  __c30_signature
-                  0x000ace          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(funpack.epeo)
+                  0x000a71          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(funpack.epeo)
  __c30_signature
-                  0x000ad4          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(funpack2.epeo)
+                  0x000a77          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(funpack2.epeo)
  __c30_signature
-                  0x000ada          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(futil.epeo)
+                  0x000a7d          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(futil.epeo)
  __c30_signature
-                  0x000ae0          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(mulsf3.epeo)
+                  0x000a83          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(mulsf3.epeo)
  __c30_signature
-                  0x000ae6          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(sincosf.epeo)
+                  0x000a89          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(sincosf.epeo)
  __c30_signature
-                  0x000aec          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(sinf.epeo)
+                  0x000a8f          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(sinf.epeo)
  __c30_signature
-                  0x000af2          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(udivsi3.epeo)
+                  0x000a95          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(udivsi3.epeo)
  __c30_signature
-                  0x000af8          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(asinacosf.epeo)
+                  0x000a9b          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(asinacosf.epeo)
  __c30_signature
-                  0x000afe          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(fcompare.epeo)
+                  0x000aa1          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(fcompare.epeo)
  __c30_signature
-                  0x000b04          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(floatdisf.epeo)
+                  0x000aa7          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(floatdisf.epeo)
  __c30_signature
-                  0x000b0a          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(floatundisf.epeo)
+                  0x000aad          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(floatundisf.epeo)
  __c30_signature
-                  0x000b10          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(fmodf.epeo)
+                  0x000ab3          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(fmodf.epeo)
  __c30_signature
-                  0x000b16          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(fmodrem.epeo)
+                  0x000ab9          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(fmodrem.epeo)
  __c30_signature
-                  0x000b1c          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(sqrtf.epeo)
+                  0x000abf          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(sqrtf.epeo)
  __c30_signature
-                  0x000b22          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(free.EPeo)
+                  0x000ac5          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(free.EPeo)
  __c30_signature
-                  0x000b28          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(malloc.EPeo)
+                  0x000acb          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(malloc.EPeo)
  __c30_signature
-                  0x000b2e          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(memset.EPeo)
+                  0x000ad1          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(memset.EPeo)
  __c30_signature
-                  0x000b34          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(xgetmem.EPeo)
+                  0x000ad7          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(xgetmem.EPeo)
  __c30_signature
-                  0x000b3a          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(printf_fF.EPeo)
+                  0x000add          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(printf_fF.EPeo)
  __c30_signature
-                  0x000b40          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(xprintf_fF.EPeo)
+                  0x000ae3          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(xprintf_fF.EPeo)
  __c30_signature
-                  0x000b46          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(xputfld_fF.EPeo)
+                  0x000ae9          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(xputfld_fF.EPeo)
  __c30_signature
-                  0x000b4c          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(xldtob_fF.EPeo)
+                  0x000aef          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(xldtob_fF.EPeo)
  __c30_signature
-                  0x000b52          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(xgenld_fF.EPeo)
+                  0x000af5          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(xgenld_fF.EPeo)
  __c30_signature
-                  0x000b58          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(div.EPeo)
+                  0x000afb          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(div.EPeo)
  __c30_signature
-                  0x000b5e          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(fwrite.EPeo)
+                  0x000b01          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(fwrite.EPeo)
  __c30_signature
-                  0x000b64          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(ldiv.EPeo)
+                  0x000b07          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(ldiv.EPeo)
  __c30_signature
-                  0x000b6a          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(memchr.EPeo)
+                  0x000b0d          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(memchr.EPeo)
  __c30_signature
-                  0x000b70          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(memcpy.EPeo)
+                  0x000b13          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(memcpy.EPeo)
  __c30_signature
-                  0x000b76          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(strchr.EPeo)
+                  0x000b19          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(strchr.EPeo)
  __c30_signature
-                  0x000b7c          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(xfiles.EPeo)
+                  0x000b1f          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(xfiles.EPeo)
  __c30_signature
-                  0x000b82          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(xfwprep.EPeo)
+                  0x000b25          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(xfwprep.EPeo)
  __c30_signature
-                  0x000b88          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(xldunsca.EPeo)
+                  0x000b2b          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(xldunsca.EPeo)
  __c30_signature
-                  0x000b8e          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(xputtxt.EPeo)
+                  0x000b31          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(xputtxt.EPeo)
  __c30_signature
-                  0x000b94          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(xvacopy.EPeo)
+                  0x000b37          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(xvacopy.EPeo)
  __c30_signature
-                  0x000b9a          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(fclose.EPelo)
+                  0x000b3d          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(fclose.EPelo)
  __c30_signature
-                  0x000ba0          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(fflush.EPelo)
+                  0x000b43          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(fflush.EPelo)
  __c30_signature
-                  0x000ba6          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(xatexit.EPelo)
+                  0x000b49          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(xatexit.EPelo)
  __c30_signature
-                  0x000bac          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(xdnorm.EPelo)
+                  0x000b4f          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(xdnorm.EPelo)
  __c30_signature
-                  0x000bb2          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-pic30-elf.a(closeep.Leo)
+                  0x000b55          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-pic30-elf.a(closeep.Leo)
  __c30_signature
-                  0x000bb8          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-pic30-elf.a(writeep.Leo)
+                  0x000b5b          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-pic30-elf.a(writeep.Leo)
  __c30_signature
-                  0x000bbe          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-pic30-elf.a(removeep.Leo)
+                  0x000b61          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-pic30-elf.a(removeep.Leo)
  __c30_signature
-                  0x000bc4          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-pic30-elf.a(sbrkep.Leo)
+                  0x000b67          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-pic30-elf.a(sbrkep.Leo)
  __c30_signature
-                  0x000bca          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-pic30-elf.a(c30_uartep.Leo)
+                  0x000b6d          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-pic30-elf.a(c30_uartep.Leo)
  __c30_signature
-                  0x000bd0          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-pic30-elf.a(brkep.Lelo)
+                  0x000b73          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-pic30-elf.a(brkep.Lelo)
  __c30_signature
-                  0x000bd6          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(deqltle.epeo)
+                  0x000b79          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(deqltle.epeo)
  __c30_signature
-                  0x000bdc          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(dgtge.epeo)
+                  0x000b7f          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(dgtge.epeo)
  __c30_signature
-                  0x000be2          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(divdf3.epeo)
+                  0x000b85          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(divdf3.epeo)
  __c30_signature
-                  0x000be8          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(dpack.epeo)
+                  0x000b8b          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(dpack.epeo)
  __c30_signature
-                  0x000bee          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(dunpack2.epeo)
+                  0x000b91          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(dunpack2.epeo)
  __c30_signature
-                  0x000bf4          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(extendsfdf.epeo)
+                  0x000b97          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(extendsfdf.epeo)
  __c30_signature
-                  0x000bfa          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(fixdfsi.epeo)
+                  0x000b9d          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(fixdfsi.epeo)
  __c30_signature
-                  0x000c00          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(floatsidf.epeo)
+                  0x000ba3          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(floatsidf.epeo)
  __c30_signature
-                  0x000c06          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(muldf3.epeo)
+                  0x000ba9          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(muldf3.epeo)
  __c30_signature
-                  0x000c0c          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(subdf3.epeo)
+                  0x000baf          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(subdf3.epeo)
  __c30_signature
-                  0x000c12          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(mulsi3.epeo)
+                  0x000bb5          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(mulsi3.epeo)
  __c30_signature
-                  0x000c18          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(adddf3.epeo)
+                  0x000bbb          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(adddf3.epeo)
  __c30_signature
-                  0x000c1e          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(dcompare.epeo)
+                  0x000bc1          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(dcompare.epeo)
  __c30_signature
-                  0x000c24          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(dpropagateNaN.epeo)
+                  0x000bc7          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(dpropagateNaN.epeo)
  __c30_signature
-                  0x000c2a          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(dtype.epeo)
+                  0x000bcd          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(dtype.epeo)
  __c30_signature
-                  0x000c30          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(dunpack.epeo)
+                  0x000bd3          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(dunpack.epeo)
  __c30_signature
-                  0x000c36          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(floatdidf.epeo)
+                  0x000bd9          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(floatdidf.epeo)
  __c30_signature
-                  0x000c3c          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(floatundidf.epeo)
+                  0x000bdf          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(floatundidf.epeo)
 
 .nbss               0x1000        0x106
  .nbss              0x1000         0x8c build/default/production/gyro.o
@@ -4445,7 +4445,7 @@ __c30_signature
  .const             0x9f5c          0x4 build/default/production/gyro.o
                     0x9f5c                  _RAD_TO_DEGREE
 
-.text             0x001f60       0x37dc
+.text             0x001f60       0x37b2
  .text            0x001f60       0x168e build/default/production/wiiCamera.o
                   0x001f60                  _seekBeacon
                   0x002316                  _sendWiiData
@@ -4469,143 +4469,143 @@ __c30_signature
                   0x003284                  _readCamera
                   0x0032ac                  _cameraReady
                   0x0032ca                  _read
- .text            0x0035ee        0xd12 build/default/production/gyro.o
+ .text            0x0035ee        0xcf6 build/default/production/gyro.o
                   0x0035ee                  _GYRO_initialize
                   0x00364a                  _meanGyroAccel
                   0x003756                  _calibrate
                   0x0039b6                  _getAngles
-                  0x003b48                  _getAcceleration
-                  0x003c26                  _getImpactStatus
-                  0x003dc6                  _get_BaseMotion
-                  0x003e4c                  _get_Movement_6
-                  0x004168                  _offsetRegisterSet
-                  0x004184                  _setAcclOffset
-                  0x004202                  _setGyroOffset
-                  0x004280                  _setFullScaleAccelRange
-                  0x004296                  _setFullScaleGyroRange
-                  0x0042ac                  _SetSleepEnabled
-                  0x0042c0                  _setClockSource
-                  0x0042d6                  _setSampleRate
-                  0x0042ec                  _abs
- .text            0x004300        0x678 build/default/production/FastTransfer.o
-                  0x004300                  _begin
-                  0x004346                  _CRC8
-                  0x0043aa                  _sendData
-                  0x00440c                  _receiveData
-                  0x004656                  _ToSend
-                  0x004668                  _FastTransfer_buffer_put
-                  0x0046f2                  _FastTransfer_buffer_get
-                  0x00472c                  _FastTransfer_buffer_flush
-                  0x004756                  _FastTransfer_buffer_modulo_inc
-                  0x004772                  _AKNAK
-                  0x0047aa                  _alignError
-                  0x0047b2                  _CRCError
-                  0x0047ba                  _addressError
-                  0x0047c2                  _dataAddressError
-                  0x0047ca                  _crcBufS_put
-                  0x004828                  _crcBufS_status_put
-                  0x004878                  _crcBufS_get
-                  0x0048d6                  _CRCcheck
- .text            0x004978        0x5d6 build/default/production/I2C_API_GYRO.o
-                  0x004978                  _InitI2Cone
-                  0x004992                  _SendI2Cone
-                  0x0049ea                  _ReceiveI2Cone
-                  0x004a42                  _SendSlaveAddressI2Cone
-                  0x004a66                  _SendDataAddressI2Cone
-                  0x004aca                  _SendDataI2Cone
-                  0x004b12                  _SendRestartI2Cone
-                  0x004b1e                  _SendStartI2Cone
-                  0x004b2a                  _SendReadRequestI2Cone
-                  0x004b3e                  _FirstReceiveI2Cone
-                  0x004b5c                  _ReceiveByteI2Cone
-                  0x004b9c                  _EnableReceiveI2Cone
-                  0x004ba8                  _NACKFollowUpI2Cone
-                  0x004bb4                  _StopFunctionI2Cone
-                  0x004bbc                  _FailFunctionI2Cone
-                  0x004bc8                  _SuccessFunctionI2Cone
-                  0x004bd4                  _StatusI2Cone
-                  0x004bde                  __MI2C1Interrupt
-                  0x004c2c                  _InitI2Ctwo
-                  0x004c46                  _SendI2Ctwo
-                  0x004c9e                  _ReceiveI2Ctwo
-                  0x004cf6                  _SendSlaveAddressI2Ctwo
-                  0x004d08                  _SendDataAddressI2Ctwo
-                  0x004d52                  _SendDataI2Ctwo
-                  0x004d9a                  _SendRestartI2Ctwo
-                  0x004da6                  _SendStartI2Ctwo
-                  0x004db2                  _SendReadRequestI2Ctwo
-                  0x004dc6                  _FirstReceiveI2Ctwo
-                  0x004de4                  _ReceiveByteI2Ctwo
-                  0x004e24                  _EnableReceiveI2Ctwo
-                  0x004e30                  _NACKFollowUpI2Ctwo
-                  0x004e3c                  _StopFunctionI2Ctwo
-                  0x004e44                  _FailFunctionI2Ctwo
-                  0x004e50                  _SuccessFunctionI2Ctwo
-                  0x004e5c                  _StatusI2Ctwo
-                  0x004e66                  __MI2C2Interrupt
-                  0x004e9a                  _writeBits
-                  0x004f0e                  _writeBit
- .text            0x004f4e        0x3c6 build/default/production/UART_handler.o
-                  0x004f4e                  _UART_init
-                  0x004fd6                  _UART_buff_init
-                  0x004fe6                  _UART_buff_put
-                  0x005048                  _UART_buff_get
-                  0x005082                  _UART_buff_flush
-                  0x0050ac                  _UART_buff_size
-                  0x0050b8                  _UART_buff_modulo_inc
-                  0x0050d4                  _UART_buff_peek
-                  0x0050e6                  _Receive_peek
-                  0x0050f0                  _Receive_available
-                  0x0050fa                  _Receive_get
-                  0x005104                  _Send_put
-                  0x005122                  __U1RXInterrupt
-                  0x005148                  __U1TXInterrupt
-                  0x0051b2                  _absol
-                  0x0051c6                  _MessageParsser
-                  0x00521a                  _isNegative
-                  0x00524a                  _loadHundreds
-                  0x005282                  _loadTens
-                  0x0052b6                  _loadUnits
-                  0x0052f6                  _maxedHead
- .text            0x005314        0x24e build/default/production/encoderCalculator.o
-                  0x005314                  _RightSpeedCalculation
-                  0x005396                  _LeftSpeedCalculation
-                  0x005418                  _updateEncoders
-                  0x00542a                  __IC1Interrupt
-                  0x005480                  __IC2Interrupt
-                  0x0054d6                  _sendEncoderValues
- .text            0x005562        0x1da build/default/production/initialize.o
-                  0x005562                  _initialize
-                  0x0055cc                  _oscillator
-                  0x005622                  _timerOne
-                  0x005644                  _timerTwo
-                  0x00566e                  _timerFour
-                  0x005688                  _initUART1
-                  0x0056b6                  _inputCapture
+                  0x003b2c                  _getAcceleration
+                  0x003c0a                  _getImpactStatus
+                  0x003daa                  _get_BaseMotion
+                  0x003e30                  _get_Movement_6
+                  0x00414c                  _offsetRegisterSet
+                  0x004168                  _setAcclOffset
+                  0x0041e6                  _setGyroOffset
+                  0x004264                  _setFullScaleAccelRange
+                  0x00427a                  _setFullScaleGyroRange
+                  0x004290                  _SetSleepEnabled
+                  0x0042a4                  _setClockSource
+                  0x0042ba                  _setSampleRate
+                  0x0042d0                  _abs
+ .text            0x0042e4        0x678 build/default/production/FastTransfer.o
+                  0x0042e4                  _begin
+                  0x00432a                  _CRC8
+                  0x00438e                  _sendData
+                  0x0043f0                  _receiveData
+                  0x00463a                  _ToSend
+                  0x00464c                  _FastTransfer_buffer_put
+                  0x0046d6                  _FastTransfer_buffer_get
+                  0x004710                  _FastTransfer_buffer_flush
+                  0x00473a                  _FastTransfer_buffer_modulo_inc
+                  0x004756                  _AKNAK
+                  0x00478e                  _alignError
+                  0x004796                  _CRCError
+                  0x00479e                  _addressError
+                  0x0047a6                  _dataAddressError
+                  0x0047ae                  _crcBufS_put
+                  0x00480c                  _crcBufS_status_put
+                  0x00485c                  _crcBufS_get
+                  0x0048ba                  _CRCcheck
+ .text            0x00495c        0x5bc build/default/production/I2C_API_GYRO.o
+                  0x00495c                  _InitI2Cone
+                  0x004976                  _SendI2Cone
+                  0x0049ce                  _ReceiveI2Cone
+                  0x004a26                  _SendSlaveAddressI2Cone
+                  0x004a4a                  _SendDataAddressI2Cone
+                  0x004aae                  _SendDataI2Cone
+                  0x004af6                  _SendRestartI2Cone
+                  0x004b02                  _SendStartI2Cone
+                  0x004b0e                  _SendReadRequestI2Cone
+                  0x004b22                  _FirstReceiveI2Cone
+                  0x004b40                  _ReceiveByteI2Cone
+                  0x004b80                  _EnableReceiveI2Cone
+                  0x004b8c                  _NACKFollowUpI2Cone
+                  0x004b98                  _StopFunctionI2Cone
+                  0x004ba0                  _FailFunctionI2Cone
+                  0x004bac                  _SuccessFunctionI2Cone
+                  0x004bb8                  _StatusI2Cone
+                  0x004bc2                  __MI2C1Interrupt
+                  0x004bf6                  _InitI2Ctwo
+                  0x004c10                  _SendI2Ctwo
+                  0x004c68                  _ReceiveI2Ctwo
+                  0x004cc0                  _SendSlaveAddressI2Ctwo
+                  0x004cd2                  _SendDataAddressI2Ctwo
+                  0x004d1c                  _SendDataI2Ctwo
+                  0x004d64                  _SendRestartI2Ctwo
+                  0x004d70                  _SendStartI2Ctwo
+                  0x004d7c                  _SendReadRequestI2Ctwo
+                  0x004d90                  _FirstReceiveI2Ctwo
+                  0x004dae                  _ReceiveByteI2Ctwo
+                  0x004dee                  _EnableReceiveI2Ctwo
+                  0x004dfa                  _NACKFollowUpI2Ctwo
+                  0x004e06                  _StopFunctionI2Ctwo
+                  0x004e0e                  _FailFunctionI2Ctwo
+                  0x004e1a                  _SuccessFunctionI2Ctwo
+                  0x004e26                  _StatusI2Ctwo
+                  0x004e30                  __MI2C2Interrupt
+                  0x004e64                  _writeBits
+                  0x004ed8                  _writeBit
+ .text            0x004f18        0x3c6 build/default/production/UART_handler.o
+                  0x004f18                  _UART_init
+                  0x004fa0                  _UART_buff_init
+                  0x004fb0                  _UART_buff_put
+                  0x005012                  _UART_buff_get
+                  0x00504c                  _UART_buff_flush
+                  0x005076                  _UART_buff_size
+                  0x005082                  _UART_buff_modulo_inc
+                  0x00509e                  _UART_buff_peek
+                  0x0050b0                  _Receive_peek
+                  0x0050ba                  _Receive_available
+                  0x0050c4                  _Receive_get
+                  0x0050ce                  _Send_put
+                  0x0050ec                  __U1RXInterrupt
+                  0x005112                  __U1TXInterrupt
+                  0x00517c                  _absol
+                  0x005190                  _MessageParsser
+                  0x0051e4                  _isNegative
+                  0x005214                  _loadHundreds
+                  0x00524c                  _loadTens
+                  0x005280                  _loadUnits
+                  0x0052c0                  _maxedHead
+ .text            0x0052de        0x25e build/default/production/encoderCalculator.o
+                  0x0052de                  _RightSpeedCalculation
+                  0x005360                  _LeftSpeedCalculation
+                  0x0053e2                  _updateEncoders
+                  0x0053f4                  __IC1Interrupt
+                  0x00544a                  __IC2Interrupt
+                  0x0054a0                  _sendEncoderValues
+ .text            0x00553c        0x1d6 build/default/production/initialize.o
+                  0x00553c                  _initialize
+                  0x0055a2                  _oscillator
+                  0x0055f8                  _timerOne
+                  0x00561a                  _timerTwo
+                  0x005644                  _timerFour
+                  0x00565e                  _initUART1
+                  0x00568c                  _inputCapture
 
-.dinit            0x00573c        0x184
- .dinit           0x00573c        0x184 data_init
+.dinit            0x005712        0x184
+ .dinit           0x005712        0x184 data_init
 
-.text             0x0058c0        0x24a
- .text            0x0058c0        0x13c build/default/production/PWM.o
-                  0x0058c0                  _initPWM1
-                  0x005912                  _initPWM2
-                  0x005964                  _setAngle1
-                  0x0059a8                  _setAngle2
-                  0x0059ec                  _presentAngle1
-                  0x0059f4                  _presentAngle2
- .text            0x0059fc        0x10e build/default/production/main.o
-                  0x0059fc                  _indicatorsOFF
-                  0x005a0a                  _debugLEDs
-                  0x005a36                  _main
-                  0x005ac2                  _setRUN_DATAFUNCTION
-                  0x005ad0                  _setCycleCounter
-                  0x005adc                  _getGYRO_DEBUG
-                  0x005ae4                  _constrain
+.text             0x005896        0x248
+ .text            0x005896        0x13c build/default/production/PWM.o
+                  0x005896                  _initPWM1
+                  0x0058e8                  _initPWM2
+                  0x00593a                  _setAngle1
+                  0x00597e                  _setAngle2
+                  0x0059c2                  _presentAngle1
+                  0x0059ca                  _presentAngle2
+ .text            0x0059d2        0x10c build/default/production/main.o
+                  0x0059d2                  _indicatorsOFF
+                  0x0059e0                  _debugLEDs
+                  0x005a0c                  _main
+                  0x005a96                  _setRUN_DATAFUNCTION
+                  0x005aa4                  _setCycleCounter
+                  0x005ab0                  _getGYRO_DEBUG
+                  0x005ab8                  _constrain
 
-.init.delay32     0x005b0a         0x1c
- .init.delay32    0x005b0a         0x1c c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-pic30-elf.a(delay32ep.Leo)
-                  0x005b0a                  ___delay32
+.init.delay32     0x005ade         0x1c
+ .init.delay32    0x005ade         0x1c c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-pic30-elf.a(delay32ep.Leo)
+                  0x005ade                  ___delay32
 
-.shared.dinit     0x005b26          0x2
- .shared.dinit    0x005b26          0x2 shared_data_init
+.shared.dinit     0x005afa          0x2
+ .shared.dinit    0x005afa          0x2 shared_data_init

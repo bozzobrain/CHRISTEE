@@ -42,8 +42,8 @@
 #pragma config OSCIOFNC = OFF           // CLKO Output Signal Active on the OSCO Pin (Disabled)
 #pragma config FPBDIV = DIV_1           // Peripheral Clock Divisor (Pb_Clk is Sys_Clk/1)
 #pragma config FCKSM = CSDCMD           // Clock Switching and Monitor Selection (Clock Switch Disable, FSCM Disabled)
-#pragma config WDTPS = PS1048576        // Watchdog Timer Postscaler (1:1048576)
-#pragma config FWDTEN = OFF             // Watchdog Timer Enable (WDT Disabled (SWDTEN Bit Controls))
+#pragma config WDTPS = PS32768       // Watchdog Timer Postscaler (1:32768)
+#pragma config FWDTEN = ON             // Watchdog Timer Enable (WDT Disabled (SWDTEN Bit Controls))
 
 // DEVCFG0
 #pragma config DEBUG = ON               // Background Debugger Enable (Debugger is enabled)
@@ -81,6 +81,7 @@ int main(void)
     //while(1);
     while (1)
     {
+        WDTCONbits.WDTCLR = 1;
         // checks the incoming buffers and parses data
         receive_one.receiveData();
         receive_two.receiveData();
