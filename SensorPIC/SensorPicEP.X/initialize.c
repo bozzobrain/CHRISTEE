@@ -25,13 +25,13 @@ void initialize(void)
     TRISGbits.TRISG7  = 0; // RG7 set to output
     ANSELGbits.ANSG8  = 0; // turn off analog
     TRISGbits.TRISG8  = 0; // RG8 set to output
-    INTCON1bits.NSTDIS= 0;
+   
     TRISFbits.TRISF6 = 0; // Right camera reset pin
     LATFbits.LATF6 = 1; // set pin high
     TRISDbits.TRISD0 = 0; // Left camera reset pin
     LATDbits.LATD0 = 1; // set pin high
 
-    INTCON2bits.GIE = 1;        //Enables global interrupts
+    //INTCON2bits.GIE = 1;        //Enables global interrupts
     //DIrection pins Encoders
     TRISBbits.TRISB0= 1;
     TRISBbits.TRISB1= 1;
@@ -66,6 +66,7 @@ void initialize(void)
     INDICATOR2=OFF;
     INDICATOR3=OFF;
     INDICATOR4=OFF;
+    //INTCON1bits.NSTDIS= 1;
     GLOBAL_INTERRUPTS = 1;
     
 }

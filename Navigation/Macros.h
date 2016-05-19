@@ -20,8 +20,8 @@
 #define DRIVE_INCREMENT       500
 #define DRIVE_INC_NUM_FORWARD 1  //600
 #define DRIVE_INC_NUM_REVERSE 1  //550
-#define DRIVE_DIG_FORWARD     50
-#define DRIVE_DIG_REVERSE     75
+#define DRIVE_DIG_FORWARD     75
+#define DRIVE_DIG_REVERSE     25
 #define ACTUATOR_DUMP_ANGLE   91
 #define GYRO_CORRECTION_ANGLE 4
 
@@ -39,7 +39,7 @@ inline void initMacroSystem()
   //  Navigation.sendData(CONTROL_ADDRESS);
   //  Navigation.ToSend(MACRO_COMMAND_SEND, stored_macro_command);
   //  Navigation.sendData(CONTROL_ADDRESS);
-
+  wipeGyro();
   if (stored_macro_command == 1)
   {
     while (stored_macro_command != 0)
@@ -65,134 +65,10 @@ inline void initMacroSystem()
         switch (macro_sub_command)
         {
           case 1:
-              wipeGyro();   
-                flipflop=true;
-            while(stored_macro_command!=0)
-            {
-              static Timers redoTimer(2500),mildDelayTimer(250);
-              static int counter=0;
-              if(redoTimer.timerDone()||((counter>0)&&mildDelayTimer.timerDone()))
-              {
-                //FLIP FLOP SAYS DO FORWARD THEN BACKWARD
-                if(flipflop)
-                {
-                  //GOING TO DO 5 ITERATIONS OF THIS PART (250 cm) 
-                  if(counter<5)
-                  {
-                    //Go forward 50 cm
-                    newEncoders((signed long)50);
-                    //CHECK GYRO FOR SHIFTED ANGLE
-                    if(abs(macroAngle>4)){
-                      //IF CORRECTION IS REQUIRED DO IT
-                      doTurn(-macroAngle);
-                    }
-                    counter++;
-                  }
-                  else
-                  {
-                    flipflop=false;
-                    counter=0;
-                  }
-                }
-                else
-                {        
-                  //GOING TO DO 5 ITERATIONS OF THIS PART (250 cm)    
-                  if(counter<5)
-                  {
-                    //Go backward 50 cm
-                    newEncoders((signed long)-50);
-                    //CHECK GYRO FOR SHIFTED ANGLE
-                    if(abs(macroAngle>4)){
-                      //IF CORRECTION IS REQUIRED DO IT
-                      doTurn(-macroAngle);
-                    }
-                    counter++;
-                  }
-                  else
-                  {
-                    flipflop=true;
-                    counter=0;
-                  }
-                }
-                redoTimer.resetTimer();
-              }
-              else
-              {
-                macroCommunicationsUpdate();
-              }
-            }
+            wiiCameraLocalize();
             break;
           case 2:
-              wipeGyro();   
-                 flipflop=true;
-            while(stored_macro_command!=0)
-            {
-              static Timers redoTimer(2500), mildDelayTimer(250);
-              static int counter=0;
-              if(redoTimer.timerDone()||((counter>0)&&mildDelayTimer.timerDone()))
-              {
-                //FLIP FLOP SAYS DO FORWARD THEN BACKWARD
-                if(flipflop)
-                {
-                  //GOING TO DO 5 ITERATIONS OF THIS PART (250 cm) 
-                  if(counter<6)
-                  {
-                    //Go forward 50 cm
-                    newEncoders((signed long)50);
-                    //CHECK GYRO FOR SHIFTED ANGLE
-                    if(abs(macroAngle)>4){
-                      //IF CORRECTION IS REQUIRED DO IT
-                      doTurn(-macroAngle);
-                    }
-                    counter++;
-                    mildDelayTimer.resetTimer();
-                  }
-                  else
-                  {
-                    sendActuatorPositionDig(0);
-                    delay(150);
-                    newEncoders((signed long) 50);
-                    delay(150);       
-                 
-                    newEncoders((signed long) -50);
-                    delay(150);                    
-                    sendActuatorPositionFeedback(BUCKET_DRIVE_ANGLE_SET);
-                    flipflop=false;
-                    counter=0;
-                  }
-                }
-                else
-                {        
-                  //GOING TO DO 5 ITERATIONS OF THIS PART (250 cm)    
-                  if(counter<6)
-                  {
-                    //Go backward 50 cm
-                    newEncoders((signed long)-50);
-                    //CHECK GYRO FOR SHIFTED ANGLE
-                    if(abs(macroAngle)>4){
-                      //IF CORRECTION IS REQUIRED DO IT
-                      doTurn(-macroAngle);
-                    }
-                    counter++;
-                    mildDelayTimer.resetTimer();
-                  }
-                  else
-                  {
-                    sendActuatorPositionFeedback(90);
-                    delay(1500);                    
-                    sendActuatorPositionFeedback(BUCKET_DRIVE_ANGLE_SET);
-                    delay(150);                    
-                    flipflop=true;
-                    counter=0;
-                  }
-                }
-                redoTimer.resetTimer();
-              }
-              else
-              {
-                macroCommunicationsUpdate();
-              }
-            }
+            makeCentered(LEFT_PERPENDICULAR);
             break;
           case 3:          
               wipeGyro();   
@@ -249,7 +125,7 @@ inline void initMacroSystem()
               			counter=0;
               			while((counter<DRIVE_INC_NUM_REVERSE) && (stored_macro_command!=0))
               			{
-              				newEncoders((signed long) -475);
+              				newEncoders((signed long) -525);
               				//RESET TIMER
               				subDelayTimer.resetTimer();
               				//WAIT UNTIL ITS FINISHED WHILE CHECKING COMMS
@@ -286,13 +162,102 @@ inline void initMacroSystem()
               }
             break;
           case 4:
-            orientWithWii();
+             wipeGyro();   
+              AUTO_STATE=6;
+              sendActuatorPositionFeedback(BUCKET_DRIVE_ANGLE_SET);
+              while(stored_macro_command!=0)
+              {	
+              	static Timers subDelayTimer(75), dumpTimer(6000);
+                static int counter=0;
+              	switch(AUTO_STATE)
+              	{	
+              		case TRAVERSE_FORWARD:
+              			counter=0;
+              			while((counter<DRIVE_INC_NUM_FORWARD)  && (stored_macro_command!=0))
+              			{
+              				newEncoders((signed long) 250);
+              				//RESET TIMER
+              				subDelayTimer.resetTimer();
+              				//WAIT UNTIL ITS FINISHED WHILE CHECKING COMMS
+              				while(!subDelayTimer.timerDone() && (stored_macro_command!=0)) 
+              				{
+              					macroCommunicationsUpdate();
+              					delay(2);
+              				}
+              			    
+              				//CHECK GYRO FOR SHIFTED ANGLE
+//              				if(abs(macroAngle)>GYRO_CORRECTION_ANGLE){
+//              				  //IF CORRECTION IS REQUIRED DO IT
+//              				  
+//              				  doTurn(-grabIntegerSign(macroAngle)*(abs(macroAngle+1)));
+//              				}
+              				counter++;
+              			}
+              			AUTO_STATE++;
+              			break;
+              		case DROPPING_BUCKET:
+              			//Lower bucket, moving forward when bucket gets low
+              			sendActuatorPositionDig(0);			
+              			AUTO_STATE++;
+              			break;
+              		case DIGGING_FORWARD:
+              			//Drive forward with bucket in the dirt
+              			newEncoders((signed long) DRIVE_DIG_FORWARD);			
+              			AUTO_STATE++;
+              			break;
+              		case DIGGING_REVERSE:
+              			//Free bucket by backing up
+              			newEncoders((signed long) -DRIVE_DIG_REVERSE);	
+              			//Lift the bucket
+              			sendActuatorPositionFeedback(BUCKET_DRIVE_ANGLE_SET);		
+              			AUTO_STATE++;
+              			break;
+              		case TRAVERSE_BACKWARD:
+              			counter=0;
+              			while((counter<DRIVE_INC_NUM_REVERSE) && (stored_macro_command!=0))
+              			{
+              				newEncoders((signed long) -250);
+              				//RESET TIMER
+              				subDelayTimer.resetTimer();
+              				//WAIT UNTIL ITS FINISHED WHILE CHECKING COMMS
+              				while(!subDelayTimer.timerDone()&&(stored_macro_command!=0)) 
+              				{
+              					macroCommunicationsUpdate();
+              					delay(2);
+              				}
+              			    
+              				
+              				counter++;
+              			}
+              			AUTO_STATE++;
+              			break;
+              		case DUMPING_BUCKET:
+              			
+                          sendActuatorPositionFeedback(ACTUATOR_DUMP_ANGLE);
+              			dumpTimer.resetTimer();
+              			while(!dumpTimer.timerDone() && (stored_macro_command!=0))
+              			{
+              				macroCommunicationsUpdate();
+              				delay(5);			
+              			}
+              			AUTO_STATE++;
+              			break;
+              		case BUCKET_TO_DRIVE:
+              			sendActuatorPositionFeedback(BUCKET_DRIVE_ANGLE_SET);			
+              			AUTO_STATE=TRAVERSE_FORWARD;
+              			break;
+              	
+              	}
+              	
+              	macroCommunicationsUpdate();
+              }
             break;
           case 5:
-            wiiCameraLocalize(HORIZONTAL_BEACON, 67 , LEFT_CAMERA);
+            
+            makePerpendicular(LEFT_PERPENDICULAR);
             break;
           case 6:
-            fullRoutine();
+            doTurn(5);
             break;
           case 7:
             fullDigRoutine();
@@ -314,10 +279,10 @@ inline void initMacroSystem()
             break;
             //CW
           case 13:
-            doTurn(90);
+           // doTurn(90);
             break;
           case 14:
-            doTurn(-90);
+            //doTurn(-90);
             break;
           case 15:
             runEncoderDistanceEvenly(1000);
@@ -363,17 +328,17 @@ inline void initMacroSystem()
           sendActuatorPosition(5);
         break;
       case 8:
-         if(macro_sub_command<180)
-          wiiCameraLocalize(HORIZONTAL_BEACON, macro_sub_command, LEFT_CAMERA);
-         else
-          wiiCameraLocalize(HORIZONTAL_BEACON, macro_sub_command-180, RIGHT_CAMERA);
+//           if(macro_sub_command<180)
+//            wiiCameraLocalize(HORIZONTAL_BEACON, macro_sub_command, LEFT_CAMERA);
+//           else
+//            wiiCameraLocalize(HORIZONTAL_BEACON, macro_sub_command-180, RIGHT_CAMERA);
         break;
       case 9:
         
-         if(macro_sub_command<180)
-          wiiCameraLocalize(VERTICAL_BEACON, macro_sub_command, LEFT_CAMERA);
-          else
-          wiiCameraLocalize(VERTICAL_BEACON, macro_sub_command-180, RIGHT_CAMERA);
+//         if(macro_sub_command<180)
+//          wiiCameraLocalize(VERTICAL_BEACON, macro_sub_command, LEFT_CAMERA);
+//          else
+//          wiiCameraLocalize(VERTICAL_BEACON, macro_sub_command-180, RIGHT_CAMERA);
         break;
         
     }
@@ -389,23 +354,23 @@ inline bool straightPathMineDump()
 
 inline bool orientWithWii()
 {
-  //Line up with target
-  if (!wiiCameraFindTwoCamera(VERTICAL_BEACON) ) {
-    if (wiiCameraLocalize(HORIZONTAL_BEACON, 67, LEFT_CAMERA)) {
-      //This means only the horizontal is visible
-      
-            runEncoderDistanceEvenly(-80);
-            doTurn(90);
-    }
-  }
-  else {
-    //This means you can see vertical beacon... may also the horizontal
-    wiiCameraLocalize(VERTICAL_BEACON,112,RIGHT_CAMERA);
-    
-            runEncoderDistanceEvenly(-80);
-            doTurn(-90);
-  }
-
+//  //Line up with target
+//  if (!wiiCameraFindTwoCamera(VERTICAL_BEACON) ) {
+//    if (wiiCameraLocalize(HORIZONTAL_BEACON, 67, LEFT_CAMERA)) {
+//      //This means only the horizontal is visible
+//      
+//            runEncoderDistanceEvenly(-80);
+//            doTurn(90);
+//    }
+//  }
+//  else {
+//    //This means you can see vertical beacon... may also the horizontal
+//    wiiCameraLocalize(VERTICAL_BEACON,112,RIGHT_CAMERA);
+//    
+//            runEncoderDistanceEvenly(-80);
+//            doTurn(-90);
+//  }
+//
 
 
   return stored_macro_command != 0;

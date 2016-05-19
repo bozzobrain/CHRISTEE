@@ -1,6 +1,8 @@
 
+
 #include "MPU.h"
 
+#include <Wire.h>
 MPU::MPU(word address)
 {
   MPUaddress=address; 
@@ -8,6 +10,7 @@ MPU::MPU(word address)
 
 void MPU::MPUinit()
 {
+  ///Wire.begin();
   // Clear the 'sleep' bit to start the sensor.
   MPU6050_write_reg(MPU6050_PWR_MGMT_1, 0); 
   MPU6050_write_reg(MPU6050_CONFIG,MPU6050_CONFIG_DLPF);
@@ -86,21 +89,21 @@ int MPU::MPU6050_read(int starts, uint8_t *buffer, uint8_t sized)
 {
   int i, n, error;
 
-  Wire.beginTransmission(MPUaddress);
-  n = Wire.write(starts);
+  //Wire.beginTransmission(MPUaddress);
+  //n = Wire.write(starts);
   if (n != 1)
     return (-10);
 
-  n = Wire.endTransmission(false);    // hold the I2C-bus
+  //n = Wire.endTransmission(false);    // hold the I2C-bus
   if (n != 0)
     return (n);
 
   // Third parameter is true: relase I2C-bus after data is read.
-  Wire.requestFrom(MPUaddress, sized, (uint8_t) true);
+  //Wire.requestFrom(MPUaddress, sized, (uint8_t) true);
   i = 0;
-  while (Wire.available() && i < sized)
+  //while (Wire.available() && i < sized)
   {
-    buffer[i++] = Wire.read();
+  //  buffer[i++] = Wire.read();
   }
   if ( i != sized)
     return (-11);
@@ -113,16 +116,16 @@ int MPU::MPU6050_read(int starts, uint8_t *buffer, uint8_t sized)
 int MPU::MPU6050_write(int starts, const uint8_t *pData,  uint8_t sized)
 {
   int n, error;
-  Wire.beginTransmission(MPUaddress);
-  n = Wire.write(starts);        // write the start address
+  //Wire.beginTransmission(MPUaddress);
+  ///n = Wire.write(starts);        // write the start address
   if (n != 1)
     return (-20);
 
-  n = Wire.write(pData, sized);  // write data bytes
+  //n = Wire.write(pData, sized);  // write data bytes
   if (n != sized)
     return (-21);
 
-  error = Wire.endTransmission(true); // release the I2C-bus
+  //error = Wire.endTransmission(true); // release the I2C-bus
   if (error != 0)
     return (error);
   return (0);         // return : no error
