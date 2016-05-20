@@ -2,7 +2,13 @@
 // 5/19/16
 #include <WatchDogTimers.h>
 
-#define navi 6  //needs longer boot time
+/*
+* navi 6
+* sensor 7
+* router 2
+* led 3
+*/
+#define navi 6
 #define sensor 7
 #define router 2
 #define led 3
@@ -28,9 +34,9 @@ int pinToReboot;
 #define COMPLETE_BOOT_TIME 45000 // Time given to boot up entire robot
 #define NAVI_BOOT_TIME 6500 // Time given to boot up the navi
 #define OTHER_BOOT_TIME 4000 // Time given to boot up a pin other than router or navi
-
 #define LOW_TIME 2000  // time to hold pins low while resetting
 #define WAIT_TIME 5000 // time to wait until it is determined a processor is hanging
+
 Timers sensorTimer(WAIT_TIME);
 Timers naviTimer(WAIT_TIME);
 //Timers motorbTimer(WAIT_TIME);
@@ -190,7 +196,7 @@ void pinDown(int pin)
 {
   // If the led hangs, reboot entire robot
   // Otherwise reboot the pin for the given time depending on what pin
-  if(pin == ledOut) {
+  if(pin == routerOut) {
     allPinsLow = true;
     return;
   }
@@ -269,6 +275,7 @@ void setAllHigh()
   digitalWrite(routerOut, HIGH);
   digitalWrite(ledOut, HIGH);
   digitalWrite(powerbOut, HIGH);
+  rebootTimer.setInterval(COMPLETE_BOOT_TIME);
   rebootTimer.resetTimer();
   bootWaiting = true;
   
