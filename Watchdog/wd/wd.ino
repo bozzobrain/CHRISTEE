@@ -31,6 +31,7 @@
 #define powerbOut A3
 
 int pinToReboot;
+
 #define COMPLETE_BOOT_TIME 45000 // Time given to boot up entire robot
 #define NAVI_BOOT_TIME 6500 // Time given to boot up the navi
 #define OTHER_BOOT_TIME 4000 // Time given to boot up a pin other than router or navi
@@ -173,7 +174,7 @@ void loop() {
 
 
 
-void checkHanging(Timers *timer, int inPin, int outPin, bool *oldValue)
+void checkHanging(Timers * timer, int inPin, int outPin, bool *oldValue)
 {
   // If the current state of the inPin equals the previous state of the inPin
   if(digitalRead(inPin) == *oldValue) {
@@ -278,6 +279,6 @@ void setAllHigh()
   rebootTimer.setInterval(COMPLETE_BOOT_TIME);
   rebootTimer.resetTimer();
   bootWaiting = true;
-  
+  allPinsHigh = true;
   return;
 }
