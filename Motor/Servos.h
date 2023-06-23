@@ -7,7 +7,7 @@
 #define lowerLIMIT 1 //6
 #define upperLIMIT 91  //90
 #define VIBRATING_MOTOR_ON_HIGH 80
-#define VIBRATING_MOTOR_ON_LOW 10
+#define VIBRATING_MOTOR_ON_LOW 15
 //// attage names to servos
 static Servo leftMotor;
 static Servo rightMotor;

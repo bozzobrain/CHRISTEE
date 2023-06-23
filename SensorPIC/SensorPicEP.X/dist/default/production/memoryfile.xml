@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project>
-  <executable name="dist/default/production/AccelGyro.X.production.elf">
+  <executable name="dist/default/production/SensorPicEP.X.production.elf">
     <memory name="data">
       <units>bytes</units>
       <length>53248</length>
-      <used>86</used>
-      <free>53162</free>
+      <used>3548</used>
+      <free>49700</free>
     </memory>
     <memory name="program">
       <units>bytes</units>
       <length>524544</length>
-      <used>6201</used>
-      <free>518343</free>
+      <used>34170</used>
+      <free>490374</free>
     </memory>
   </executable>
 </project>

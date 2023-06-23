@@ -1,5 +1,4 @@
 //Sensors.h
-
 float lastGyroAngle=0;
 void wipeGyro(){
   //lastGyroValue=0;
@@ -10,16 +9,16 @@ void updateMPU()
 {
   // if(gyroTimer.timerDone())
   //{
-     get_Movement_6();
-
-     RemoveGravity();
-	
-     GyroAngle(); 
-    
-//  Serial.print("x"); Serial.println(angle_x); 
-//  Serial.print("y"); Serial.println(angle_y);
-//  Serial.print("z"); Serial.println(angle_z);
-    macroAngle+=lastGyroAngle-angle_y;
+//     get_Movement_6();
+//
+//     RemoveGravity();
+//	
+//     GyroAngle(); 
+//    
+ // Serial.print("x"); Serial.println(angle_x); 
+ // Serial.print("y"); Serial.println(angle_y);
+ // Serial.print("z"); Serial.println(angle_z);
+    macroAngle+=angle_y-lastGyroAngle;
     lastGyroAngle=angle_y;
   //Serial.print("LastGAngle: "); Serial.println(lastGyroAngle); 
   //Serial.print("macroAngle: "); Serial.println(macroAngle); Serial.println();

@@ -5,7 +5,7 @@ Timers sendTimer(50);
 Timers screenTimer(25);  //15
 Timers commTimer(2000);
 Timers latency(50);
-Timers resendTimer(250);
+Timers resendTimer(100);
 bool CTS=true;
 bool notSent=true, heardBack=false;
 //---------------------- Screen variables ---------------------------

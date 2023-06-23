@@ -1,172 +1,228 @@
-#define acceptableGyroBeaconAngle           5
-#define gyroCorrectBeaconCenterMinAngle     4
-#define gyroCorrectBeaconCenterMaxAngle    10
-#define ROBOT_ANGLE_CORRECT_WIDE           90
-#define SERVO_MIN                          0
-#define SERVO_MAX                         180
-#define OFFSET_CAMERA_REGISTER              3
-#define NUMBER_SWEEPS_UNSEEN                2
 
-bool wiiCameraLocalize(int targetBeacon, int targetAngle, int cameraNumber)
+Timers acquisitionTimer(100);
+
+#define HALFWAY_VALUE 1.89
+
+bool makePerpendicular(bool L_R)
 {
-  int sendBeacon;
-  if(targetBeacon==HORIZONTAL_BEACON){
-   sendBeacon=HORIZONTAL_SEND; 
-  }
-  else
-  sendBeacon=VERTICAL_SEND;
-    Navigation.ToSend(LAST_BOARD_ADDRESS_RECEIVE, NAVIGATION_ADDRESS);
-  Navigation.ToSend(WII_SUBSYSTEM_MODE, sendBeacon);
-  Navigation.sendData(PIC_ADDRESS);
-  bool doneLocalizing = false;
-  int sweepCount = numberSweeps[cameraNumber];
-  static Timers decisionTimer(300),sendTimerWii(150);
-  while (!doneLocalizing && (stored_macro_command != 0))
+  //LEFT CAMERA
+  if(L_R)
   {
-    sweepCount = numberSweeps[cameraNumber];
-
-    //while the wii camera doesnt see it..
-    while ((stored_macro_command != 0) && (!beaconSeen[cameraNumber]))
+    //PLUG THIS IN AS THE INITIAL VALUE
+    int prevDist=distLeft, currentDist=distLeft;
+    //Turn the robot a certain dist...
+    doTurn(2);
+    
+    //load new dist
+    currentDist=distLeft;
+    //if the distance increased
+    if((currentDist-prevDist)>=0)
+    {      
+      //while it continues to increase
+      while(((currentDist-prevDist)>=0) && (stored_macro_command!=0))
+      {
+        //Small turn
+        doTurn(2);       
+        //Reset timer
+        acquisitionTimer.resetTimer();
+        //Wait for camera to reacquire
+        while((!acquisitionTimer.timerDone()) && (stored_macro_command!=0))
+        {           
+          if(MPUTimer.timerDone())     updateMPU();
+          macroCommunicationsUpdate();
+        }      
+        //store old dist
+        prevDist=currentDist;
+        //Record new dist          
+        currentDist=distLeft;
+      }
+    }
+    else
     {
-
-      if (sendTimerWii.timerDone()) {
+      //load new dist and overright prev dist
+      currentDist=distLeft;
+      prevDist=distLeft;        
+      //while it continues to increase
+      while(((currentDist-prevDist)>=0) && (stored_macro_command!=0))
+      {
+        //Small turn
+        doTurn(-2);        
+        //Reset timer
+        acquisitionTimer.resetTimer();
+         //Wait for camera to reacquire
+        while((!acquisitionTimer.timerDone()) && (stored_macro_command!=0))
+        {           
+          if(MPUTimer.timerDone())     updateMPU();
+          macroCommunicationsUpdate();
+        }
         
-    Navigation.ToSend(LAST_BOARD_ADDRESS_RECEIVE, NAVIGATION_ADDRESS);
-        Navigation.ToSend(WII_SUBSYSTEM_MODE, sendBeacon);
-        Navigation.sendData(PIC_ADDRESS);
-        sendLEDCommand(RED);
-      }
-
-      //if we have swept a number of times
-      if ((numberSweeps[cameraNumber] > (sweepCount + NUMBER_SWEEPS_UNSEEN)))
-      {
-        static int turnCount;
-        //Reposition for another look
-        doTurn(ROBOT_ANGLE_CORRECT_WIDE);
-        turnCount++;
-
-        beaconSeen[cameraNumber] = 0;
-
-        //if you have turned too much give up on this beacon...
-        if (turnCount > (450 / ROBOT_ANGLE_CORRECT_WIDE))
-          return false;
-        sweepCount = numberSweeps[cameraNumber];
-      }
-      //Listen for break and for wii
-      macroCommunicationsUpdate();
-    }
-
-    //    //Allow to center -- do small adjustments if camera is on edge of capable angle
-    //    while (((macro_stop != 1) && (beaconSeen[cameraNumber])) && (!beaconCentered))
-    //    {
-    //      if (decisionTimer.timerDone())
-    //      {
-    //        if (beaconAngle[cameraNumber] < SERVO_MIN + 10) {
-    //          doTurn(5);
-    //        }
-    //        else if ((beaconAngle[cameraNumber] > SERVO_MAX - 10)) {
-    //          doTurn(-5);
-    //        }
-    //        decisionTimer.resetTimer();
-    //      }
-    //      //Listen for break and for wii
-    //      macroCommunicationsUpdate();
-    //    }
-
-
-    //Then make angle = what you want;
-    while ( (!(((beaconAngle[cameraNumber] - acceptableGyroBeaconAngle) < targetAngle) && ((beaconAngle[cameraNumber] + acceptableGyroBeaconAngle) > targetAngle))) && ((stored_macro_command != 0) && (beaconSeen[cameraNumber]) && (beaconCentered[cameraNumber])) && !doneLocalizing)
-    {
-
-      if (decisionTimer.timerDone())
-      {
-      if (sendTimerWii.timerDone()) 
-        sendLEDCommand(BLUE);
-        if (beaconAngle[cameraNumber] < targetAngle)
-        {
-          doTurn(constrain((targetAngle - beaconAngle[cameraNumber]) / 2, gyroCorrectBeaconCenterMinAngle, gyroCorrectBeaconCenterMaxAngle));
-        }
-        else
-        {
-          doTurn(constrain((targetAngle - beaconAngle[cameraNumber]) / 2 , -gyroCorrectBeaconCenterMaxAngle, -gyroCorrectBeaconCenterMinAngle));
-        }
-        beaconSeen[cameraNumber] = 0;
-        beaconCentered[cameraNumber] = 0;
-        decisionTimer.resetTimer();
-      }
-      //Listen for break and for wii
-      macroCommunicationsUpdate();
-
-      if (( ( (beaconAngle[cameraNumber] - acceptableGyroBeaconAngle) < targetAngle) && ((beaconAngle[cameraNumber] + acceptableGyroBeaconAngle) > targetAngle)))
-      {
-        doneLocalizing = true;
-        return stored_macro_command != 0;
-      }
-    }
-
-    macroCommunicationsUpdate();
-    if (( ( (beaconAngle[cameraNumber] - acceptableGyroBeaconAngle) < targetAngle) && ((beaconAngle[cameraNumber] + acceptableGyroBeaconAngle) > targetAngle)))
-    {
-      doneLocalizing = true;
-      return stored_macro_command != 0;
+        prevDist=currentDist;   
+        currentDist=distLeft;  
+        
+      }      
     }
   }
+  
+  //-RIGHT CAMERA-
+  else
+  {    
+    //PLUG THIS IN AS THE INITIAL VALUE
+    int prevDist=distRight, currentDist=distRight;    
+    //Turn the robot a certain dist...
+    doTurn(2);    
+    //load new dist
+    currentDist=distRight;
+    //if the distance increased
+    if((currentDist-prevDist)>=0)
+    {
+      //while it continues to increase
+      while(((currentDist-prevDist)>=0) && (stored_macro_command!=0))
+      {
+        //Small turn
+        doTurn(2);       
+           //Reset timer
+        acquisitionTimer.resetTimer();
+         //Wait for camera to reacquire
+        while((!acquisitionTimer.timerDone()) && (stored_macro_command!=0))
+        {           
+          if(MPUTimer.timerDone())     updateMPU();
+          macroCommunicationsUpdate();
+        }
+        currentDist=distRight;
+        prevDist=currentDist;   
+        
+      }
+    }
+    else
+    {
+        //load new dist and overright prev dist
+        currentDist=distRight;
+        prevDist=currentDist;
+        
+       //while it continues to increase
+      while(((currentDist-prevDist)>=0) && (stored_macro_command!=0))
+      {
+        //Small turn
+        doTurn(-2);
+        //Reset timer
+        acquisitionTimer.resetTimer();
+        //Wait for camera to reacquire
+        while((!acquisitionTimer.timerDone()) && (stored_macro_command!=0))
+        {           
+          if(MPUTimer.timerDone())     updateMPU();
+          macroCommunicationsUpdate();
+        }        
+        prevDist=currentDist;     
+        currentDist=distRight;
 
+      }      
+    }
+  }
+}
+
+bool makeCentered(bool L_R)
+{
+  int target_angle=0;
+    //LEFT CAMERA
+  if(L_R)
+  {
+    //USING THE LEFT CAMERA AS CONST ANGLE
+     target_angle=leftAngle;
+     //WHILE THE LEFT AND RIGHT ARE NOT SIMILAR TO WITHIN 5 degrees
+     while((!isAbout(target_angle,rightAngle,5)) && (stored_macro_command!=0))
+     {
+       //Move to attempt to align the cameras to same angle value
+       newEncoders(-10);
+       //Reset timer
+       acquisitionTimer.resetTimer();
+       //Wait for camera to reacquire
+       while((!acquisitionTimer.timerDone()) && (stored_macro_command!=0))
+       {           
+          if(MPUTimer.timerDone())     updateMPU();
+          macroCommunicationsUpdate();
+       }   
+   
+      //MAY WANT THIS TO UPDATE THE ANGLE BUT FOR NOW DO NOT   
+        //target_angle=leftAngle;     
+     }
+  }
+  
+  //RIGHT CAMERA
+  else
+  {
+     //USING THE RIGHT CAMERA AS CONST ANGLE
+     target_angle=rightAngle;  
+     //WHILE THE LEFT AND RIGHT ARE NOT SIMILAR TO WITHIN 5 degrees  
+     while((!isAbout(target_angle,leftAngle,5)) && (stored_macro_command!=0))
+     {
+       //Move to attempt to align the cameras to same angle value
+         newEncoders(-10);     
+        //Reset timer
+        acquisitionTimer.resetTimer();
+        //Wait for camera to reacquire
+        while((!acquisitionTimer.timerDone()) && (stored_macro_command!=0))
+        {           
+          if(MPUTimer.timerDone())     updateMPU();
+          macroCommunicationsUpdate();
+        } 
+    //MAY WANT THIS TO UPDATE THE ANGLE BUT FOR NOW DO NOT   
+        //target_angle=rightAngle; 
+     } 
+  }  
+}
+bool angleDataValid()
+{  
+  return true;
+}
+bool wiiCameraLocalize()
+{
+  //MAKE SURE CAMERAS ARE LOCKED
+  while((robotSeen==0) && (stored_macro_command!=0))
+  {    
+        if(MPUTimer.timerDone())     updateMPU();
+        macroCommunicationsUpdate();
+  }
+  
+    if(((robotSeen==XY_FOUND || robotSeen==BOTH_CAMERAS) && angleDataValid()) && (stored_macro_command!=0))
+    {
+   //if X-Y found (both found)
+     //if on right (EITHER BY X/Y)
+//       if(x_coordinate>HALFWAY_VALUE)
+//         makePerpendicular(LEFT_PERPENDICULAR);  //ON RIGHT SIDE
+//       else if(x_coordinate<=HALFWAY_VALUE)
+//         makePerpendicular(RIGHT_PERPENDICULAR);  //ON LEFT SIDE      
+//       
+       // or by greatest ANGLE of CAMERA
+      if(leftAngle>rightAngle)    //LEFT SIDE
+      {        
+         makePerpendicular(RIGHT_PERPENDICULAR);  //ON LEFT SIDE     
+      }
+      else                        //RIGHT_SIDE
+      {        
+         makePerpendicular(LEFT_PERPENDICULAR);  //ON RIGHT SIDE
+      }
+   
+    }
+   
+   //else determine left or right camera found robot
+   //if left camera     
+       //make perpendicular to beacon left
+    else if(robotSeen==LEFT_CAMERA_ONLY || robotSeen==LEFT_CAMERA_ONLY_1)
+       makePerpendicular(LEFT_PERPENDICULAR);
+   
+   //if right camera
+       //make perpendicular to beacon right
+    else if(robotSeen==RIGHT_CAMERA_ONLY  || robotSeen==RIGHT_CAMERA_ONLY_1 )
+       makePerpendicular(RIGHT_PERPENDICULAR);
+     
+   
+   
 }
 
 bool wiiCameraFindTwoCamera(int targetBeacon)
 {
   
-  int sendBeacon;
-  if(targetBeacon==HORIZONTAL_BEACON){
-   sendBeacon=HORIZONTAL_SEND; 
-  }
-  else
-  sendBeacon=VERTICAL_SEND;
-  
-    Navigation.ToSend(LAST_BOARD_ADDRESS_RECEIVE, NAVIGATION_ADDRESS);
-  Navigation.ToSend(WII_SUBSYSTEM_MODE, sendBeacon);
-  Navigation.sendData(PIC_ADDRESS);
-  bool doneLocalizing = false;
-  int sweepCountLeft = numberSweeps[LEFT_CAMERA], sweepCountRight = numberSweeps[RIGHT_CAMERA];
-  static Timers decisionTimer(300), sendTimerWii(100);
-  while (!doneLocalizing && (stored_macro_command != 0))
-  {
-    sweepCountLeft = numberSweeps[LEFT_CAMERA];
-    sweepCountRight = numberSweeps[RIGHT_CAMERA];
-
-    //while the wii camera doesnt see it..
-    while ((stored_macro_command != 0) && (!beaconSeen[RIGHT_CAMERA] || !beaconSeen[LEFT_CAMERA]))
-    {
-      if (sendTimerWii.timerDone()) {
-        
-        Navigation.ToSend(LAST_BOARD_ADDRESS_RECEIVE, NAVIGATION_ADDRESS);
-        Navigation.ToSend(WII_SUBSYSTEM_MODE, sendBeacon);
-        Navigation.sendData(PIC_ADDRESS);
-        sendLEDCommand(RED);
-      }
-
-      //if we have swept a number of times
-      if ((numberSweeps[LEFT_CAMERA] > (sweepCountLeft + NUMBER_SWEEPS_UNSEEN)) || (numberSweeps[RIGHT_CAMERA] > (sweepCountRight + NUMBER_SWEEPS_UNSEEN)))
-      {
-        static int turnCount;
-        //Reposition for another look
-        doTurn(ROBOT_ANGLE_CORRECT_WIDE);
-        turnCount++;
-
-        //if you have turned too much give up on this beacon...
-        if (turnCount > (450 / ROBOT_ANGLE_CORRECT_WIDE))
-          return false;
-        sweepCountLeft = numberSweeps[LEFT_CAMERA];
-        sweepCountRight = numberSweeps[RIGHT_CAMERA];
-      }
-      //Listen for break and for wii
-      macroCommunicationsUpdate();
-    }
-    return true;
-    macroCommunicationsUpdate();
-
-  }
+ 
 
 }
 

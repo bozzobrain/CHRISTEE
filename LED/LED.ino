@@ -40,10 +40,11 @@ Adafruit_NeoPixel Core = Adafruit_NeoPixel(CORE_MAX, PINCr, NEO_GRB + NEO_KHZ800
 
 
 FastTransfer LED;
-int received[4];
+int received[5];
 #define STATE 1
 #define COLOR 2
 #define UPDATE_FLAG 3
+#define REBOOT_FLAG 4
 
 int state;
 boolean initialized;
@@ -69,7 +70,7 @@ boolean initialized;
 #define STROBE          7
 #define POLICE          8
 #define RAINBOW         9
-#define ZIPS             10
+#define ZIPS            10
 
 
 // IMPORTANT: To reduce NeoPixel burnout risk, add 1000 uF capacitor across
@@ -79,6 +80,7 @@ boolean initialized;
 
 // safetyTimer is how long to wait before switching to gettingComms()
 Timers safetyTimer(2000);
+Timers ledPin13Timer(500);
 
 void setup()
 {
@@ -98,6 +100,9 @@ void setup()
   Core.begin();
   Core.show();
   
+  safetyTimer.resetTimer();
+  ledPin13Timer.resetTimer();
+  
   state = 0;
   initialized = false;
 }
@@ -108,9 +113,19 @@ uint8_t blue;
 
 void loop()
 {
+  if(received[REBOOT_FLAG] == 1)
+  {
+    strobe();
+    delay(5000);
+  }
+  else if(ledPin13Timer.timerDone())
+  {
+    digitalWrite(13, !digitalRead(13));
+    ledPin13Timer.resetTimer();
+  }
+  
   if(LED.receiveData())
   {
-    digitalWrite(13, !digitalRead(13)); //equivalent to blink
     safetyTimer.resetTimer();
     initialized = false;
     state = received[STATE];

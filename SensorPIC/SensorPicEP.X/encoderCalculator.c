@@ -2,7 +2,7 @@
 #include <xc.h>
 #include <stdbool.h>
 #include "encoderCalculator.h"
-
+#include "gyro.h"
 #define ON         0
 #define OFF        1
 #define INDICATOR1 LATEbits.LATE5
@@ -12,6 +12,7 @@
 #define WATCHDOG   LATEbits.LATE7
 
 
+#define GLOBAL_INTERRUPTS  INTCON2bits.GIE
 #define DISTANCE_PER_PULSE 0.69 //1.045
 union jointhem{
     long joined;
@@ -49,7 +50,7 @@ void LeftSpeedCalculation(void) {
 }
 
 void updateEncoders() {
-    if (encoderTime > 50) {
+    if (encoderTime > 100) {
         //INDICATOR3^=1;
         encoderTime = 0;
 //        if (!EncoderRight) {
@@ -160,6 +161,10 @@ void sendEncoderValues() {
     {        
         INDICATOR2=0;
     }
+    
+    WATCHDOG ^= 1;
+    
+   // GLOBAL_INTERRUPTS = 0;
     ToSend(LAST_BOARD_ADDRESS_RECEIVE,   PIC_ADDRESS);
     _16_to_32.joined=navEncoderRight*DISTANCE_PER_PULSE;
     ToSend(ENCODER_R_L_NAVIGATION, _16_to_32.endian.low);
@@ -168,21 +173,27 @@ void sendEncoderValues() {
     _16_to_32.joined=navEncoderLeft*DISTANCE_PER_PULSE;
     ToSend(ENCODER_L_H_NAVIGATION, _16_to_32.endian.high);
     ToSend(ENCODER_L_L_NAVIGATION, _16_to_32.endian.low);
+    
+    ToSend(GYRO_Z_ANGLE, angleZ[0]);
+    //ToSend(GYRO_IMPACT, getImpactStatus());
     //navEncoderLeft=0;
     //navEncoderRight=0;
     //ToSend(ENCODER_SPEED_R_NAVIGATION, SpeedRight);
     //ToSend(ENCODER_SPEED_L_NAVIGATION, SpeedLeft);
     sendData(NAVIGATION_ADDRESS);
+    
+    //GLOBAL_INTERRUPTS = 1;
 //    
-//    ToSend(LAST_BOARD_ADDRESS_RECEIVE,   PIC_ADDRESS);
 //    _16_to_32.joined=navEncoderRight*DISTANCE_PER_PULSE;
 //    ToSend(ENCODER_R_L_CONTROL, _16_to_32.endian.low);
 //    ToSend(ENCODER_R_H_CONTROL, _16_to_32.endian.high);
 //    
 //    _16_to_32.joined=navEncoderLeft*DISTANCE_PER_PULSE;
-//    ToSend(ENCODER_L_H_CONTROL, _16_to_32.endian.high);
-//    ToSend(ENCODER_L_L_CONTROL, _16_to_32.endian.low);
-//    //ToSend(ENCODER_SPEED_R_CONTROL, SpeedRight);
-//    //ToSend(ENCODER_SPEED_L_CONTROL, SpeedLeft);
-//    sendData(CONTROL_ADDRESS);
+    
+//     ToSend(LAST_BOARD_ADDRESS_RECEIVE,   PIC_ADDRESS);
+//      ToSend(ENCODER_R_L_CONTROL, angleX[0]);//_16_to_32.endian.high);
+//      ToSend(ENCODER_L_L_CONTROL, angleY[0]);//_16_to_32.endian.low);
+//      ToSend(ENCODER_SPEED_R_CONTROL,angleZ[0]);// SpeedRight);
+//      ToSend(ENCODER_SPEED_L_CONTROL,getImpactStatus());// SpeedLeft);
+//      sendData(CONTROL_ADDRESS);
 }

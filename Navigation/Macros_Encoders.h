@@ -63,10 +63,10 @@ void newEncoders(signed long cm)
       }
 //          Serial.print("CM: ");
 //    Serial.print(cm);
-//    Serial.print(", LE: ");
-//    Serial.print(macroEncoderL);
-//    Serial.print(", RE: ");
-//    Serial.print(macroEncoderR);
+    Serial.print(", LE: ");
+    Serial.print(macroEncoderL);
+    Serial.print(", RE: ");
+    Serial.println(macroEncoderR);
 //    Serial.print(",  inRL: ");
 //    Serial.print(isInRange(macroEncoderL,cm,DEADZONE_ENCODER)==true);
 //    

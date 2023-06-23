@@ -100,7 +100,7 @@ union jointhem{
 
 inline void updateCommunication()
 {
-  static Timers minimumResponseTimer(25);
+  static Timers minimumResponseTimer(15);
   //So if you have heard from the comm after sending -or- if the resend timer timed out and you havent already sent before a safety timeout condition
   if ((heardBack && minimumResponseTimer.timerDone()) || (resendTimer.timerDone() && notSent ))
   {
@@ -113,16 +113,18 @@ inline void updateCommunication()
     else notSent=false;
     minimumResponseTimer.resetTimer();     
     resendTimer.resetTimer();
+    
+     
   }
   //control box is always listening to the robot
   //in order to keep track of macro's and keep
   //screen up to date.
-  while (robot.receiveData())
+  if (robot.receiveData())
   {
     switch (roboMessage[LAST_BOARD_ADDRESS_RECEIVE]) {
       case NAVIGATION_ADDRESS:
         //NAVIGATION_RECEIVE
-        
+         digitalWrite(13, !digitalRead(13));
         
        //When you hear from the navigation, reset comms timers
         heardBack = true;
@@ -140,7 +142,6 @@ inline void updateCommunication()
         //Robot Motor States
         motorL                = roboMessage[MOTORL];
         motorR                = roboMessage[MOTORR];
-        
         break;
       case POWER_ADDRESS:
         //Power systems

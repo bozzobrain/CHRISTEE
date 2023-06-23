@@ -25,13 +25,13 @@ void initialize(void)
     TRISGbits.TRISG7  = 0; // RG7 set to output
     ANSELGbits.ANSG8  = 0; // turn off analog
     TRISGbits.TRISG8  = 0; // RG8 set to output
-    INTCON1bits.NSTDIS= 0;
+   
     TRISFbits.TRISF6 = 0; // Right camera reset pin
     LATFbits.LATF6 = 1; // set pin high
     TRISDbits.TRISD0 = 0; // Left camera reset pin
     LATDbits.LATD0 = 1; // set pin high
 
-    
+    //INTCON2bits.GIE = 1;        //Enables global interrupts
     //DIrection pins Encoders
     TRISBbits.TRISB0= 1;
     TRISBbits.TRISB1= 1;
@@ -57,6 +57,7 @@ void initialize(void)
     //initUART1();
     timerOne();
     timerTwo();
+    timerFour();
     INDICATOR3=ON;
     inputCapture();
 
@@ -65,6 +66,7 @@ void initialize(void)
     INDICATOR2=OFF;
     INDICATOR3=OFF;
     INDICATOR4=OFF;
+    //INTCON1bits.NSTDIS= 1;
     GLOBAL_INTERRUPTS = 1;
     
 }
@@ -112,15 +114,30 @@ void timerTwo(void)
     IEC0bits.T2IE = 0; // disable timer1 interrupt
     T2CONbits.TON = 1; //enable timer 2
 }
+void timerFour(void)
+{
+    //TIMER INTURUPT INIT
+    
+    //INTCON1bits.NSTDIS = 0;       //disables the interrupt nusting
+    T4CONbits.TCKPS = 0b10;     //Prescaler for timer 2
+    PR4 = 9375;                 //Period Register
+    //(1/(FR/Pre))*Period        =(1/(60000000/ 64)*9375
+    T4CONbits.T32 = 0;          //Timer mode select bit
+    IFS1bits.T4IF = 0;          //Clears the interrupt flag
+    IEC1bits.T4IE = 1;          //Enables the Timer interrupt
+    T4CONbits.TON = 1;          //Enables the Timer(this timer is running a 100Hz)
+}
 
 void initUART1(void)
 {
-
-    RPINR18bits.U1RXR = 66; // RP66 for RX
-    RPOR0bits.RP65R = 1;
-    U1MODEbits.BRGH = 0; // 16 multiplier
-    U1BRG = 64; // 57600 baud rate
-    U1MODEbits.UARTEN = 1; // enable uart
+    if(getGYRO_DEBUG() == false)
+    {
+        RPINR18bits.U1RXR = 66; // RP66 for RX
+        RPOR0bits.RP65R = 1;
+        U1MODEbits.BRGH = 0; // 16 multiplier
+        U1BRG = 64; // 57600 baud rate
+        U1MODEbits.UARTEN = 1; // enable uart
+    }
 }
 /*
  ICM<2:0>: Input Capture Mode Select bits

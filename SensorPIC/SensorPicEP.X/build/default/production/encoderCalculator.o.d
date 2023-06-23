@@ -1,3 +1,4 @@
 build/default/production/encoderCalculator.o:  \
 encoderCalculator.c  \
- encoderCalculator.h 
+ encoderCalculator.h  \
+gyro.h 
