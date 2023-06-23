@@ -1083,17 +1083,17 @@ __FUID0
 .comment
  *(.comment)
 
-.debug_info       0x000000       0x832f
+.debug_info       0x000000       0x8434
  *(.debug_info)
- .debug_info      0x000000       0x199c build/default/production/I2C_API.o
- .debug_info      0x00199c        0x98b build/default/production/PWM.o
- .debug_info      0x002327       0x27a7 build/default/production/initialize.o
- .debug_info      0x004ace        0x343 build/default/production/interrupt_handler.o
- .debug_info      0x004e11        0x4fa build/default/production/main.o
- .debug_info      0x00530b        0xc38 build/default/production/wiiCamera.o
- .debug_info      0x005f43        0xb65 build/default/production/FastTransfer.o
- .debug_info      0x006aa8        0xf4a build/default/production/UART_handler.o
- .debug_info      0x0079f2        0x93d build/default/production/encoderCalculator.o
+ .debug_info      0x000000       0x19b9 build/default/production/I2C_API.o
+ .debug_info      0x0019b9        0x9a8 build/default/production/PWM.o
+ .debug_info      0x002361       0x27c4 build/default/production/initialize.o
+ .debug_info      0x004b25        0x360 build/default/production/interrupt_handler.o
+ .debug_info      0x004e85        0x517 build/default/production/main.o
+ .debug_info      0x00539c        0xc55 build/default/production/wiiCamera.o
+ .debug_info      0x005ff1        0xb82 build/default/production/FastTransfer.o
+ .debug_info      0x006b73        0xf67 build/default/production/UART_handler.o
+ .debug_info      0x007ada        0x95a build/default/production/encoderCalculator.o
  *(.gnu.linkonce.wi.*)
 
 .debug_abbrev     0x000000        0xc1d

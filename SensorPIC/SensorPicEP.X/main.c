@@ -32,6 +32,7 @@ void delay(int ms);
 
 int main(void)
 {
+    //angleZ[0]=-100;
     initialize();
     //initCamera(0);
     //initCamera(1);
